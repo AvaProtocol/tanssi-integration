@@ -97,6 +97,9 @@ cumulus-primitives-utility = { workspace = true }
 parachain-info = { workspace = true }
 parachains-common = { workspace = true }
 
+# OAK
+pallet-automation-time = { workspace = true }
+
 # Benchmarking
 frame-benchmarking = { workspace = true, optional = true }
 frame-system-benchmarking = { workspace = true, optional = true }
@@ -151,6 +154,7 @@ std = [
 	"pallet-xcm-benchmarks?/std",
 	"pallet-xcm-executor-utils/std",
 	"pallet-xcm/std",
+	"pallet-automation-time/std",
 	"parachain-info/std",
 	"parachains-common/std",
 	"parity-scale-codec/std",

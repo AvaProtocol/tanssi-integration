@@ -638,6 +638,45 @@ impl pallet_multisig::Config for Runtime {
     type WeightInfo = weights::pallet_multisig::SubstrateWeight<Runtime>;
 }
 
+parameter_types! {
+	pub const MaxScheduleSeconds: u64 = 6 * 30 * 24 * 60 * 60;	// 6 months in seconds
+	pub const SlotSizeSeconds: u64 = 600; // 10 minutes in seconds
+	pub const MaxBlockWeight: u64 = MAXIMUM_BLOCK_WEIGHT.ref_time();
+	pub const MaxWeightPercentage: Perbill = Perbill::from_percent(5);
+	pub const UpdateQueueRatio: Perbill = Perbill::from_percent(50);
+	// pub const ExecutionWeightFee: Balance = 12;
+}
+
+pub struct ScheduleAllowList;
+impl Contains<RuntimeCall> for ScheduleAllowList {
+	fn contains(c: &RuntimeCall) -> bool {
+		match c {
+			RuntimeCall::System(_) => true,
+			RuntimeCall::Balances(_) => true,
+			RuntimeCall::Utility(_) => true,
+			_ => false,
+		}
+	}
+}
+
+impl pallet_automation_time::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type MaxTasksPerSlot = ConstU32<256>;
+	type MaxExecutionTimes = ConstU32<36>;
+	type MaxScheduleSeconds = MaxScheduleSeconds;
+	type MaxBlockWeight = MaxBlockWeight;
+	type MaxWeightPercentage = MaxWeightPercentage;
+	// Roughly .125% of parachain block weight per hour
+	// ≈ 500_000_000_000 (MaxBlockWeight) * 300 (Blocks/Hour) * .00125
+	type MaxWeightPerSlot = ConstU128<150_000_000_000>;
+	type SlotSizeSeconds = SlotSizeSeconds;
+	type UpdateQueueRatio = UpdateQueueRatio;
+	type WeightInfo = pallet_automation_time::weights::SubstrateWeight<Runtime>;
+	type Currency = Balances;
+	type RuntimeCall = RuntimeCall;
+	type ScheduleAllowList = ScheduleAllowList;
+}
+
 impl_tanssi_pallets_config!(Runtime);
 
 // Create the runtime by composing the FRAME pallets that were previously configured.
@@ -681,6 +720,7 @@ construct_runtime!(
         RootTesting: pallet_root_testing = 100,
         AsyncBacking: pallet_async_backing::{Pallet, Storage} = 110,
 
+        AutomationTime: pallet_automation_time::{Pallet, Call, Storage, Event<T>} = 200,
     }
 );
 

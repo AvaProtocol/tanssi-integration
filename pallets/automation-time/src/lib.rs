@@ -125,9 +125,6 @@ pub mod pallet {
 		#[pallet::constant]
 		type UpdateQueueRatio: Get<Perbill>;
 
-		#[pallet::constant]
-		type ExecutionWeightFee: Get<BalanceOf<Self>>;
-
 		/// The Currency type for interacting with balances
 		type Currency: Currency<Self::AccountId>;
 
@@ -141,10 +138,6 @@ pub mod pallet {
 			+ From<crate::Call<Self>>;
 
 		type ScheduleAllowList: Contains<<Self as frame_system::Config>::RuntimeCall>;
-
-		/// Self chain location.
-		#[pallet::constant]
-		type SelfLocation: Get<MultiLocation>;
 	}
 
 	const STORAGE_VERSION: StorageVersion = StorageVersion::new(2);

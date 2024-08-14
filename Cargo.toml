@@ -86,6 +86,9 @@ tp-maths = { path = "primitives/maths", default-features = false }
 tp-traits = { path = "primitives/traits", default-features = false }
 tp-xcm-core-buyer = { path = "primitives/xcm-core-buyer", default-features = false }
 
+# OAK
+pallet-automation-time = { path = "pallets/automation-time", default-features = false }
+
 # Dancekit (wasm)
 ccp-authorities-noting-inherent = { git = "https://github.com/moondance-labs/dancekit", branch = "tanssi-polkadot-v1.11.0", default-features = false }
 ccp-xcm = { git = "https://github.com/moondance-labs/dancekit", branch = "tanssi-polkadot-v1.11.0", default-features = false }
