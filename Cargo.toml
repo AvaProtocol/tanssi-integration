@@ -8,6 +8,7 @@ members = [
 	"pallets/collator-assignment/runtime-api",
 	"pallets/registrar/runtime-api",
 	"primitives/*",
+	"oak-primitives",
 	"runtime/dancebox",
 	"runtime/flashbox",
 	"runtime/relay-encoder",
@@ -492,6 +493,12 @@ substrate-rpc-client = { git = "https://github.com/moondance-labs/polkadot-sdk",
 orml-traits = { git = "https://github.com/AstarNetwork/open-runtime-module-library", branch = "polkadot-v1.11.0", default-features = false }
 orml-currencies = { git = "https://github.com/AstarNetwork/open-runtime-module-library", branch = "polkadot-v1.11.0", default-features = false }
 orml-tokens = { git = "https://github.com/AstarNetwork/open-runtime-module-library", branch = "polkadot-v1.11.0", default-features = false }
+
+# OAK
+oak-primitives = { path = "oak-primitives", default-features = false }
+pallet-valve = { path = "pallets/valve", default-features = false }
+pallet-xcmp-handler = { path = "pallets/xcmp-handler", default-features = false }
+pallet-automation-time = { path = "pallets/automation-time", default-features = false }
 
 [profile.production]
 codegen-units = 1
