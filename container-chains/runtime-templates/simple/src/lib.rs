@@ -701,7 +701,7 @@ impl EnsureOriginWithArg<RuntimeOrigin, Option<u32>> for AssetAuthority {
 	}
 }
 
-impl orml_asset_registry::Config for Runtime {
+impl orml_asset_registry::module::Config for Runtime {
 	type RuntimeEvent = RuntimeEvent;
 	type CustomMetadata = CustomMetadata;
 	type AssetId = TokenId;
@@ -711,35 +711,6 @@ impl orml_asset_registry::Config for Runtime {
 	type WeightInfo = weights::asset_registry_weights::SubstrateWeight<Runtime>;
     type StringLimit = common_runtime::config::orml_asset_registry::StringLimit;
 }
-
-// impl orml_asset_registry::Config for Runtime {
-// 	type RuntimeEvent = RuntimeEvent;
-// 	type CustomMetadata = CustomMetadata;
-// 	type AssetId = TokenId;
-// 	type AuthorityOrigin = cfg::orml_asset_registry::AssetAuthority<Runtime>;
-// 	type AssetProcessor = cfg::orml_asset_registry::SequentialIdWithCreation<Runtime>;
-// 	type Balance = Balance;
-// 	type WeightInfo = weights::orml_asset_registry_weights::ModuleWeight<Runtime>;
-// 	type StringLimit = cfg::orml_asset_registry::StringLimit;
-// }
-
-// parameter_types! {
-// 	pub TuringTreasuryAccount: AccountId = TreasuryPalletId::get().into_account_truncating();
-// }
-
-// impl orml_tokens::Config for Runtime {
-// 	type RuntimeEvent = RuntimeEvent;
-// 	type Balance = Balance;
-// 	type Amount = Amount;
-// 	type CurrencyId = TokenId;
-// 	type WeightInfo = ();
-// 	type ExistentialDeposits = orml_asset_registry::ExistentialDeposits<Runtime>;
-// 	type CurrencyHooks = CurrencyHooks<Runtime, TuringTreasuryAccount>;
-// 	type MaxLocks = MaxLocks;
-// 	type MaxReserves = MaxReserves;
-// 	type ReserveIdentifier = [u8; 8];
-// 	type DustRemovalWhitelist = DustRemovalWhitelist;
-// }
 
 // parameter_types! {
 // 	pub const GetNativeCurrencyId: TokenId = NATIVE_TOKEN_ID;
@@ -866,6 +837,9 @@ construct_runtime!(
         // Other utilities
         Multisig: pallet_multisig = 16,
 
+        AssetRegistry: orml_asset_registry::module = 18,
+        XTokens: orml_xtokens = 19,
+
         // ContainerChain Author Verification
         AuthoritiesNoting: pallet_cc_authorities_noting = 50,
         AuthorInherent: pallet_author_inherent = 51,
@@ -884,8 +858,8 @@ construct_runtime!(
         RootTesting: pallet_root_testing = 100,
         AsyncBacking: pallet_async_backing::{Pallet, Storage} = 110,
 
-        // AssetRegistry: orml_asset_registry = 200,
-        AssetRegistry: orml_asset_registry::{Pallet, Call, Storage, Event<T>, Config<T>} = 200,
+        
+        // AssetRegistry: orml_asset_registry::{Pallet, Call, Storage, Event<T>, Config<T>} = 200,
         // XcmpHandler: pallet_xcmp_handler = 200,
         // Tokens: orml_tokens = 200,
         // Currencies: orml_currencies = 201,

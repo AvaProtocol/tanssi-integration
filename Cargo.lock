@@ -2069,6 +2069,8 @@ dependencies = [
  "oak-primitives",
  "orml-asset-registry",
  "orml-currencies",
+ "orml-traits",
+ "orml-xtokens",
  "pallet-asset-rate",
  "pallet-assets",
  "pallet-async-backing",
@@ -8181,6 +8183,41 @@ dependencies = [
  "sp-io",
  "sp-runtime",
  "sp-std",
+]
+
+[[package]]
+name = "orml-xcm-support"
+version = "0.10.0"
+source = "git+https://github.com/AstarNetwork/open-runtime-module-library?branch=polkadot-v1.11.0#d3629f99bd7e679bf217a247966df9fcf17fa55d"
+dependencies = [
+ "frame-support",
+ "orml-traits",
+ "parity-scale-codec",
+ "sp-runtime",
+ "sp-std",
+ "staging-xcm",
+ "staging-xcm-executor",
+]
+
+[[package]]
+name = "orml-xtokens"
+version = "0.10.0"
+source = "git+https://github.com/AstarNetwork/open-runtime-module-library?branch=polkadot-v1.11.0#d3629f99bd7e679bf217a247966df9fcf17fa55d"
+dependencies = [
+ "frame-support",
+ "frame-system",
+ "log",
+ "orml-traits",
+ "orml-xcm-support",
+ "pallet-xcm",
+ "parity-scale-codec",
+ "scale-info",
+ "serde",
+ "sp-io",
+ "sp-runtime",
+ "sp-std",
+ "staging-xcm",
+ "staging-xcm-executor",
 ]
 
 [[package]]

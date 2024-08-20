@@ -494,6 +494,7 @@ orml-traits = { git = "https://github.com/AstarNetwork/open-runtime-module-libra
 orml-currencies = { git = "https://github.com/AstarNetwork/open-runtime-module-library", branch = "polkadot-v1.11.0", default-features = false }
 orml-tokens = { git = "https://github.com/AstarNetwork/open-runtime-module-library", branch = "polkadot-v1.11.0", default-features = false }
 orml-asset-registry = { git = "https://github.com/AstarNetwork/open-runtime-module-library", branch = "polkadot-v1.11.0", default-features = false }
+orml-xtokens = { git = "https://github.com/AstarNetwork/open-runtime-module-library", branch = "polkadot-v1.11.0", default-features = false }
 
 # OAK
 oak-primitives = { path = "oak-primitives", default-features = false }

@@ -109,6 +109,8 @@ parachains-common = { workspace = true }
 # ORML
 orml-currencies = { workspace = true }
 orml-asset-registry = { workspace = true }
+orml-xtokens = { workspace = true }
+orml-traits = { workspace = true }
 
 # Benchmarking
 frame-benchmarking = { workspace = true, optional = true }
@@ -196,6 +198,8 @@ std = [
 	"tanssi-runtime-common/std",
 	"orml-currencies/std",
 	"orml-asset-registry/std",
+	"orml-xtokens/std",
+	"orml-traits/std",
 	"xcm-primitives/std",
 	"xcm-runtime-apis/std",
 	"oak-primitives/std",
@@ -283,4 +287,5 @@ try-runtime = [
 	"polkadot-runtime-common/try-runtime",
 	"sp-runtime/try-runtime",
 	"tanssi-runtime-common/try-runtime",
+	"orml-asset-registry/try-runtime",
 ]

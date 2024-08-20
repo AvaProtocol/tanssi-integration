@@ -39,7 +39,7 @@ use {
     parachains_common::message_queue::{NarrowOriginToSibling, ParaIdToSibling},
     polkadot_runtime_common::xcm_sender::ExponentialPrice,
     sp_core::ConstU32,
-    sp_runtime::Perbill,
+    sp_runtime::{traits::Convert, Perbill},
     staging_xcm::latest::prelude::*,
     staging_xcm_builder::{
         AccountId32Aliases, AllowKnownQueryResponses, AllowSubscriptionsFrom,
@@ -47,9 +47,11 @@ use {
         IsConcrete, ParentIsPreset, RelayChainAsNative, SiblingParachainAsNative,
         SiblingParachainConvertsVia, SignedAccountId32AsNative, SignedToAccountId32,
         SovereignSignedViaLocation, TakeWeightCredit, UsingComponents, WeightInfoBounds,
-        WithComputedOrigin,
+        WithComputedOrigin, FixedWeightBounds,
     },
     staging_xcm_executor::XcmExecutor,
+    oak_primitives::AbsoluteAndRelativeReserveProvider,
+    orml_traits::parameter_type_with_key,
 };
 
 parameter_types! {
@@ -453,38 +455,74 @@ parameter_types! {
 // 	type SelfLocation = SelfLocationAbsolute;
 // }
 
-// pub struct TokenIdConvert;
-// impl Convert<TokenId, Option<Location>> for TokenIdConvert {
-// 	fn convert(id: TokenId) -> Option<Location> {
-// 		AssetRegistryOf::<Runtime>::multilocation(&id).unwrap_or(None)
-// 	}
-// }
+type AssetRegistryOf<T> = orml_asset_registry::module::Pallet<T>;
 
-// impl Convert<Location, Option<TokenId>> for TokenIdConvert {
-// 	fn convert(location: Location) -> Option<TokenId> {
-// 		match location {
-// 			// adapt for re-anchor canonical location bug: https://github.com/paritytech/polkadot/pull/4470
-// 			Location { parents: 1, interior: X1(Parachain(para_id)) }
-// 				if para_id == u32::from(ParachainInfo::parachain_id()) =>
-// 				Some(NATIVE_TOKEN_ID),
-// 			_ => AssetRegistryOf::<Runtime>::location_to_asset_id(location),
-// 		}
-// 	}
-// }
+pub struct TokenIdConvert;
+impl Convert<TokenId, Option<Location>> for TokenIdConvert {
+	fn convert(id: TokenId) -> Option<Location> {
+		AssetRegistryOf::<Runtime>::location(&id).unwrap_or(None).into()
+        // None
+	}
+}
 
-// impl Convert<Asset, Option<TokenId>> for TokenIdConvert {
-// 	fn convert(asset: Asset) -> Option<TokenId> {
-// 		if let Asset { id: Concrete(location), .. } = asset {
-// 			Self::convert(location)
-// 		} else {
-// 			None
-// 		}
-// 	}
-// }
+impl Convert<Location, Option<TokenId>> for TokenIdConvert {
+    fn convert(location: Location) -> Option<TokenId> {
+        if let Some(Junction::Parachain(para_id)) = location.interior.first() {
+            if para_id == u32::from(ParachainInfo::parachain_id()) {
+                return Some(NATIVE_TOKEN_ID);
+            }
+        }
+        AssetRegistryOf::<Runtime>::location_to_asset_id(location)
+    }
+}
 
-// pub struct AccountIdToMultiLocation;
-// impl Convert<AccountId, Location> for AccountIdToLocation {
-// 	fn convert(account: AccountId) -> Location {
-// 		X1(AccountId32 { network: None, id: account.into() }).into()
-// 	}
-// }
+impl Convert<Asset, Option<TokenId>> for TokenIdConvert {
+	fn convert(asset: Asset) -> Option<TokenId> {
+		if let Asset { id: AssetId(location), .. } = asset {
+			Self::convert(location)
+		} else {
+			None
+		}
+	}
+}
+
+pub struct AccountIdToMultiLocation;
+impl Convert<AccountId, Location> for AccountIdToMultiLocation {
+	fn convert(account: AccountId) -> Location {
+		AccountId32 { network: None, id: account.into() }.into()
+	}
+}
+
+parameter_types! {
+	pub SelfLocation: Location = Here.into_location();
+	pub SelfLocationAbsolute: Location = Location::new(1, Parachain(ParachainInfo::parachain_id().into()));
+	pub const BaseXcmWeight: Weight = Weight::from_parts(100_000_000, 0);
+	pub const MaxAssetsForTransfer: usize = 1;
+}
+
+parameter_type_with_key! {
+	pub ParachainMinFee: |_location: Location| -> Option<u128> {
+		None
+	};
+}
+
+impl orml_xtokens::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type Balance = Balance;
+	type CurrencyId = TokenId;
+	type CurrencyIdConvert = TokenIdConvert;
+	type AccountIdToLocation = AccountIdToMultiLocation;
+	type SelfLocation = SelfLocation;
+	type XcmExecutor = XcmExecutor<XcmConfig>;
+	type Weigher = FixedWeightBounds<UnitWeightCost, RuntimeCall, MaxInstructions>;
+	type BaseXcmWeight = BaseXcmWeight;
+	type UniversalLocation = UniversalLocation;
+	type MaxAssetsForTransfer = MaxAssetsForTransfer;
+    // Default impl. Refer to `orml-xtokens` docs for more details.
+    type MinXcmFee = ParachainMinFee;
+    type LocationsFilter = Everything;
+    type ReserveProvider = AbsoluteAndRelativeReserveProvider<SelfLocationAbsolute>;
+    type RateLimiter = ();
+    type RateLimiterId = ();
+}
+
