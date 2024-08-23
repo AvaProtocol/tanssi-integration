@@ -25,6 +25,7 @@ dp-consensus = { workspace = true }
 dp-impl-tanssi-pallets-config = { workspace = true }
 dp-slot-duration-runtime-api = { workspace = true }
 pallet-cc-authorities-noting = { workspace = true }
+pallet-valve = { workspace = true }
 tanssi-runtime-common = { workspace = true }
 
 # Moonkit
@@ -48,6 +49,8 @@ frame-system-rpc-runtime-api = { workspace = true }
 pallet-asset-rate = { workspace = true }
 pallet-assets = { workspace = true }
 pallet-balances = { workspace = true }
+pallet-collective = { workspace = true }
+pallet-membership = { workspace = true }
 pallet-message-queue = { workspace = true }
 pallet-multisig = { workspace = true }
 pallet-proxy = { workspace = true }
@@ -137,6 +140,8 @@ std = [
 	"pallet-author-inherent/std",
 	"pallet-balances/std",
 	"pallet-cc-authorities-noting/std",
+	"pallet-collective/std",
+	"pallet-membership/std",
 	"pallet-foreign-asset-creator/std",
 	"pallet-maintenance-mode/std",
 	"pallet-message-queue/std",

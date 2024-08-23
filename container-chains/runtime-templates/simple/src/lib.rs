@@ -44,7 +44,7 @@ use {
         parameter_types,
         traits::{
             tokens::ConversionToAssetBalance, ConstBool, ConstU128, ConstU32, ConstU64, ConstU8,
-            Contains, InsideBoth, InstanceFilter,
+            Contains, EitherOfDiverse, InsideBoth, InstanceFilter,
         },
         weights::{
             constants::{
@@ -659,6 +659,52 @@ impl pallet_multisig::Config for Runtime {
     type WeightInfo = weights::pallet_multisig::SubstrateWeight<Runtime>;
 }
 
+parameter_types! {
+	pub const CouncilMotionDuration: BlockNumber = 3 * DAYS;
+	pub MaxProposalWeight: Weight = Perbill::from_percent(50) * RuntimeBlockWeights::get().max_block;
+}
+
+type CouncilCollective = pallet_collective::Instance1;
+impl pallet_collective::Config<CouncilCollective> for Runtime {
+	type RuntimeOrigin = RuntimeOrigin;
+	type Proposal = RuntimeCall;
+	type RuntimeEvent = RuntimeEvent;
+	type MotionDuration = CouncilMotionDuration;
+	type MaxProposals = ConstU32<100>;
+	type MaxMembers = ConstU32<100>;
+	type DefaultVote = pallet_collective::PrimeDefaultVote;
+	type WeightInfo = pallet_collective::weights::SubstrateWeight<Runtime>;
+	type SetMembersOrigin = EnsureRoot<Self::AccountId>;
+	type MaxProposalWeight = MaxProposalWeight;
+}
+
+type MoreThanHalfCouncil = EitherOfDiverse<
+	EnsureRoot<AccountId>,
+	pallet_collective::EnsureProportionMoreThan<AccountId, CouncilCollective, 1, 2>,
+>;
+
+impl pallet_membership::Config<pallet_membership::Instance1> for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type AddOrigin = MoreThanHalfCouncil;
+	type RemoveOrigin = MoreThanHalfCouncil;
+	type SwapOrigin = MoreThanHalfCouncil;
+	type ResetOrigin = MoreThanHalfCouncil;
+	type PrimeOrigin = MoreThanHalfCouncil;
+	type MembershipInitialized = TechnicalCommittee;
+	type MembershipChanged = TechnicalCommittee;
+	type MaxMembers = ConstU32<100>;
+	type WeightInfo = pallet_membership::weights::SubstrateWeight<Runtime>;
+}
+
+impl pallet_valve::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type WeightInfo = pallet_valve::weights::SubstrateWeight<Runtime>;
+	type ClosedCallFilter = ClosedCallFilter;
+	type AutomationTime = AutomationTime;
+	// type AutomationPrice = AutomationPrice;
+	type CallAccessFilter = TechnicalMembership;
+}
+
 impl_tanssi_pallets_config!(Runtime);
 
 // Create the runtime by composing the FRAME pallets that were previously configured.
@@ -676,6 +722,8 @@ construct_runtime!(
         Migrations: pallet_migrations = 7,
         MaintenanceMode: pallet_maintenance_mode = 8,
         TxPause: pallet_tx_pause = 9,
+        TechnicalCommittee: pallet_collective::<Instance2>::{Pallet, Call, Storage, Event<T>, Origin<T>, Config<T>} = 10,
+        TechnicalMembership: pallet_membership::<Instance1>::{Pallet, Call, Storage, Event<T>, Config<T>} = 11,
 
         // Monetary stuff.
         Balances: pallet_balances = 10,
