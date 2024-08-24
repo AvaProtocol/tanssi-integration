@@ -19420,3 +19420,1013 @@ dependencies = [
  "cc",
  "pkg-config",
 ]
+
+[[patch.unused]]
+name = "asset-hub-rococo-emulated-chain"
+version = "0.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "asset-hub-rococo-integration-tests"
+version = "1.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "asset-hub-rococo-runtime"
+version = "0.11.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "asset-hub-westend-emulated-chain"
+version = "0.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "asset-hub-westend-integration-tests"
+version = "1.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "asset-hub-westend-runtime"
+version = "0.15.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "bp-asset-hub-rococo"
+version = "0.4.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "bp-asset-hub-westend"
+version = "0.3.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "bp-beefy"
+version = "0.1.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "bp-bridge-hub-cumulus"
+version = "0.7.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "bp-bridge-hub-kusama"
+version = "0.6.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "bp-bridge-hub-polkadot"
+version = "0.6.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "bp-bridge-hub-rococo"
+version = "0.7.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "bp-bridge-hub-westend"
+version = "0.3.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "bp-kusama"
+version = "0.5.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "bp-polkadot"
+version = "0.5.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "bp-polkadot-bulletin"
+version = "0.4.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "bp-rococo"
+version = "0.6.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "bp-westend"
+version = "0.3.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "bridge-hub-common"
+version = "0.1.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "bridge-hub-rococo-emulated-chain"
+version = "0.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "bridge-hub-rococo-integration-tests"
+version = "1.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "bridge-hub-rococo-runtime"
+version = "0.5.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "bridge-hub-test-utils"
+version = "0.7.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "bridge-hub-westend-emulated-chain"
+version = "0.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "bridge-hub-westend-integration-tests"
+version = "1.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "bridge-hub-westend-runtime"
+version = "0.2.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "collectives-westend-emulated-chain"
+version = "0.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "collectives-westend-integration-tests"
+version = "1.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "collectives-westend-runtime"
+version = "3.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "contracts-rococo-runtime"
+version = "0.8.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "coretime-rococo-runtime"
+version = "0.1.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "coretime-westend-runtime"
+version = "0.1.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "cumulus-client-consensus-relay-chain"
+version = "0.7.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "cumulus-pallet-aura-ext"
+version = "0.7.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "cumulus-pallet-solo-to-para"
+version = "0.7.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "cumulus-ping"
+version = "0.7.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "cumulus-test-client"
+version = "0.1.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "cumulus-test-runtime"
+version = "0.1.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "cumulus-test-service"
+version = "0.1.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "equivocation-detector"
+version = "0.1.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "erasure_coding_fuzzer"
+version = "1.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "finality-relay"
+version = "0.1.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "frame-benchmarking-pallet-pov"
+version = "18.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "frame-election-solution-type-fuzzer"
+version = "2.0.0-alpha.5"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "frame-omni-bencher"
+version = "0.1.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "frame-support-test"
+version = "3.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "frame-support-test-compile-pass"
+version = "4.0.0-dev"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "frame-support-test-pallet"
+version = "4.0.0-dev"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "frame-support-test-stg-frame-crate"
+version = "0.1.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "generate-bags"
+version = "28.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "glutton-westend-runtime"
+version = "3.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "kitchensink-runtime"
+version = "3.0.0-dev"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "messages-relay"
+version = "0.1.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "minimal-template-node"
+version = "0.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "minimal-template-runtime"
+version = "0.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "node-bench"
+version = "0.9.0-dev"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "node-primitives"
+version = "2.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "node-rpc"
+version = "3.0.0-dev"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "node-runtime-generate-bags"
+version = "3.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "node-template-release"
+version = "3.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "node-testing"
+version = "3.0.0-dev"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-alliance"
+version = "27.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-asset-conversion-ops"
+version = "0.1.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-asset-conversion-tx-payment"
+version = "10.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-atomic-swap"
+version = "28.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-aura"
+version = "27.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-bags-list-fuzzer"
+version = "4.0.0-dev"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-bags-list-remote-tests"
+version = "4.0.0-dev"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-bridge-beefy"
+version = "0.1.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-collective-content"
+version = "0.6.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-contracts"
+version = "27.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-contracts-fixtures"
+version = "1.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-contracts-mock-network"
+version = "3.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-contracts-proc-macro"
+version = "18.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-contracts-uapi"
+version = "5.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-core-fellowship"
+version = "12.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-default-config-example"
+version = "10.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-dev-mode"
+version = "10.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-election-provider-e2e-test"
+version = "1.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-example-basic"
+version = "27.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-example-frame-crate"
+version = "0.0.1"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-example-kitchensink"
+version = "4.0.0-dev"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-example-mbm"
+version = "0.1.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-example-offchain-worker"
+version = "28.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-example-single-block-migrations"
+version = "0.0.1"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-example-split"
+version = "10.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-example-tasks"
+version = "1.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-examples"
+version = "4.0.0-dev"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-glutton"
+version = "14.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-insecure-randomness-collective-flip"
+version = "16.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-lottery"
+version = "28.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-minimal-template"
+version = "0.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-mixnet"
+version = "0.4.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-nft-fractionalization"
+version = "10.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-nfts"
+version = "22.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-nfts-runtime-api"
+version = "14.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-node-authorization"
+version = "28.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-nomination-pools-fuzzer"
+version = "2.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-nomination-pools-test-staking"
+version = "1.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-paged-list"
+version = "0.6.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-paged-list-fuzzer"
+version = "0.1.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-parachain-template"
+version = "0.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-remark"
+version = "28.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-root-offences"
+version = "25.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-safe-mode"
+version = "9.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-salary"
+version = "13.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-sassafras"
+version = "0.3.5-dev"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-scored-pool"
+version = "28.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-skip-feeless-payment"
+version = "3.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-statement"
+version = "10.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-template"
+version = "0.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-transaction-storage"
+version = "27.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-uniques"
+version = "28.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "pallet-xcm-bridge-hub"
+version = "0.2.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "parachain-template-node"
+version = "0.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "parachain-template-runtime"
+version = "0.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "parachains-relay"
+version = "0.1.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "penpal-emulated-chain"
+version = "0.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "penpal-runtime"
+version = "0.14.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "people-rococo-emulated-chain"
+version = "0.1.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "people-rococo-integration-tests"
+version = "0.1.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "people-rococo-runtime"
+version = "0.1.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "people-westend-emulated-chain"
+version = "0.1.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "people-westend-integration-tests"
+version = "0.1.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "people-westend-runtime"
+version = "0.1.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "polkadot"
+version = "6.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "polkadot-parachain-bin"
+version = "1.11.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "polkadot-sdk-docs"
+version = "0.0.1"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "polkadot-sdk-frame"
+version = "0.1.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "polkadot-subsystem-bench"
+version = "1.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "polkadot-test-malus"
+version = "1.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "polkadot-voter-bags"
+version = "7.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "relay-substrate-client"
+version = "0.1.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "relay-utils"
+version = "0.1.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "remote-ext-tests-bags-list"
+version = "1.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "rococo-emulated-chain"
+version = "0.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "rococo-parachain-runtime"
+version = "0.6.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "rococo-system-emulated-network"
+version = "0.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "rococo-westend-system-emulated-network"
+version = "0.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "sc-consensus-pow"
+version = "0.33.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "sc-network-statement"
+version = "0.16.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "sc-runtime-test"
+version = "2.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "sc-service-test"
+version = "2.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "sc-statement-store"
+version = "10.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "seedling-runtime"
+version = "0.7.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "shell-runtime"
+version = "0.7.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "snowbridge-beacon-primitives"
+version = "0.2.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "snowbridge-core"
+version = "0.2.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "snowbridge-ethereum"
+version = "0.3.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "snowbridge-outbound-queue-merkle-tree"
+version = "0.3.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "snowbridge-outbound-queue-runtime-api"
+version = "0.2.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "snowbridge-pallet-ethereum-client"
+version = "0.2.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "snowbridge-pallet-ethereum-client-fixtures"
+version = "0.9.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "snowbridge-pallet-inbound-queue"
+version = "0.2.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "snowbridge-pallet-inbound-queue-fixtures"
+version = "0.10.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "snowbridge-pallet-outbound-queue"
+version = "0.2.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "snowbridge-pallet-system"
+version = "0.2.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "snowbridge-router-primitives"
+version = "0.9.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "snowbridge-runtime-common"
+version = "0.2.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "snowbridge-runtime-test-common"
+version = "0.2.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "snowbridge-system-runtime-api"
+version = "0.2.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "solochain-template-node"
+version = "0.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "solochain-template-runtime"
+version = "0.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "sp-api-test"
+version = "2.0.1"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "sp-application-crypto-test"
+version = "2.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "sp-arithmetic-fuzzer"
+version = "2.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "sp-consensus-pow"
+version = "0.32.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "sp-consensus-sassafras"
+version = "0.3.4-dev"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "sp-core-fuzz"
+version = "0.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "sp-core-hashing"
+version = "15.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "sp-core-hashing-proc-macro"
+version = "15.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "sp-crypto-ec-utils"
+version = "0.10.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "sp-npos-elections-fuzzer"
+version = "2.0.0-alpha.5"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "sp-runtime-interface-test"
+version = "2.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "sp-runtime-interface-test-wasm"
+version = "2.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "sp-runtime-interface-test-wasm-deprecated"
+version = "2.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "sp-test-primitives"
+version = "2.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "staging-chain-spec-builder"
+version = "3.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "staging-node-cli"
+version = "3.0.0-dev"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "staging-node-inspect"
+version = "0.12.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "subkey"
+version = "9.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "substrate-cli-test-utils"
+version = "0.1.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "substrate-frame-cli"
+version = "32.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "substrate-frame-rpc-support"
+version = "29.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "substrate-relay-helper"
+version = "0.1.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "substrate-test-runtime-transaction-pool"
+version = "2.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "substrate-test-utils"
+version = "4.0.0-dev"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "test-parachain-adder"
+version = "1.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "test-parachain-adder-collator"
+version = "1.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "test-parachain-halt"
+version = "1.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "test-parachain-undying"
+version = "1.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "test-parachain-undying-collator"
+version = "1.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "test-parachains"
+version = "1.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "testnet-parachains-constants"
+version = "1.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "westend-emulated-chain"
+version = "0.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "westend-system-emulated-network"
+version = "0.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "xcm-executor-integration-tests"
+version = "1.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "xcm-simulator"
+version = "7.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "xcm-simulator-example"
+version = "7.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "xcm-simulator-fuzzer"
+version = "1.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
+
+[[patch.unused]]
+name = "zombienet-backchannel"
+version = "1.0.0"
+source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.11.0#be526b072ff5a6894fd49c9f87c5650881bc594f"
