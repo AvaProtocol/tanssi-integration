@@ -13,7 +13,7 @@ targets = [ "x86_64-unknown-linux-gnu" ]
 workspace = true
 
 [dependencies]
-hex-literal = { workspace = true, optional = true }
+hex-literal = { workspace = true }
 log = { workspace = true }
 parity-scale-codec = { workspace = true, features = [ "derive" ] }
 scale-info = { workspace = true, features = [ "derive" ] }
@@ -27,6 +27,7 @@ dp-slot-duration-runtime-api = { workspace = true }
 pallet-cc-authorities-noting = { workspace = true }
 pallet-valve = { workspace = true }
 pallet-xcmp-handler = { workspace = true }
+pallet-automation-time = { workspace = true }
 tanssi-runtime-common = { workspace = true }
 oak-primitives = { workspace = true }
 common-runtime = { workspace = true }
@@ -111,6 +112,7 @@ orml-currencies = { workspace = true }
 orml-asset-registry = { workspace = true }
 orml-xtokens = { workspace = true }
 orml-traits = { workspace = true }
+orml-tokens = { workspace = true }
 
 # Benchmarking
 frame-benchmarking = { workspace = true, optional = true }
@@ -170,6 +172,7 @@ std = [
 	"pallet-xcm-executor-utils/std",
 	"pallet-xcm/std",
 	"pallet-xcmp-handler/std",
+	"pallet-automation-time/std",
 	"parachain-info/std",
 	"parachains-common/std",
 	"parity-scale-codec/std",
@@ -204,6 +207,7 @@ std = [
 	"xcm-runtime-apis/std",
 	"oak-primitives/std",
 	"common-runtime/std",
+	"orml-tokens/std",
 ]
 
 # Allow to print logs details (no wasm:stripped)
@@ -221,7 +225,6 @@ runtime-benchmarks = [
 	"frame-support/runtime-benchmarks",
 	"frame-system-benchmarking/runtime-benchmarks",
 	"frame-system/runtime-benchmarks",
-	"hex-literal",
 	"nimbus-primitives/runtime-benchmarks",
 	"pallet-asset-rate/runtime-benchmarks",
 	"pallet-assets/runtime-benchmarks",

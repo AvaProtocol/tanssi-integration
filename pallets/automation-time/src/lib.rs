@@ -66,7 +66,7 @@ use oak_primitives::EnsureProxy;
 use scale_info::{prelude::format, TypeInfo};
 use sp_runtime::{
 	traits::{CheckedConversion, Convert, Dispatchable, SaturatedConversion, Saturating},
-	ArithmeticError, DispatchError, MultiAddress, Perbill,
+	ArithmeticError, DispatchError, Perbill,
 };
 use sp_std::{boxed::Box, collections::btree_map::BTreeMap, vec, vec::Vec};
 pub use weights::WeightInfo;
@@ -186,11 +186,11 @@ pub mod pallet {
 		/// This chain's Universal Location.
 		type UniversalLocation: Get<InteriorLocation>;
 
-		type TransferCallCreator: oak_primitives::TransferCallCreator<
-			MultiAddress<Self::AccountId, ()>,
-			BalanceOf<Self>,
-			<Self as frame_system::Config>::RuntimeCall,
-		>;
+		// type TransferCallCreator: oak_primitives::TransferCallCreator<
+		// 	MultiAddress<Self::AccountId, ()>,
+		// 	BalanceOf<Self>,
+		// 	<Self as frame_system::Config>::RuntimeCall,
+		// >;
 
 		/// The way to retreave the reserve of a Asset. This can be
 		/// configured to accept absolute or relative paths for self tokens

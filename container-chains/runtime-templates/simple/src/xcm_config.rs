@@ -22,12 +22,12 @@ use {
         MaintenanceMode, MessageQueue, ParachainInfo, ParachainSystem, PolkadotXcm, Runtime,
         RuntimeBlockWeights, RuntimeCall, RuntimeEvent, RuntimeOrigin, TransactionByteFee,
         WeightToFee, XcmpQueue,
-        TokenId, NATIVE_TOKEN_ID,
+        TokenId, NATIVE_TOKEN_ID, BlockNumber, MaxReserves, MaxLocks, TreasuryPalletId, Tokens, Currencies,
     },
     cumulus_primitives_core::{AggregateMessageOrigin, ParaId},
     frame_support::{
         parameter_types,
-        traits::{Everything, Nothing, PalletInfoAccess, TransformOrigin},
+        traits::{Everything, Nothing, PalletInfoAccess, TransformOrigin, Contains},
         weights::Weight,
     },
     frame_system::EnsureRoot,
@@ -39,7 +39,7 @@ use {
     parachains_common::message_queue::{NarrowOriginToSibling, ParaIdToSibling},
     polkadot_runtime_common::xcm_sender::ExponentialPrice,
     sp_core::ConstU32,
-    sp_runtime::{traits::Convert, Perbill},
+    sp_runtime::{traits::{AccountIdConversion, Convert}, Perbill, Percent},
     staging_xcm::latest::prelude::*,
     staging_xcm_builder::{
         AccountId32Aliases, AllowKnownQueryResponses, AllowSubscriptionsFrom,
@@ -47,11 +47,12 @@ use {
         IsConcrete, ParentIsPreset, RelayChainAsNative, SiblingParachainAsNative,
         SiblingParachainConvertsVia, SignedAccountId32AsNative, SignedToAccountId32,
         SovereignSignedViaLocation, TakeWeightCredit, UsingComponents, WeightInfoBounds,
-        WithComputedOrigin, FixedWeightBounds,
+        WithComputedOrigin, FixedWeightBounds, TakeRevenue,
     },
     staging_xcm_executor::XcmExecutor,
-    oak_primitives::AbsoluteAndRelativeReserveProvider,
-    orml_traits::parameter_type_with_key,
+    oak_primitives::{AbsoluteAndRelativeReserveProvider, Amount},
+    orml_traits::{parameter_type_with_key, FixedConversionRateProvider, asset_registry::Inspect, MultiCurrency},
+    common_runtime::CurrencyHooks,
 };
 
 parameter_types! {
@@ -434,55 +435,81 @@ impl pallet_xcm_executor_utils::Config for Runtime {
     type WeightInfo = weights::pallet_xcm_executor_utils::SubstrateWeight<Runtime>;
 }
 
-parameter_types! {
-	pub const GetNativeCurrencyId: TokenId = NATIVE_TOKEN_ID;
+pub struct ToTreasury;
+impl TakeRevenue for ToTreasury {
+	fn take_revenue(revenue: Asset) {
+		if let Asset { id: AssetId(id), fun: Fungibility::Fungible(amount) } =
+			revenue
+		{
+			if let Some(currency_id) = TokenIdConvert::convert(id) {
+				if currency_id == NATIVE_TOKEN_ID {
+					// Deposit to native treasury account
+					// 20% burned, 80% to the treasury
+					let to_treasury = Percent::from_percent(80).mul_floor(amount);
+					// Due to the way XCM works the amount has already been taken off the total allocation balance.
+					// Thus whatever we deposit here gets added back to the total allocation, and the rest is burned.
+					let _ = Currencies::deposit(currency_id, &TreasuryAccount::get(), to_treasury);
+				} else {
+					// Deposit to foreign treasury account
+					let _ = Currencies::deposit(
+						currency_id,
+						&TemporaryForeignTreasuryAccount::get(),
+						amount,
+					);
+				}
+			}
+		}
+	}
 }
 
-// impl pallet_xcmp_handler::Config for Runtime {
-// 	type RuntimeEvent = RuntimeEvent;
-// 	type RuntimeCall = RuntimeCall;
-// 	type MultiCurrency = Currencies;
-// 	type CurrencyId = TokenId;
-// 	type GetNativeCurrencyId = GetNativeCurrencyId;
-// 	type SelfParaId = parachain_info::Pallet<Runtime>;
-// 	type AccountIdToMultiLocation = AccountIdToMultiLocation;
-// 	type CurrencyIdToMultiLocation = TokenIdConvert;
-// 	type UniversalLocation = UniversalLocation;
-// 	type XcmSender = XcmRouter;
-// 	type XcmExecutor = XcmExecutor<XcmConfig>;
-// 	type Weigher = FixedWeightBounds<UnitWeightCost, RuntimeCall, MaxInstructions>;
-// 	type ReserveProvider = AbsoluteAndRelativeReserveProvider<SelfLocationAbsolute>;
-// 	type SelfLocation = SelfLocationAbsolute;
-// }
-
 type AssetRegistryOf<T> = orml_asset_registry::module::Pallet<T>;
+
+pub struct FeePerSecondProvider;
+impl FixedConversionRateProvider for FeePerSecondProvider {
+    fn get_fee_per_second(location: &Location) -> Option<u128> {
+        let metadata = match location.interior.first() {
+            Some(Junction::Parachain(para_id)) if *para_id == u32::from(ParachainInfo::parachain_id()) => {
+                AssetRegistryOf::<Runtime>::metadata(NATIVE_TOKEN_ID)?
+            },
+            _ => AssetRegistryOf::<Runtime>::metadata_by_location(location)?,
+        };
+        
+        metadata.additional.fee_per_second
+    }
+}
+
+// pub type Trader =
+// 	(AssetRegistryTrader<FixedRateAssetRegistryTrader<FeePerSecondProvider>, ToTreasury>,);
 
 pub struct TokenIdConvert;
 impl Convert<TokenId, Option<Location>> for TokenIdConvert {
 	fn convert(id: TokenId) -> Option<Location> {
-		AssetRegistryOf::<Runtime>::location(&id).unwrap_or(None).into()
-        // None
+        match AssetRegistryOf::<Runtime>::location(&id) {
+            Ok(Some(multi_location)) =>{
+                let location: Location = Location::try_from(multi_location).unwrap();
+                Some(location)
+            },
+            _ => None,
+        }
 	}
 }
 
 impl Convert<Location, Option<TokenId>> for TokenIdConvert {
     fn convert(location: Location) -> Option<TokenId> {
         if let Some(Junction::Parachain(para_id)) = location.interior.first() {
-            if para_id == u32::from(ParachainInfo::parachain_id()) {
+            if *para_id == u32::from(ParachainInfo::parachain_id()) {
                 return Some(NATIVE_TOKEN_ID);
             }
         }
-        AssetRegistryOf::<Runtime>::location_to_asset_id(location)
+
+        AssetRegistryOf::<Runtime>::asset_id(&location)
     }
 }
 
 impl Convert<Asset, Option<TokenId>> for TokenIdConvert {
 	fn convert(asset: Asset) -> Option<TokenId> {
-		if let Asset { id: AssetId(location), .. } = asset {
-			Self::convert(location)
-		} else {
-			None
-		}
+		let Asset { id: AssetId(location), .. } = asset;
+        Self::convert(location)
 	}
 }
 
@@ -526,3 +553,59 @@ impl orml_xtokens::Config for Runtime {
     type RateLimiterId = ();
 }
 
+parameter_types! {
+	pub TreasuryAccount: AccountId = TreasuryPalletId::get().into_account_truncating();
+	// Until we can codify how to handle forgien tokens that we collect in XCMP fees
+	// we will send the tokens to a special account to be dealt with.
+	pub TemporaryForeignTreasuryAccount: AccountId = hex_literal::hex!["8acc2955e592588af0eeec40384bf3b498335ecc90df5e6980f0141e1314eb37"].into();
+}
+
+pub struct DustRemovalWhitelist;
+impl Contains<AccountId> for DustRemovalWhitelist {
+	fn contains(a: &AccountId) -> bool {
+		*a == TreasuryAccount::get() || *a == TemporaryForeignTreasuryAccount::get()
+	}
+}
+
+impl orml_tokens::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type Balance = Balance;
+	type Amount = Amount;
+	type CurrencyId = TokenId;
+	type WeightInfo = ();
+	type ExistentialDeposits = orml_asset_registry::ExistentialDeposits<Runtime>;
+	type CurrencyHooks = CurrencyHooks<Runtime, TreasuryAccount>;
+	type MaxLocks = MaxLocks;
+	type MaxReserves = MaxReserves;
+	type ReserveIdentifier = [u8; 8];
+	type DustRemovalWhitelist = DustRemovalWhitelist;
+}
+
+parameter_types! {
+	pub const GetNativeCurrencyId: TokenId = NATIVE_TOKEN_ID;
+}
+
+impl orml_currencies::Config for Runtime {
+	type MultiCurrency = Tokens;
+	type NativeCurrency =
+		orml_currencies::BasicCurrencyAdapter<Runtime, Balances, Amount, BlockNumber>;
+	type GetNativeCurrencyId = GetNativeCurrencyId;
+	type WeightInfo = ();
+}
+
+impl pallet_xcmp_handler::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type RuntimeCall = RuntimeCall;
+	type MultiCurrency = Currencies;
+	type CurrencyId = TokenId;
+	type GetNativeCurrencyId = GetNativeCurrencyId;
+	type SelfParaId = parachain_info::Pallet<Runtime>;
+	type AccountIdToMultiLocation = AccountIdToMultiLocation;
+	type CurrencyIdToMultiLocation = TokenIdConvert;
+	type UniversalLocation = UniversalLocation;
+	type XcmSender = XcmRouter;
+	type XcmExecutor = XcmExecutor<XcmConfig>;
+	type Weigher = FixedWeightBounds<UnitWeightCost, RuntimeCall, MaxInstructions>;
+	type ReserveProvider = AbsoluteAndRelativeReserveProvider<SelfLocationAbsolute>;
+	type SelfLocation = SelfLocationAbsolute;
+}
