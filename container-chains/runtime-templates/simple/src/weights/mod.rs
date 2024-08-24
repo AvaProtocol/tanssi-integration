@@ -37,3 +37,5 @@ pub mod pallet_utility;
 pub mod pallet_xcm;
 pub mod pallet_xcm_executor_utils;
 pub mod xcm;
+
+pub mod asset_registry_weights;

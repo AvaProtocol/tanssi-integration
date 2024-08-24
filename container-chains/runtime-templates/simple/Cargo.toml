@@ -26,7 +26,10 @@ dp-impl-tanssi-pallets-config = { workspace = true }
 dp-slot-duration-runtime-api = { workspace = true }
 pallet-cc-authorities-noting = { workspace = true }
 pallet-valve = { workspace = true }
+pallet-xcmp-handler = { workspace = true }
 tanssi-runtime-common = { workspace = true }
+oak-primitives = { workspace = true }
+common-runtime = { workspace = true }
 
 # Moonkit
 async-backing-primitives = { workspace = true }
@@ -102,6 +105,11 @@ cumulus-primitives-utility = { workspace = true }
 parachain-info = { workspace = true }
 parachains-common = { workspace = true }
 
+
+# ORML
+orml-currencies = { workspace = true }
+orml-asset-registry = { workspace = true }
+
 # Benchmarking
 frame-benchmarking = { workspace = true, optional = true }
 frame-system-benchmarking = { workspace = true, optional = true }
@@ -159,6 +167,7 @@ std = [
 	"pallet-xcm-benchmarks?/std",
 	"pallet-xcm-executor-utils/std",
 	"pallet-xcm/std",
+	"pallet-xcmp-handler/std",
 	"parachain-info/std",
 	"parachains-common/std",
 	"parity-scale-codec/std",
@@ -185,8 +194,12 @@ std = [
 	"staging-xcm-executor/std",
 	"staging-xcm/std",
 	"tanssi-runtime-common/std",
+	"orml-currencies/std",
+	"orml-asset-registry/std",
 	"xcm-primitives/std",
 	"xcm-runtime-apis/std",
+	"oak-primitives/std",
+	"common-runtime/std",
 ]
 
 # Allow to print logs details (no wasm:stripped)

@@ -22,6 +22,7 @@ use {
         MaintenanceMode, MessageQueue, ParachainInfo, ParachainSystem, PolkadotXcm, Runtime,
         RuntimeBlockWeights, RuntimeCall, RuntimeEvent, RuntimeOrigin, TransactionByteFee,
         WeightToFee, XcmpQueue,
+        TokenId, NATIVE_TOKEN_ID,
     },
     cumulus_primitives_core::{AggregateMessageOrigin, ParaId},
     frame_support::{
@@ -430,3 +431,60 @@ impl pallet_xcm_executor_utils::Config for Runtime {
     type SetTeleportTrustOrigin = EnsureRoot<AccountId>;
     type WeightInfo = weights::pallet_xcm_executor_utils::SubstrateWeight<Runtime>;
 }
+
+parameter_types! {
+	pub const GetNativeCurrencyId: TokenId = NATIVE_TOKEN_ID;
+}
+
+// impl pallet_xcmp_handler::Config for Runtime {
+// 	type RuntimeEvent = RuntimeEvent;
+// 	type RuntimeCall = RuntimeCall;
+// 	type MultiCurrency = Currencies;
+// 	type CurrencyId = TokenId;
+// 	type GetNativeCurrencyId = GetNativeCurrencyId;
+// 	type SelfParaId = parachain_info::Pallet<Runtime>;
+// 	type AccountIdToMultiLocation = AccountIdToMultiLocation;
+// 	type CurrencyIdToMultiLocation = TokenIdConvert;
+// 	type UniversalLocation = UniversalLocation;
+// 	type XcmSender = XcmRouter;
+// 	type XcmExecutor = XcmExecutor<XcmConfig>;
+// 	type Weigher = FixedWeightBounds<UnitWeightCost, RuntimeCall, MaxInstructions>;
+// 	type ReserveProvider = AbsoluteAndRelativeReserveProvider<SelfLocationAbsolute>;
+// 	type SelfLocation = SelfLocationAbsolute;
+// }
+
+// pub struct TokenIdConvert;
+// impl Convert<TokenId, Option<Location>> for TokenIdConvert {
+// 	fn convert(id: TokenId) -> Option<Location> {
+// 		AssetRegistryOf::<Runtime>::multilocation(&id).unwrap_or(None)
+// 	}
+// }
+
+// impl Convert<Location, Option<TokenId>> for TokenIdConvert {
+// 	fn convert(location: Location) -> Option<TokenId> {
+// 		match location {
+// 			// adapt for re-anchor canonical location bug: https://github.com/paritytech/polkadot/pull/4470
+// 			Location { parents: 1, interior: X1(Parachain(para_id)) }
+// 				if para_id == u32::from(ParachainInfo::parachain_id()) =>
+// 				Some(NATIVE_TOKEN_ID),
+// 			_ => AssetRegistryOf::<Runtime>::location_to_asset_id(location),
+// 		}
+// 	}
+// }
+
+// impl Convert<Asset, Option<TokenId>> for TokenIdConvert {
+// 	fn convert(asset: Asset) -> Option<TokenId> {
+// 		if let Asset { id: Concrete(location), .. } = asset {
+// 			Self::convert(location)
+// 		} else {
+// 			None
+// 		}
+// 	}
+// }
+
+// pub struct AccountIdToMultiLocation;
+// impl Convert<AccountId, Location> for AccountIdToLocation {
+// 	fn convert(account: AccountId) -> Location {
+// 		X1(AccountId32 { network: None, id: account.into() }).into()
+// 	}
+// }
