@@ -16,7 +16,7 @@
 
 use {
     container_chain_template_simple_runtime::{
-        AccountId, MaintenanceModeConfig, MigrationsConfig, PolkadotXcmConfig, Signature,
+        AccountId, AssetRegistryConfig, MaintenanceModeConfig, MigrationsConfig, PolkadotXcmConfig, Signature,
     },
     cumulus_primitives_core::ParaId,
     sc_chain_spec::{ChainSpecExtension, ChainSpecGroup},
@@ -24,7 +24,14 @@ use {
     sc_service::ChainType,
     serde::{Deserialize, Serialize},
     sp_core::{sr25519, Pair, Public},
-    sp_runtime::traits::{IdentifyAccount, Verify},
+    sp_runtime::{BoundedVec, traits::{IdentifyAccount, Verify}},
+    staging_xcm::{prelude::*, VersionedLocation},
+    oak_primitives::{assets::CustomMetadata, TokenId, Balance},
+    common_runtime::{
+        constants::currency::TOKEN_DECIMALS,
+        config::orml_asset_registry::{StringLimit, AssetMetadataOf},
+    },
+    parity_scale_codec::Encode,
 };
 
 /// Specialized `ChainSpec` for the normal parachain runtime.
@@ -42,6 +49,8 @@ pub fn get_from_seed<TPublic: Public>(seed: &str) -> <TPublic::Pair as Pair>::Pu
 
 /// Orcherstrator's parachain id
 pub const ORCHESTRATOR: ParaId = ParaId::new(1000);
+
+const TOKEN_SYMBOL: &str = "TUR";
 
 /// The extensions for the [`ChainSpec`].
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize, ChainSpecGroup, ChainSpecExtension)]
@@ -73,7 +82,7 @@ where
 pub fn development_config(para_id: ParaId, boot_nodes: Vec<String>) -> ChainSpec {
     // Give your base currency a unit name and decimal places
     let mut properties = sc_chain_spec::Properties::new();
-    properties.insert("tokenSymbol".into(), "UNIT".into());
+    properties.insert("tokenSymbol".into(), TOKEN_SYMBOL.into());
     properties.insert("tokenDecimals".into(), 12.into());
     properties.insert("ss58Format".into(), 42.into());
     properties.insert("isEthereum".into(), false.into());
@@ -104,6 +113,7 @@ pub fn development_config(para_id: ParaId, boot_nodes: Vec<String>) -> ChainSpec
         default_funded_accounts.clone(),
         para_id,
         get_account_id_from_seed::<sr25519::Public>("Alice"),
+        vec![],
     ))
     .with_properties(properties)
     .with_boot_nodes(boot_nodes)
@@ -145,6 +155,7 @@ pub fn local_testnet_config(para_id: ParaId, boot_nodes: Vec<String>) -> ChainSp
         default_funded_accounts.clone(),
         para_id,
         get_account_id_from_seed::<sr25519::Public>("Alice"),
+        vec![],
     ))
     .with_properties(properties)
     .with_protocol_id(&protocol_id)
@@ -156,7 +167,32 @@ fn testnet_genesis(
     endowed_accounts: Vec<AccountId>,
     id: ParaId,
     root_key: AccountId,
+    additional_assets: Vec<(TokenId, Vec<u8>)>,
 ) -> serde_json::Value {
+
+    let assets = [
+		vec![(
+			0,
+			orml_asset_registry::AssetMetadata::<Balance, CustomMetadata, StringLimit>::encode(
+				&AssetMetadataOf {
+					decimals: TOKEN_DECIMALS,
+					name: BoundedVec::truncate_from(b"Native".to_vec()),
+					symbol: BoundedVec::truncate_from(TOKEN_SYMBOL.as_bytes().to_vec()),
+					existential_deposit: 100_000_000,
+					location: Some(VersionedLocation::V4(Location { parents: 0, interior: Here })),
+					additional: CustomMetadata {
+						fee_per_second: Some(416_000_000_000),
+						conversion_rate: None,
+					},
+				},
+			),
+		)],
+		additional_assets,
+	]
+	.concat();
+
+    let last_asset_id = assets.iter().map(|asset| asset.0).max().expect("At least 1 item!");
+
     let g = container_chain_template_simple_runtime::RuntimeGenesisConfig {
         balances: container_chain_template_simple_runtime::BalancesConfig {
             balances: endowed_accounts
@@ -187,7 +223,7 @@ fn testnet_genesis(
         transaction_payment: Default::default(),
         tx_pause: Default::default(),
         system: Default::default(),
-        asset_registry: Default::default(),
+        asset_registry: AssetRegistryConfig { assets, last_asset_id },
         tokens: Default::default(),
     };
 

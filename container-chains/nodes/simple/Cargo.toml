@@ -82,6 +82,9 @@ sp-transaction-pool = { workspace = true }
 substrate-frame-rpc-system = { workspace = true }
 substrate-prometheus-endpoint = { workspace = true }
 
+# Polkadot (wasm)
+staging-xcm = { workspace = true }
+
 # Polkadot
 polkadot-cli = { workspace = true }
 polkadot-parachain-primitives = { workspace = true }
@@ -98,6 +101,13 @@ cumulus-client-service = { workspace = true }
 cumulus-primitives-core = { workspace = true }
 cumulus-primitives-parachain-inherent = { workspace = true }
 cumulus-relay-chain-interface = { workspace = true }
+
+# ORML
+orml-asset-registry = { workspace = true }
+
+# OAK
+common-runtime = { workspace = true }
+oak-primitives = { workspace = true }
 
 [build-dependencies]
 substrate-build-script-utils = { workspace = true }

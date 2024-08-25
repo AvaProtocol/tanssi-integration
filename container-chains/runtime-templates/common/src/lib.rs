@@ -43,12 +43,14 @@ pub mod config {
 
 	pub mod orml_asset_registry {
 		use crate::*;
+		use orml_traits::asset_registry::AssetMetadata;
+		use oak_primitives::{Balance, assets::CustomMetadata};
 
 		parameter_types! {
 			pub const StringLimit: u32 = 50;
 		}
 
-		// pub type AssetMetadataOf = AssetMetadata<Balance, CustomMetadata, StringLimit>;
+		pub type AssetMetadataOf = AssetMetadata<Balance, CustomMetadata, StringLimit>;
 		// type CurrencyAdapter<Runtime> = orml_tokens::MultiTokenCurrencyAdapter<Runtime>;
 
 		// pub struct SequentialIdWithCreation<T>(PhantomData<T>);
