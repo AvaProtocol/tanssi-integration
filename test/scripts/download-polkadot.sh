@@ -7,7 +7,9 @@ set -e
 cd $(dirname $0)/..
 
 # Grab Polkadot version
-branch=$(egrep -o '/polkadot.*#([^\"]*)' ../Cargo.lock | head -1 | sed 's/.*release-//#')
+# branch=$(egrep -o '/polkadot.*#([^\"]*)' ../Cargo.lock | head -1 | sed 's/.*release-//#')
+# This line fix an error about sed command in my Mac OS
+branch=$(egrep -o '/polkadot.*#([^\"]*)' ../Cargo.lock | head -1 | sed 's|.*release-|//#|')
 polkadot_release=$(echo $branch | sed 's/#.*//' | sed 's/\/polkadot-sdk?branch=tanssi-polkadot-v//')
 
 # There is a bug where moonwall saves a html file as an executable, and we try to execute that html file.
