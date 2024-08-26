@@ -3,9 +3,9 @@ name = "pallet-xcmp-handler"
 description = "Pallet to handle XCMP intricacies."
 version = "0.1.0"
 edition = "2021"
-authors = ["OAK Developement Team"]
-homepage = "https://oak.tech"
-repository = 'https://github.com/OAK-Foundation/OAK-blockchain'
+authors = ["Ava Protocol Team"]
+homepage = "https://avaprotocol.org"
+repository = 'https://github.com/AvaProtocol/OAK-blockchain'
 
 [package.metadata.docs.rs]
 targets = ['x86_64-unknown-linux-gnu']
@@ -56,7 +56,7 @@ pallet-xcm = { workspace = true }
 staging-xcm-builder = { workspace = true }
 staging-xcm-executor = { workspace = true }
 
-oak-primitives = { workspace = true }
+ava-protocol-primitives = { workspace = true }
 
 [features]
 default = ["std"]

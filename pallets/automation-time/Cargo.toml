@@ -3,10 +3,10 @@ name = "pallet-automation-time"
 description = "Pallet for scheduling and running tasks in the future."
 version = "1.0.0"
 edition = "2021"
-authors = ["OAK Developement Team"]
+authors = ["Ava Protocol Team"]
 license = "GPL-3.0"
-homepage = "https://oak.tech"
-repository = 'https://github.com/OAK-Foundation/OAK-blockchain'
+homepage = "https://avaprotocol.org"
+repository = 'https://github.com/AvaProtocol/OAK-blockchain'
 readme = 'README.md'
 
 [package.metadata.docs.rs]
@@ -54,7 +54,7 @@ orml-currencies = { workspace = true }
 ## Local
 pallet-valve = { workspace = true }
 pallet-xcmp-handler = { workspace = true }
-oak-primitives = { workspace = true }
+ava-protocol-primitives = { workspace = true }
 
 
 [dev-dependencies]
@@ -96,7 +96,7 @@ std = [
 #  "pallet-parachain-staking/std",
   "pallet-valve/std",
   "pallet-xcmp-handler/std",
-  "oak-primitives/std",
+  "ava-protocol-primitives/std",
   "polkadot-parachain-primitives/std",
   "scale-info/std",
   "sp-runtime/std",

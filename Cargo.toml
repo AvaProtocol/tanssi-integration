@@ -8,7 +8,7 @@ members = [
 	"pallets/collator-assignment/runtime-api",
 	"pallets/registrar/runtime-api",
 	"primitives/*",
-	"oak-primitives",
+	"ava-protocol-primitives",
 	"runtime/dancebox",
 	"runtime/flashbox",
 	"runtime/relay-encoder",
@@ -497,7 +497,7 @@ orml-asset-registry = { git = "https://github.com/AstarNetwork/open-runtime-modu
 orml-xtokens = { git = "https://github.com/AstarNetwork/open-runtime-module-library", branch = "polkadot-v1.11.0", default-features = false }
 
 # OAK
-oak-primitives = { path = "oak-primitives", default-features = false }
+ava-protocol-primitives = { path = "ava-protocol-primitives", default-features = false }
 pallet-valve = { path = "pallets/valve", default-features = false }
 pallet-xcmp-handler = { path = "pallets/xcmp-handler", default-features = false }
 pallet-automation-time = { path = "pallets/automation-time", default-features = false }

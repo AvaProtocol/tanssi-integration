@@ -1,6 +1,6 @@
-// This file is part of OAK Blockchain.
+// This file is part of Ava Protocol.
 
-// Copyright (C) 2022 OAK Network
+// Copyright (C) 2022 Ava Protocol
 // SPDX-License-Identifier: Apache-2.0
 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
 // limitations under the License.
 
 pub mod time {
-	use oak_primitives::BlockNumber;
+	use ava_protocol_primitives::BlockNumber;
 
 	/// This determines the average expected block time that we are targeting.
 	/// Blocks will be produced at a minimum duration defined by `SLOT_DURATION`.
@@ -37,7 +37,7 @@ pub mod time {
 }
 
 pub mod currency {
-	use oak_primitives::Balance;
+	use ava_protocol_primitives::Balance;
 
 	pub const TOKEN_DECIMALS: u32 = 10;
 	const TOKEN_BASE: u128 = 10;

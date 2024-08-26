@@ -1,11 +1,11 @@
 [package]
-name = "oak-primitives"
+name = "ava-protocol-primitives"
 version = "1.0.0"
-description = "OAK Runtime primitives"
-authors = ["OAK Developement Team"]
+description = "Ava Protocol Runtime primitives"
+authors = ["Ava Protocol Team"]
 license = "GPL-3.0"
-homepage = "https://oak.tech"
-repository = 'https://github.com/OAK-Foundation/OAK-blockchain'
+homepage = "https://avaprotocol.org"
+repository = 'https://github.com/AvaProtocol/OAK-blockchain'
 edition = "2021"
 
 [dependencies]

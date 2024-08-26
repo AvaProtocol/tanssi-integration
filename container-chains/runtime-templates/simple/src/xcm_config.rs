@@ -50,7 +50,7 @@ use {
         WithComputedOrigin, FixedWeightBounds, TakeRevenue,
     },
     staging_xcm_executor::XcmExecutor,
-    oak_primitives::{AbsoluteAndRelativeReserveProvider, Amount},
+    ava_protocol_primitives::{AbsoluteAndRelativeReserveProvider, Amount},
     orml_traits::{parameter_type_with_key, FixedConversionRateProvider, asset_registry::Inspect, MultiCurrency},
     common_runtime::CurrencyHooks,
 };

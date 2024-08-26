@@ -1,6 +1,6 @@
-// This file is part of OAK Blockchain.
+// This file is part of Ava Protocol.
 
-// Copyright (C) 2022 OAK Network
+// Copyright (C) 2022 Ava Protocol
 // SPDX-License-Identifier: Apache-2.0
 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -62,7 +62,7 @@ use orml_traits::{location::Reserve, FixedConversionRateProvider, MultiCurrency}
 use pallet_timestamp::{self as timestamp};
 pub use pallet_xcmp_handler::InstructionSequence;
 use pallet_xcmp_handler::XcmpTransactor;
-use oak_primitives::EnsureProxy;
+use ava_protocol_primitives::EnsureProxy;
 use scale_info::{prelude::format, TypeInfo};
 use sp_runtime::{
 	traits::{CheckedConversion, Convert, Dispatchable, SaturatedConversion, Saturating},
@@ -181,12 +181,12 @@ pub mod pallet {
 		type ScheduleAllowList: Contains<<Self as frame_system::Config>::RuntimeCall>;
 
 		/// Ensure proxy
-		type EnsureProxy: oak_primitives::EnsureProxy<Self::AccountId>;
+		type EnsureProxy: ava_protocol_primitives::EnsureProxy<Self::AccountId>;
 
 		/// This chain's Universal Location.
 		type UniversalLocation: Get<InteriorLocation>;
 
-		// type TransferCallCreator: oak_primitives::TransferCallCreator<
+		// type TransferCallCreator: ava_protocol_primitives::TransferCallCreator<
 		// 	MultiAddress<Self::AccountId, ()>,
 		// 	BalanceOf<Self>,
 		// 	<Self as frame_system::Config>::RuntimeCall,

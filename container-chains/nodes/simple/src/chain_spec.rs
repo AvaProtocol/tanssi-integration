@@ -26,7 +26,7 @@ use {
     sp_core::{sr25519, Pair, Public},
     sp_runtime::{BoundedVec, traits::{IdentifyAccount, Verify}},
     staging_xcm::{prelude::*, VersionedLocation},
-    oak_primitives::{assets::CustomMetadata, TokenId, Balance},
+    ava_protocol_primitives::{assets::CustomMetadata, TokenId, Balance},
     common_runtime::{
         constants::currency::TOKEN_DECIMALS,
         config::orml_asset_registry::{StringLimit, AssetMetadataOf},

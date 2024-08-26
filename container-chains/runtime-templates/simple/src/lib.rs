@@ -86,11 +86,11 @@ use {
         dry_run::{CallDryRunEffects, Error as XcmDryRunApiError, XcmDryRunEffects},
         fees::Error as XcmPaymentApiError,
     },
-    oak_primitives::{AbsoluteAndRelativeReserveProvider, EnsureProxy},
+    ava_protocol_primitives::{AbsoluteAndRelativeReserveProvider, EnsureProxy},
     common_runtime::constants::weight_ratios::SCHEDULED_TASKS_INITIALIZE_RATIO,
 };
 
-use oak_primitives::{ assets::CustomMetadata, TokenId };
+use ava_protocol_primitives::{ assets::CustomMetadata, TokenId };
 
 pub mod xcm_config;
 use xcm_config::{SelfLocationAbsolute, ToTreasury, FeePerSecondProvider, TokenIdConvert, UniversalLocation};

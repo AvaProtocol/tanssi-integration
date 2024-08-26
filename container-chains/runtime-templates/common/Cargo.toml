@@ -2,10 +2,10 @@
 name = "common-runtime"
 version = "0.1.0"
 description = "The commonalities between runtimes"
-authors = ["OAK Developement Team"]
+authors = ["Ava Protocol Team"]
 license = "GPL-3.0"
-homepage = "https://oak.tech"
-repository = 'https://github.com/OAK-Foundation/OAK-blockchain'
+homepage = "https://avaprotocol.org"
+repository = 'https://github.com/AvaProtocol/OAK-blockchain'
 edition = "2021"
 
 [dependencies]
@@ -31,7 +31,7 @@ orml-traits = { workspace = true }
 orml-tokens = { workspace = true }
 
 # Local Dependencies
-oak-primitives = { workspace = true }
+ava-protocol-primitives = { workspace = true }
 
 [features]
 default = ["std"]
@@ -43,7 +43,7 @@ std = [
   "pallet-transaction-payment/std",
   "pallet-treasury/std",
   "polkadot-primitives/std",
-  "oak-primitives/std",
+  "ava-protocol-primitives/std",
   "orml-traits/std",
   "orml-tokens/std",
 ]

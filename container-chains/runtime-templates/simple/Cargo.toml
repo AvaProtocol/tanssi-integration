@@ -29,7 +29,7 @@ pallet-valve = { workspace = true }
 pallet-xcmp-handler = { workspace = true }
 pallet-automation-time = { workspace = true }
 tanssi-runtime-common = { workspace = true }
-oak-primitives = { workspace = true }
+ava-protocol-primitives = { workspace = true }
 common-runtime = { workspace = true }
 
 # Moonkit
@@ -205,7 +205,7 @@ std = [
 	"orml-traits/std",
 	"xcm-primitives/std",
 	"xcm-runtime-apis/std",
-	"oak-primitives/std",
+	"ava-protocol-primitives/std",
 	"common-runtime/std",
 	"orml-tokens/std",
 ]

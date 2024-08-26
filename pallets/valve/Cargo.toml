@@ -3,9 +3,9 @@ name = "pallet-valve"
 description = "Pallet for pausing different parts of the chain."
 version = "0.2.0"
 edition = "2021"
-authors = ["OAK Developement Team"]
-homepage = "https://oak.tech"
-repository = 'https://github.com/OAK-Foundation/OAK-blockchain'
+authors = ["Ava Protocol Team"]
+homepage = "https://avaprotocol.org"
+repository = 'https://github.com/AvaProtocol/OAK-blockchain'
 
 [package.metadata.docs.rs]
 targets = ['x86_64-unknown-linux-gnu']

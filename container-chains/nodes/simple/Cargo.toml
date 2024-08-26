@@ -107,7 +107,7 @@ orml-asset-registry = { workspace = true }
 
 # OAK
 common-runtime = { workspace = true }
-oak-primitives = { workspace = true }
+ava-protocol-primitives = { workspace = true }
 
 [build-dependencies]
 substrate-build-script-utils = { workspace = true }
