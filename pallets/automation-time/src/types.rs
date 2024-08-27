@@ -258,24 +258,6 @@ impl<AccountId: Clone> Task<AccountId> {
 		Ok(Self::new(owner_id, task_id, schedule, action, abort_errors))
 	}
 
-	// pub fn create_auto_compound_delegated_stake_task<T: Config>(
-	// 	owner_id: AccountId,
-	// 	task_id: Vec<u8>,
-	// 	next_execution_time: UnixTime,
-	// 	frequency: Seconds,
-	// 	collator_id: AccountId,
-	// 	account_minimum: Balance,
-	// 	abort_errors: Vec<Vec<u8>>,
-	// ) -> Result<Self, DispatchError> {
-	// 	let action = Action::AutoCompoundDelegatedStake {
-	// 		delegator: owner_id.clone(),
-	// 		collator: collator_id,
-	// 		account_minimum,
-	// 	};
-	// 	let schedule = Schedule::new_recurring_schedule::<T>(next_execution_time, frequency)?;
-	// 	Ok(Self::new(owner_id, task_id, schedule, action, abort_errors))
-	// }
-
 	pub fn execution_times(&self) -> Vec<UnixTime> {
 		match &self.schedule {
 			Schedule::Fixed { execution_times, .. } => execution_times.to_vec(),
@@ -365,7 +347,7 @@ mod tests {
 				let task_id = vec![48, 45, 48, 45, 48];
 				assert_err!(
 					ScheduledTasksOf::<Test> { tasks: vec![], weight: MaxWeightPerSlot::get() }
-						.try_push::<Test, BalanceOf<Test>>(task_id, &task),
+						.try_push::<Test>(task_id, &task),
 					Error::<Test>::TimeSlotFull
 				);
 			})
@@ -395,7 +377,7 @@ mod tests {
 				let task_id = vec![48, 45, 48, 45, 48];
 				assert_err!(
 					ScheduledTasksOf::<Test> { tasks, weight: 0 }
-						.try_push::<Test, BalanceOf<Test>>(task_id, &task),
+						.try_push::<Test>(task_id, &task),
 					Error::<Test>::TimeSlotFull
 				);
 			})
@@ -426,7 +408,7 @@ mod tests {
 				let task_id = "0-1-0".as_bytes().to_vec();
 				let mut scheduled_tasks = ScheduledTasksOf::<Test>::default();
 				scheduled_tasks
-					.try_push::<Test, BalanceOf<Test>>(task_id.clone(), &task)
+					.try_push::<Test>(task_id.clone(), &task)
 					.expect("slot is not full");
 
 				assert_eq!(scheduled_tasks.tasks, vec![(task.owner_id, task_id)]);

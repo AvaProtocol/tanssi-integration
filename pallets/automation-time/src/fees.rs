@@ -27,8 +27,9 @@ use sp_runtime::{
 	TokenError::BelowMinimum,
 };
 use sp_std::marker::PhantomData;
-use staging_xcm::latest::prelude::*;
+use staging_xcm::latest::{prelude::*, Junctions::*};
 use staging_xcm_builder::TakeRevenue;
+use parity_scale_codec::Encode;
 
 /// Handle execution fee payments in the context of automation actions
 pub trait HandleFees<T: Config> {
@@ -244,8 +245,8 @@ where
 mod tests {
 	use super::*;
 	use crate::{mock::*, Action, AssetPayment, Weight};
-	use codec::Encode;
-	use frame_benchmarking::frame_support::assert_err;
+	// use codec::Encode;
+	use frame_support::assert_err;
 	use frame_support::sp_runtime::AccountId32;
 	use frame_system::RawOrigin;
 
@@ -277,13 +278,13 @@ mod tests {
 	#[test]
 	fn call_pay_checked_fees_for_with_normal_flow_and_enough_execution_fee_success() {
 		new_test_ext(0).execute_with(|| {
-			let destination = Location::new(1, X1(Parachain(PARA_ID)));
+			let destination = Location::new(1, X1([Parachain(PARA_ID)].into()));
 			let alice = AccountId32::new(ALICE);
 			let mut has_callback_run = false;
 			get_multi_xcmp_funds(alice.clone());
 
 			let action = Action::XCMP {
-				destination,
+				destination: destination.clone(),
 				schedule_fee: NATIVE_LOCATION,
 				execution_fee: AssetPayment { asset_location: destination.into(), amount: 10 },
 				encoded_call: vec![3, 4, 5],
@@ -310,7 +311,7 @@ mod tests {
 	#[test]
 	fn call_pay_checked_fees_for_with_normal_flow_and_foreign_schedule_fee_success() {
 		new_test_ext(0).execute_with(|| {
-			let destination = Location::new(1, X1(Parachain(PARA_ID)));
+			let destination = Location::new(1, X1([Parachain(PARA_ID)].into()));
 			let alice = AccountId32::new(ALICE);
 			let mut has_callback_run = false;
 			let _ = Currencies::update_balance(
@@ -322,7 +323,7 @@ mod tests {
 			fund_account(&alice, 900_000_000, 1, Some(0));
 
 			let action = Action::XCMP {
-				destination,
+				destination: destination.clone(),
 				schedule_fee: destination,
 				execution_fee: AssetPayment { asset_location: NATIVE_LOCATION.into(), amount: 10 },
 				encoded_call: vec![3, 4, 5],
@@ -350,12 +351,12 @@ mod tests {
 	fn call_pay_checked_fees_for_with_normal_flow_and_foreign_schedule_fee_will_throw_insufficent_balance(
 	) {
 		new_test_ext(0).execute_with(|| {
-			let destination = Location::new(1, X1(Parachain(PARA_ID)));
+			let destination = Location::new(1, X1([Parachain(PARA_ID)].into()));
 			let alice = AccountId32::new(ALICE);
 			fund_account(&alice, 900_000_000, 1, Some(0));
 
 			let action = Action::XCMP {
-				destination,
+				destination: destination.clone(),
 				schedule_fee: destination,
 				execution_fee: AssetPayment { asset_location: NATIVE_LOCATION.into(), amount: 10 },
 				encoded_call: vec![3, 4, 5],
@@ -378,12 +379,12 @@ mod tests {
 	#[test]
 	fn call_pay_checked_fees_for_with_normal_flow_and_insufficent_execution_fee_will_fail() {
 		new_test_ext(0).execute_with(|| {
-			let destination = Location::new(1, X1(Parachain(PARA_ID)));
+			let destination = Location::new(1, X1([Parachain(PARA_ID)].into()));
 			let alice = AccountId32::new(ALICE);
 			fund_account(&alice, 900_000_000, 1, Some(0));
 
 			let action = Action::XCMP {
-				destination,
+				destination: destination.clone(),
 				schedule_fee: NATIVE_LOCATION,
 				execution_fee: AssetPayment { asset_location: destination.into(), amount: 10 },
 				encoded_call: vec![3, 4, 5],
@@ -406,13 +407,13 @@ mod tests {
 	#[test]
 	fn call_pay_checked_fees_for_with_alternate_flow_and_no_execution_fee_success() {
 		new_test_ext(0).execute_with(|| {
-			let destination = Location::new(1, X1(Parachain(PARA_ID)));
+			let destination = Location::new(1, X1([Parachain(PARA_ID)].into()));
 			let alice = AccountId32::new(ALICE);
 			let mut has_callback_run = false;
 			fund_account(&alice, 900_000_000, 1, Some(0));
 
 			let action = Action::XCMP {
-				destination,
+				destination: destination.clone(),
 				schedule_fee: NATIVE_LOCATION,
 				execution_fee: AssetPayment { asset_location: destination.into(), amount: 10 },
 				encoded_call: vec![3, 4, 5],

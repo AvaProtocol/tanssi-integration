@@ -2118,7 +2118,6 @@ dependencies = [
  "pallet-transaction-payment-rpc-runtime-api",
  "pallet-tx-pause",
  "pallet-utility",
- "pallet-valve",
  "pallet-xcm",
  "pallet-xcm-benchmarks",
  "pallet-xcm-executor-utils",
@@ -8473,7 +8472,6 @@ dependencies = [
  "orml-traits",
  "pallet-balances",
  "pallet-timestamp",
- "pallet-valve",
  "pallet-xcm",
  "pallet-xcmp-handler",
  "parity-scale-codec",
@@ -10180,22 +10178,6 @@ dependencies = [
  "frame-benchmarking",
  "frame-support",
  "frame-system",
- "parity-scale-codec",
- "scale-info",
- "sp-core",
- "sp-io",
- "sp-runtime",
- "sp-std",
-]
-
-[[package]]
-name = "pallet-valve"
-version = "0.2.0"
-dependencies = [
- "frame-benchmarking",
- "frame-support",
- "frame-system",
- "pallet-balances",
  "parity-scale-codec",
  "scale-info",
  "sp-core",

@@ -27,10 +27,10 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 pub use pallet::*;
 
-// #[cfg(test)]
-// mod mock;
-// #[cfg(test)]
-// mod tests;
+#[cfg(test)]
+mod mock;
+#[cfg(test)]
+mod tests;
 
 // mod benchmarking;
 pub mod weights;
@@ -1563,18 +1563,6 @@ pub mod pallet {
 			}
 
 			Ok(())
-		}
-	}
-
-	impl<T: Config> pallet_valve::Shutdown for Pallet<T> {
-		fn is_shutdown() -> bool {
-			Self::is_shutdown()
-		}
-		fn shutdown() {
-			Shutdown::<T>::put(true);
-		}
-		fn restart() {
-			Shutdown::<T>::put(false);
 		}
 	}
 }

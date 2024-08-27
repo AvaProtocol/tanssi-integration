@@ -703,7 +703,8 @@ impl EnsureOriginWithArg<RuntimeOrigin, Option<u32>> for AssetAuthority {
 
 	#[cfg(feature = "runtime-benchmarks")]
 	fn try_successful_origin(_asset_id: &Option<u32>) -> Result<RuntimeOrigin, ()> {
-		EnsureRoot::try_successful_origin()
+		// EnsureRoot::try_successful_origin()
+        <EnsureRoot<AccountId> as EnsureOrigin<RuntimeOrigin>>::try_successful_origin()
 	}
 }
 

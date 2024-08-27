@@ -292,4 +292,9 @@ try-runtime = [
 	"sp-runtime/try-runtime",
 	"tanssi-runtime-common/try-runtime",
 	"orml-asset-registry/try-runtime",
+	"orml-currencies/try-runtime",
+	"orml-xtokens/try-runtime",
+	"orml-tokens/try-runtime",
+	"pallet-automation-time/try-runtime",
+	"pallet-xcmp-handler/try-runtime",
 ]
