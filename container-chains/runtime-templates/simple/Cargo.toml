@@ -25,7 +25,6 @@ dp-consensus = { workspace = true }
 dp-impl-tanssi-pallets-config = { workspace = true }
 dp-slot-duration-runtime-api = { workspace = true }
 pallet-cc-authorities-noting = { workspace = true }
-pallet-valve = { workspace = true }
 pallet-xcmp-handler = { workspace = true }
 pallet-automation-time = { workspace = true }
 tanssi-runtime-common = { workspace = true }
@@ -231,6 +230,7 @@ runtime-benchmarks = [
 	"pallet-author-inherent/runtime-benchmarks",
 	"pallet-balances/runtime-benchmarks",
 	"pallet-cc-authorities-noting/runtime-benchmarks",
+	"pallet-collective/runtime-benchmarks",
 	"pallet-foreign-asset-creator/runtime-benchmarks",
 	"pallet-message-queue/runtime-benchmarks",
 	"pallet-migrations/runtime-benchmarks",
@@ -271,6 +271,7 @@ try-runtime = [
 	"pallet-author-inherent/try-runtime",
 	"pallet-balances/try-runtime",
 	"pallet-cc-authorities-noting/try-runtime",
+	"pallet-collective/try-runtime",
 	"pallet-foreign-asset-creator/try-runtime",
 	"pallet-maintenance-mode/try-runtime",
 	"pallet-message-queue/try-runtime",

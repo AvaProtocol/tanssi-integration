@@ -52,7 +52,6 @@ orml-traits = { workspace = true }
 orml-currencies = { workspace = true }
 
 ## Local
-pallet-valve = { workspace = true }
 pallet-xcmp-handler = { workspace = true }
 ava-protocol-primitives = { workspace = true }
 
@@ -94,7 +93,6 @@ std = [
   "pallet-balances/std",
   "pallet-xcm/std",
 #  "pallet-parachain-staking/std",
-  "pallet-valve/std",
   "pallet-xcmp-handler/std",
   "ava-protocol-primitives/std",
   "polkadot-parachain-primitives/std",
