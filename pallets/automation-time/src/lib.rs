@@ -186,12 +186,6 @@ pub mod pallet {
 		/// This chain's Universal Location.
 		type UniversalLocation: Get<InteriorLocation>;
 
-		// type TransferCallCreator: ava_protocol_primitives::TransferCallCreator<
-		// 	MultiAddress<Self::AccountId, ()>,
-		// 	BalanceOf<Self>,
-		// 	<Self as frame_system::Config>::RuntimeCall,
-		// >;
-
 		/// The way to retreave the reserve of a Asset. This can be
 		/// configured to accept absolute or relative paths for self tokens
 		type ReserveProvider: Reserve;

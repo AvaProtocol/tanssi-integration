@@ -830,14 +830,12 @@ impl pallet_automation_time::Config for Runtime {
 	type CurrencyId = TokenId;
 	type XcmpTransactor = XcmpHandler;
 	type FeeHandler = pallet_automation_time::FeeHandler<Runtime, ToTreasury>;
-	// type DelegatorActions = ParachainStaking;
 	type CurrencyIdConvert = TokenIdConvert;
 	type FeeConversionRateProvider = FeePerSecondProvider;
 	type RuntimeCall = RuntimeCall;
 	type ScheduleAllowList = ScheduleAllowList;
 	type EnsureProxy = AutomationEnsureProxy;
 	type UniversalLocation = UniversalLocation;
-	// type TransferCallCreator = MigrationTransferCallCreator;
 	type ReserveProvider = AbsoluteAndRelativeReserveProvider<SelfLocationAbsolute>;
 	type SelfLocation = SelfLocationAbsolute;
 }

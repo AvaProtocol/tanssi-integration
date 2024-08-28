@@ -330,7 +330,7 @@ mod tests {
 
 	mod scheduled_tasks {
 		use super::*;
-		use crate::{AccountTaskId, BalanceOf, ScheduledTasksOf, TaskOf};
+		use crate::{AccountTaskId, ScheduledTasksOf, TaskOf};
 		use sp_runtime::AccountId32;
 
 		#[test]

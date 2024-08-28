@@ -74,10 +74,6 @@ pub trait EnsureProxy<AccountId> {
 	fn ensure_ok(delegator: AccountId, delegatee: AccountId) -> Result<(), &'static str>;
 }
 
-pub trait TransferCallCreator<AccountId, Balance, RuntimeCall> {
-	fn create_transfer_call(dest: AccountId, value: Balance) -> RuntimeCall;
-}
-
 /// `Asset` reserve location provider. It's based on `RelativeReserveProvider` and in
 /// addition will convert self absolute location to relative location.
 pub struct AbsoluteAndRelativeReserveProvider<AbsoluteLocation>(PhantomData<AbsoluteLocation>);

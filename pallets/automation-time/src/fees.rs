@@ -27,9 +27,8 @@ use sp_runtime::{
 	TokenError::BelowMinimum,
 };
 use sp_std::marker::PhantomData;
-use staging_xcm::latest::{prelude::*, Junctions::*};
+use staging_xcm::latest::prelude::*;
 use staging_xcm_builder::TakeRevenue;
-use parity_scale_codec::Encode;
 
 /// Handle execution fee payments in the context of automation actions
 pub trait HandleFees<T: Config> {
@@ -245,10 +244,10 @@ where
 mod tests {
 	use super::*;
 	use crate::{mock::*, Action, AssetPayment, Weight};
-	// use codec::Encode;
-	use frame_support::assert_err;
-	use frame_support::sp_runtime::AccountId32;
+	use parity_scale_codec::Encode;
+	use frame_support::{assert_err, sp_runtime::AccountId32};
 	use frame_system::RawOrigin;
+	use staging_xcm::latest::prelude::Junctions::*;
 
 	#[test]
 	fn pay_checked_fees_for_success() {

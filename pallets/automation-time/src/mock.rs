@@ -21,22 +21,21 @@ use crate::TaskIdV2;
 
 use frame_support::{
 	construct_runtime, parameter_types, assert_ok,
-	traits::{ConstU128, ConstU32, Everything, ConstU64, ConstU16},
+	traits::{ConstU32, Everything},
 	weights::Weight,
 	PalletId,
 };
-use frame_system::{self as system, EnsureRoot, RawOrigin};
+use frame_system::{self as system, RawOrigin};
 use orml_traits::parameter_type_with_key;
-use ava_protocol_primitives::{AbsoluteAndRelativeReserveProvider, EnsureProxy, TransferCallCreator};
+use ava_protocol_primitives::{AbsoluteAndRelativeReserveProvider, EnsureProxy};
 use sp_core::H256;
 use sp_runtime::{
 	traits::{AccountIdConversion, BlakeTwo256, Convert, IdentityLookup},
-	AccountId32, DispatchError, MultiAddress, Perbill, BuildStorage,
+	AccountId32, DispatchError, Perbill, BuildStorage,
 };
 use sp_std::{marker::PhantomData, vec::Vec};
 use staging_xcm::latest::{prelude::*, Junctions::*};
 
-type UncheckedExtrinsic = system::mocking::MockUncheckedExtrinsic<Test>;
 type Block = system::mocking::MockBlock<Test>;
 
 pub type Balance = u128;
@@ -47,7 +46,6 @@ pub const ALICE: [u8; 32] = [1u8; 32];
 pub const BOB: [u8; 32] = [2u8; 32];
 pub const DELEGATOR_ACCOUNT: [u8; 32] = [3u8; 32];
 pub const PROXY_ACCOUNT: [u8; 32] = [4u8; 32];
-pub const COLLATOR_ACCOUNT: [u8; 32] = [5u8; 32];
 
 pub const PARA_ID: u32 = 2000;
 pub const NATIVE: CurrencyId = 0;
@@ -55,50 +53,47 @@ pub const NATIVE_LOCATION: Location = Location { parents: 0, interior: Here };
 pub const NATIVE_EXECUTION_WEIGHT_FEE: u128 = 12;
 pub const FOREIGN_CURRENCY_ID: CurrencyId = 1;
 
-const DOLLAR: u128 = 10_000_000_000;
-
-pub const MOONBASE_ASSET_LOCATION: Location =
-	Location { parents: 1, interior: X2([Parachain(1000), PalletInstance(3)].into()) };
-pub const UNKNOWN_SCHEDULE_FEE: Location =
-	Location { parents: 1, interior: X1([Parachain(4000)].into()) };
-
+#[derive(Clone)]
 pub struct MockAssetFeePerSecond {
 	pub asset_location: Location,
 	pub fee_per_second: u128,
 }
 
-pub const ASSET_FEE_PER_SECOND: [MockAssetFeePerSecond; 3] = [
-	MockAssetFeePerSecond {
-		asset_location: Location { parents: 1, interior: X1([Parachain(2000)].into()) },
-		fee_per_second: 416_000_000_000,
-	},
-	MockAssetFeePerSecond {
-		asset_location: Location {
-			parents: 1,
-			interior: X2([Parachain(2110), GeneralKey { length: 4, data: [0; 32] }].into()),
+pub fn get_moonbase_asset_location() -> Location {
+	Location { parents: 1, interior: X2([Parachain(1000u32), PalletInstance(3u8)].into()) }
+}
+
+pub fn get_asset_fee_per_second_config() -> Vec<MockAssetFeePerSecond> {
+	let asset_fee_per_second: [MockAssetFeePerSecond; 3] = [
+		MockAssetFeePerSecond {
+			asset_location: Location { parents: 1, interior: Parachain(2000).into() },
+			fee_per_second: 416_000_000_000,
 		},
-		fee_per_second: 416_000_000_000,
-	},
-	MockAssetFeePerSecond {
-		asset_location: MOONBASE_ASSET_LOCATION,
-		fee_per_second: 10_000_000_000_000_000_000,
-	},
-];
+		MockAssetFeePerSecond {
+			asset_location: Location {
+				parents: 1,
+				interior: X2([Parachain(2110), GeneralKey { length: 4, data: [0; 32] }].into()),
+			},
+			fee_per_second: 416_000_000_000,
+		},
+		MockAssetFeePerSecond {
+			asset_location: get_moonbase_asset_location(),
+			fee_per_second: 10_000_000_000_000_000_000,
+		},
+	];
+	asset_fee_per_second.to_vec()
+}
 
 construct_runtime!(
-	pub enum Test where
-		Block = Block,
-		NodeBlock = Block,
-		UncheckedExtrinsic = UncheckedExtrinsic,
+	pub enum Test
 	{
-		System: system::{Pallet, Call, Config, Storage, Event<T>},
-		Timestamp: pallet_timestamp::{Pallet, Call, Storage, Inherent},
-		Balances: pallet_balances::{Pallet, Call, Storage, Config<T>, Event<T>},
-		ParachainInfo: parachain_info::{Pallet, Storage, Config},
-		Tokens: orml_tokens::{Pallet, Storage, Event<T>, Config<T>},
-		Currencies: orml_currencies::{Pallet, Call},
-		AutomationTime: pallet_automation_time::{Pallet, Call, Storage, Event<T>},
-		// ParachainStaking: pallet_parachain_staking::{Pallet, Call, Storage, Event<T>, Config<T>},
+		System: system,
+		Timestamp: pallet_timestamp,
+		Balances: pallet_balances,
+		ParachainInfo: parachain_info,
+		Tokens: orml_tokens,
+		Currencies: orml_currencies,
+		AutomationTime: pallet_automation_time,
 	}
 );
 
@@ -203,38 +198,6 @@ impl pallet_timestamp::Config for Test {
 	type OnTimestampSet = ();
 	type MinimumPeriod = MinimumPeriod;
 	type WeightInfo = ();
-}
-
-pub struct MockPalletBalanceWeight<T>(PhantomData<T>);
-impl<Test: frame_system::Config> pallet_balances::WeightInfo for MockPalletBalanceWeight<Test> {
-	fn transfer_allow_death() -> Weight {
-		Weight::from_parts(100_000, 0)
-	}
-
-	fn transfer_keep_alive() -> Weight {
-		Weight::zero()
-	}
-	fn force_set_balance_creating() -> Weight {
-		Weight::zero()
-	}
-	fn force_set_balance_killing() -> Weight {
-		Weight::zero()
-	}
-	fn force_transfer() -> Weight {
-		Weight::zero()
-	}
-	fn transfer_all() -> Weight {
-		Weight::zero()
-	}
-	fn force_unreserve() -> Weight {
-		Weight::zero()
-	}
-	fn upgrade_accounts(_u: u32) -> Weight {
-		Weight::zero()
-	}
-	fn force_adjust_total_issuance() -> Weight {
-		Weight::zero()
-	}
 }
 
 pub struct MockWeight<T>(PhantomData<T>);
@@ -384,22 +347,6 @@ impl EnsureProxy<AccountId> for MockEnsureProxy {
 	}
 }
 
-pub struct MockTransferCallCreator;
-impl TransferCallCreator<MultiAddress<AccountId, ()>, Balance, RuntimeCall>
-	for MockTransferCallCreator
-{
-	fn create_transfer_call(dest: MultiAddress<AccountId, ()>, value: Balance) -> RuntimeCall {
-		let account_id = match dest {
-			MultiAddress::Id(i) => Some(i),
-			_ => None,
-		};
-
-		let call: RuntimeCall =
-			pallet_balances::Call::transfer_allow_death { dest: account_id.unwrap(), value }.into();
-		call
-	}
-}
-
 parameter_types! {
 	pub const MaxTasksPerSlot: u32 = 2;
 	#[derive(Debug)]
@@ -463,7 +410,7 @@ impl pallet_automation_time::Config for Test {
 
 // Build genesis storage according to the mock runtime.
 pub fn new_test_ext(state_block_time: u64) -> sp_io::TestExternalities {
-	let genesis_storage = system::GenesisConfig::default().build_storage().unwrap();
+	let genesis_storage = system::GenesisConfig::<Test>::default().build_storage().unwrap();
 	let mut ext = sp_io::TestExternalities::new(genesis_storage);
 	ext.execute_with(|| System::set_block_number(1));
 	ext.execute_with(|| Timestamp::set_timestamp(state_block_time));
@@ -526,18 +473,6 @@ pub fn add_task_to_task_queue(
 	abort_errors: Vec<Vec<u8>>,
 ) -> TaskIdV2 {
 	let schedule = Schedule::new_fixed_schedule::<Test>(scheduled_times).unwrap();
-	add_to_task_queue(owner, task_id, schedule, action, abort_errors)
-}
-
-pub fn add_recurring_task_to_task_queue(
-	owner: [u8; 32],
-	task_id: TaskIdV2,
-	scheduled_time: u64,
-	frequency: u64,
-	action: ActionOf<Test>,
-	abort_errors: Vec<Vec<u8>>,
-) -> TaskIdV2 {
-	let schedule = Schedule::new_recurring_schedule::<Test>(scheduled_time, frequency).unwrap();
 	add_to_task_queue(owner, task_id, schedule, action, abort_errors)
 }
 
@@ -688,9 +623,9 @@ pub fn get_fee_per_second(location: &Location) -> Option<u128> {
 			.reanchored(&SelfLocation::get(), &<Test as Config>::UniversalLocation::get())
 			.expect("Reanchor location failed");
 
-	let found_asset = ASSET_FEE_PER_SECOND.into_iter().find(|item| {
+	let found_asset = get_asset_fee_per_second_config().into_iter().find(|item| {
 			let MockAssetFeePerSecond { asset_location, .. } = item;
-			asset_location == &reanchored_location
+			asset_location == &location
 	});
 
 	found_asset.map(|asset| asset.fee_per_second)

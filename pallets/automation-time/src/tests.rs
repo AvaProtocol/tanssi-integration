@@ -52,8 +52,6 @@ const SECOND_TASK_ID: [u8; 5] = [49, 45, 48, 45, 54];
 
 const EXPECT_CALCULATE_SCHEDULE_FEE_AMOUNT: &str = "Calculate schedule fee amount should work";
 
-const DEFAULT_SCHEDULE_FEE_LOCATION: Location = MOONBASE_ASSET_LOCATION;
-
 struct XcmpActionParams {
 	destination: Location,
 	schedule_fee: Location,
@@ -70,9 +68,9 @@ impl Default for XcmpActionParams {
 		let delegator_account = AccountId32::new(DELEGATOR_ACCOUNT);
 		XcmpActionParams {
 			destination: Location::new(1, X1([Parachain(PARA_ID)].into())),
-			schedule_fee: DEFAULT_SCHEDULE_FEE_LOCATION,
+			schedule_fee: get_moonbase_asset_location(),
 			execution_fee: AssetPayment {
-				asset_location: MOONBASE_ASSET_LOCATION.into(),
+				asset_location: get_moonbase_asset_location().into(),
 				amount: 100,
 			},
 			encoded_call: vec![3, 4, 5],
@@ -806,7 +804,7 @@ fn calculate_xcmp_action_schedule_fee_amount_works() {
 #[test]
 fn calculate_xcmp_action_schedule_fee_amount_with_different_schedule_fees_works() {
 	new_test_ext(START_BLOCK_TIME).execute_with(|| {
-		ASSET_FEE_PER_SECOND.into_iter().for_each(|fee| {
+		get_asset_fee_per_second_config().into_iter().for_each(|fee| {
 			let num_of_execution = generate_random_num(1, 20);
 			let action = create_xcmp_action(XcmpActionParams {
 				schedule_fee: fee.asset_location.clone(),
@@ -887,7 +885,7 @@ fn calculate_xcmp_action_schedule_fee_amount_with_different_execution_fee_return
 
 		let action = create_xcmp_action(XcmpActionParams {
 			execution_fee: AssetPayment {
-				asset_location: MOONBASE_ASSET_LOCATION.into(),
+				asset_location: get_moonbase_asset_location().into(),
 				amount: 100,
 			},
 			..XcmpActionParams::default()
@@ -969,8 +967,9 @@ fn calculate_xcmp_action_schedule_fee_amount_with_different_schedule_as_returns_
 fn calculate_xcmp_action_schedule_fee_amount_with_unknown_schedule_fees_fails() {
 	new_test_ext(START_BLOCK_TIME).execute_with(|| {
 		let num_of_execution = generate_random_num(1, 20);
+		let unknown_schedule_fee = Location { parents: 1, interior: Parachain(4000).into() };
 		let action = create_xcmp_action(XcmpActionParams {
-			schedule_fee: UNKNOWN_SCHEDULE_FEE,
+			schedule_fee: unknown_schedule_fee,
 			..XcmpActionParams::default()
 		});
 		assert_noop!(
