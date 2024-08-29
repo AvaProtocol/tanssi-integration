@@ -38,8 +38,6 @@ use sp_runtime::{
 use sp_std::collections::btree_map::BTreeMap;
 use staging_xcm::{latest::{prelude::*, Junction::Parachain, Junctions::*}, VersionedLocation};
 
-// use pallet_valve::Shutdown;
-
 pub const START_BLOCK_TIME: u64 = 33198768000 * 1_000;
 const MAX_SCHEDULE_SECONDS: u64 = <Test as Config>::MaxScheduleSeconds::get();
 pub const SLOT_SIZE_SECONDS: u64 = <Test as Config>::SlotSizeSeconds::get();
@@ -2982,6 +2980,20 @@ fn on_init_runs_tasks() {
 			ALICE,
 			vec![60],
 			vec![SCHEDULED_TIME],
+			create_dynamic_dispatch_remark_action(message_two.clone()),
+			vec![],
+		);
+		let task_id4 = add_task_to_task_queue(
+			ALICE,
+			vec![70],
+			vec![SCHEDULED_TIME],
+			create_dynamic_dispatch_remark_action(message_two.clone()),
+			vec![],
+		);
+		let task_id5 = add_task_to_task_queue(
+			ALICE,
+			vec![80],
+			vec![SCHEDULED_TIME],
 			create_dynamic_dispatch_remark_action(vec![50]),
 			vec![],
 		);
@@ -3018,7 +3030,7 @@ fn on_init_runs_tasks() {
 				RuntimeEvent::AutomationTime(crate::Event::TaskTriggered {
 					who: owner.clone(),
 					task_id: task_id2.clone(),
-					condition,
+					condition: condition.clone(),
 				}),
 				RuntimeEvent::System(frame_system::pallet::Event::Remarked {
 					sender: owner.clone(),
@@ -3032,11 +3044,49 @@ fn on_init_runs_tasks() {
 					who: owner.clone(),
 					task_id: task_id2.clone(),
 				}),
+				// The execution of task 3
+				RuntimeEvent::AutomationTime(crate::Event::TaskTriggered {
+					who: owner.clone(),
+					task_id: task_id3.clone(),
+					condition: condition.clone(),
+				}),
+				RuntimeEvent::System(frame_system::pallet::Event::Remarked {
+					sender: owner.clone(),
+					hash: BlakeTwo256::hash(&message_two),
+				}),
+				RuntimeEvent::AutomationTime(crate::Event::TaskExecuted {
+					who: owner.clone(),
+					task_id: task_id3.clone(),
+				}),
+				RuntimeEvent::AutomationTime(crate::Event::TaskCompleted {
+					who: owner.clone(),
+					task_id: task_id3.clone(),
+				}),
+				// The execution of task 4
+				RuntimeEvent::AutomationTime(crate::Event::TaskTriggered {
+					who: owner.clone(),
+					task_id: task_id4.clone(),
+					condition: condition.clone(),
+				}),
+				RuntimeEvent::System(frame_system::pallet::Event::Remarked {
+					sender: owner.clone(),
+					hash: BlakeTwo256::hash(&message_two),
+				}),
+				RuntimeEvent::AutomationTime(crate::Event::TaskExecuted {
+					who: owner.clone(),
+					task_id: task_id4.clone(),
+				}),
+				RuntimeEvent::AutomationTime(crate::Event::TaskCompleted {
+					who: owner.clone(),
+					task_id: task_id4.clone(),
+				}),
 			]
 		);
 		assert_eq!(AutomationTime::get_account_task(owner.clone(), task_id1), None);
 		assert_eq!(AutomationTime::get_account_task(owner.clone(), task_id2), None);
-		assert_ne!(AutomationTime::get_account_task(owner.clone(), task_id3.clone()), None);
+		assert_eq!(AutomationTime::get_account_task(owner.clone(), task_id3), None);
+		assert_eq!(AutomationTime::get_account_task(owner.clone(), task_id4), None);
+		assert_ne!(AutomationTime::get_account_task(owner.clone(), task_id5.clone()), None);
 		assert_eq!(AutomationTime::get_task_queue().len(), 1);
 		assert_eq!(AutomationTime::get_missed_queue().len(), 0);
 
@@ -3047,16 +3097,16 @@ fn on_init_runs_tasks() {
 			[
 				RuntimeEvent::AutomationTime(crate::Event::TaskMissed {
 					who: AccountId32::new(ALICE),
-					task_id: task_id3.clone(),
+					task_id: task_id5.clone(),
 					execution_time: LAST_BLOCK_TIME
 				}),
 				RuntimeEvent::AutomationTime(crate::Event::TaskCompleted {
 					who: owner.clone(),
-					task_id: task_id3.clone(),
+					task_id: task_id5.clone(),
 				}),
 			],
 		);
-		assert_eq!(AutomationTime::get_account_task(owner, task_id3), None);
+		assert_eq!(AutomationTime::get_account_task(owner, task_id5), None);
 		assert_eq!(AutomationTime::get_task_queue().len(), 0);
 		assert_eq!(AutomationTime::get_missed_queue().len(), 0);
 	})
@@ -3071,7 +3121,7 @@ fn on_init_check_task_queue() {
 		LastTimeSlot::<Test>::put((LAST_BLOCK_TIME, LAST_BLOCK_TIME - SLOT_SIZE_SECONDS * 2));
 		let mut tasks = vec![];
 
-		for i in 0..5 {
+		for i in 0..9 {
 			let task_id = add_task_to_task_queue(
 				ALICE,
 				vec![i],
@@ -3127,16 +3177,6 @@ fn on_init_check_task_queue() {
 					who: owner.clone(),
 					task_id: tasks[1].clone(),
 				}),
-			],
-		);
-		assert_eq!(AutomationTime::get_task_queue().len(), 3);
-		assert_eq!(AutomationTime::get_missed_queue().len(), 0);
-
-		Timestamp::set_timestamp(START_BLOCK_TIME + (40 * 1000));
-		AutomationTime::on_initialize(2);
-		assert_eq!(
-			events(),
-			[
 				RuntimeEvent::AutomationTime(crate::Event::TaskTriggered {
 					who: owner.clone(),
 					task_id: tasks[2].clone(),
@@ -3173,6 +3213,84 @@ fn on_init_check_task_queue() {
 				}),
 			],
 		);
+		assert_eq!(AutomationTime::get_task_queue().len(), 5);
+		assert_eq!(AutomationTime::get_missed_queue().len(), 0);
+
+		Timestamp::set_timestamp(START_BLOCK_TIME + (40 * 1000));
+		AutomationTime::on_initialize(2);
+		assert_eq!(
+			events(),
+			[
+				RuntimeEvent::AutomationTime(crate::Event::TaskTriggered {
+					who: owner.clone(),
+					task_id: tasks[4].clone(),
+					condition: condition.clone(),
+				}),
+				RuntimeEvent::System(frame_system::pallet::Event::Remarked {
+					sender: owner.clone(),
+					hash: BlakeTwo256::hash(vec![4].as_slice()),
+				}),
+				RuntimeEvent::AutomationTime(crate::Event::TaskExecuted {
+					who: owner.clone(),
+					task_id: tasks[4].clone(),
+				}),
+				RuntimeEvent::AutomationTime(crate::Event::TaskCompleted {
+					who: owner.clone(),
+					task_id: tasks[4].clone(),
+				}),
+				RuntimeEvent::AutomationTime(crate::Event::TaskTriggered {
+					who: owner.clone(),
+					task_id: tasks[5].clone(),
+					condition: condition.clone(),
+				}),
+				RuntimeEvent::System(frame_system::pallet::Event::Remarked {
+					sender: owner.clone(),
+					hash: BlakeTwo256::hash(vec![5].as_slice()),
+				}),
+				RuntimeEvent::AutomationTime(crate::Event::TaskExecuted {
+					who: owner.clone(),
+					task_id: tasks[5].clone(),
+				}),
+				RuntimeEvent::AutomationTime(crate::Event::TaskCompleted {
+					who: owner.clone(),
+					task_id: tasks[5].clone(),
+				}),
+				RuntimeEvent::AutomationTime(crate::Event::TaskTriggered {
+					who: owner.clone(),
+					task_id: tasks[6].clone(),
+					condition: condition.clone(),
+				}),
+				RuntimeEvent::System(frame_system::pallet::Event::Remarked {
+					sender: owner.clone(),
+					hash: BlakeTwo256::hash(vec![6].as_slice()),
+				}),
+				RuntimeEvent::AutomationTime(crate::Event::TaskExecuted {
+					who: owner.clone(),
+					task_id: tasks[6].clone(),
+				}),
+				RuntimeEvent::AutomationTime(crate::Event::TaskCompleted {
+					who: owner.clone(),
+					task_id: tasks[6].clone(),
+				}),
+				RuntimeEvent::AutomationTime(crate::Event::TaskTriggered {
+					who: owner.clone(),
+					task_id: tasks[7].clone(),
+					condition: condition.clone(),
+				}),
+				RuntimeEvent::System(frame_system::pallet::Event::Remarked {
+					sender: owner.clone(),
+					hash: BlakeTwo256::hash(vec![7].as_slice()),
+				}),
+				RuntimeEvent::AutomationTime(crate::Event::TaskExecuted {
+					who: owner.clone(),
+					task_id: tasks[7].clone(),
+				}),
+				RuntimeEvent::AutomationTime(crate::Event::TaskCompleted {
+					who: owner.clone(),
+					task_id: tasks[7].clone(),
+				}),
+			],
+		);
 		assert_eq!(AutomationTime::get_task_queue().len(), 1);
 		assert_eq!(AutomationTime::get_missed_queue().len(), 0);
 
@@ -3183,12 +3301,12 @@ fn on_init_check_task_queue() {
 			[
 				RuntimeEvent::AutomationTime(crate::Event::TaskMissed {
 					who: AccountId32::new(ALICE),
-					task_id: tasks[4].clone(),
+					task_id: tasks[8].clone(),
 					execution_time: LAST_BLOCK_TIME
 				}),
 				RuntimeEvent::AutomationTime(crate::Event::TaskCompleted {
 					who: owner,
-					task_id: tasks[4].clone(),
+					task_id: tasks[8].clone(),
 				}),
 			],
 		);
@@ -3196,47 +3314,3 @@ fn on_init_check_task_queue() {
 		assert_eq!(AutomationTime::get_missed_queue().len(), 0);
 	})
 }
-
-// #[test]
-// fn on_init_shutdown() {
-// 	new_test_ext(START_BLOCK_TIME).execute_with(|| {
-// 		AutomationTime::shutdown();
-
-// 		let message_one: Vec<u8> = vec![2, 4, 5];
-// 		let owner = AccountId32::new(ALICE);
-// 		let task_id1 = add_task_to_task_queue(
-// 			ALICE,
-// 			vec![40],
-// 			vec![SCHEDULED_TIME],
-// 			create_dynamic_dispatch_remark_action(message_one),
-// 			vec![],
-// 		);
-// 		let message_two: Vec<u8> = vec![2, 4];
-// 		let task_id2 = add_task_to_task_queue(
-// 			ALICE,
-// 			vec![50],
-// 			vec![SCHEDULED_TIME],
-// 			create_dynamic_dispatch_remark_action(message_two),
-// 			vec![],
-// 		);
-// 		let task_id3 = add_task_to_task_queue(
-// 			ALICE,
-// 			vec![60],
-// 			vec![SCHEDULED_TIME],
-// 			create_dynamic_dispatch_remark_action(vec![50]),
-// 			vec![],
-// 		);
-// 		LastTimeSlot::<Test>::put((LAST_BLOCK_TIME, LAST_BLOCK_TIME));
-
-// 		AutomationTime::on_initialize(1);
-// 		assert_eq!(events(), []);
-// 		Timestamp::set_timestamp(START_BLOCK_TIME + (SLOT_SIZE_SECONDS * 1_000));
-// 		AutomationTime::on_initialize(2);
-// 		assert_eq!(events(), [],);
-// 		assert_ne!(AutomationTime::get_account_task(owner.clone(), task_id1), None);
-// 		assert_ne!(AutomationTime::get_account_task(owner.clone(), task_id2), None);
-// 		assert_ne!(AutomationTime::get_account_task(owner, task_id3), None);
-// 		assert_eq!(AutomationTime::get_task_queue().len(), 3);
-// 		assert_eq!(AutomationTime::get_missed_queue().len(), 0);
-// 	})
-// }

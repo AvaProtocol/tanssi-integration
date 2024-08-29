@@ -44,9 +44,6 @@ pallet-balances = { workspace = true }
 ## Polkdadot deps
 staging-xcm-builder = { workspace = true }
 
-## Moonbeam Dependencies
-# pallet-parachain-staking = { git = "https://github.com/OAK-Foundation/moonbeam", default-features = false, branch = "oak-polkadot-v0.9.43" }
-
 ## ORML
 orml-traits = { workspace = true }
 orml-currencies = { workspace = true }
@@ -73,10 +70,7 @@ orml-tokens = { workspace = true }
 
 [features]
 default = ["std"]
-runtime-benchmarks = [
-  "frame-benchmarking",
-#  "pallet-parachain-staking/runtime-benchmarks",
-]
+runtime-benchmarks = ["frame-benchmarking"]
 try-runtime = ["frame-support/try-runtime"]
 std = [
   "parity-scale-codec/std",
@@ -88,11 +82,9 @@ std = [
   "orml-currencies/std",
   "orml-tokens/std",
   "orml-traits/std",
-#  "pallet-automation-time-rpc-runtime-api/std",
   "pallet-timestamp/std",
   "pallet-balances/std",
   "pallet-xcm/std",
-#  "pallet-parachain-staking/std",
   "pallet-xcmp-handler/std",
   "ava-protocol-primitives/std",
   "polkadot-parachain-primitives/std",
@@ -103,5 +95,6 @@ std = [
   "staging-xcm/std",
   "staging-xcm-builder/std",
   "staging-xcm-executor/std",
+  "parachain-info/std",
 ]
 dev-queue = []
