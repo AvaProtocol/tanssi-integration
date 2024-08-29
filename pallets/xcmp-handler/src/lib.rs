@@ -31,11 +31,11 @@ pub use pallet::*;
 #[cfg(feature = "std")]
 use serde::{Deserialize, Serialize};
 
-// #[cfg(test)]
-// mod mock;
+#[cfg(test)]
+mod mock;
 
-// #[cfg(test)]
-// mod tests;
+#[cfg(test)]
+mod tests;
 
 // pub mod migrations;
 
@@ -91,11 +91,11 @@ pub mod pallet {
 		//The paraId of this chain.
 		type SelfParaId: Get<ParaId>;
 
-		/// Convert an accountId to a multilocation.
-		type AccountIdToMultiLocation: Convert<Self::AccountId, Location>;
+		/// Convert an accountId to a Location.
+		type AccountIdToLocation: Convert<Self::AccountId, Location>;
 
 		/// Convert a CurrencyId to a Location.
-		type CurrencyIdToMultiLocation: Convert<Self::CurrencyId, Option<Location>>;
+		type CurrencyIdToLocation: Convert<Self::CurrencyId, Option<Location>>;
 
 		/// This chain's Universal Location.
 		type UniversalLocation: Get<InteriorLocation>;
@@ -159,8 +159,8 @@ pub mod pallet {
 		FeeOverflow,
 		/// Either the instruction weight or the transact weight is too large.
 		WeightOverflow,
-		/// Failed when creating the multilocation for descend origin.
-		FailedMultiLocationToJunction,
+		/// Failed when creating the Location for descend origin.
+		FailedLocationToJunction,
 		/// Unable to reanchor the asset.
 		CannotReanchor,
 		/// Failed to send XCM to target.
@@ -169,7 +169,7 @@ pub mod pallet {
 		XcmExecutionFailed,
 		/// Failed to get weight of call.
 		ErrorGettingCallWeight,
-		/// The version of the `VersionedMultiLocation` value used is not able
+		/// The version of the `VersionedLocation` value used is not able
 		/// to be interpreted.
 		BadVersion,
 		// Asset not found
@@ -203,9 +203,9 @@ pub mod pallet {
 			(staging_xcm::latest::Xcm<<T as pallet::Config>::RuntimeCall>, staging_xcm::latest::Xcm<()>),
 			DispatchError,
 		> {
-			let descend_location: Junctions = T::AccountIdToMultiLocation::convert(caller)
+			let descend_location: Junctions = T::AccountIdToLocation::convert(caller)
 				.try_into()
-				.map_err(|_| Error::<T>::FailedMultiLocationToJunction)?;
+				.map_err(|_| Error::<T>::FailedLocationToJunction)?;
 
 			let instructions = match flow {
 				InstructionSequence::PayThroughSovereignAccount =>
@@ -263,7 +263,7 @@ pub mod pallet {
 
 			let target_asset = local_asset
 				.clone()
-				.reanchored(&destination, &T::UniversalLocation::get())
+				.reanchored(&destination.clone(), &T::UniversalLocation::get())
 				.map_err(|_| Error::<T>::CannotReanchor)?;
 
 			let reserve = T::ReserveProvider::reserve(&local_asset)
@@ -274,7 +274,7 @@ pub mod pallet {
 					WithdrawAsset::<<T as pallet::Config>::RuntimeCall>(local_asset.into()),
 					DepositAsset::<<T as pallet::Config>::RuntimeCall> {
 						assets: Wild(All),
-						beneficiary: destination,
+						beneficiary: destination.clone(),
 					},
 				]);
 				let target_xcm = Xcm(vec![

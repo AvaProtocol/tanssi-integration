@@ -60,8 +60,8 @@ ava-protocol-primitives = { workspace = true }
 
 [features]
 default = ["std"]
-runtime-benchmarks = ["frame-benchmarking/runtime-benchmarks"]
-try-runtime = ["frame-support/try-runtime"]
+runtime-benchmarks = ["frame-benchmarking/runtime-benchmarks", "staging-xcm-builder/runtime-benchmarks", "pallet-xcm/runtime-benchmarks"]
+try-runtime = ["frame-support/try-runtime", "cumulus-pallet-xcm/try-runtime", "pallet-xcm/try-runtime"]
 std = [
   "parity-scale-codec/std",
   "cumulus-primitives-core/std",
@@ -76,5 +76,11 @@ std = [
   "staging-xcm/std",
   "staging-xcm-builder/std",
   "staging-xcm-executor/std",
+  "orml-currencies/std",
+  "orml-tokens/std",
+  "ava-protocol-primitives/std",
+  "pallet-xcm/std",
+  "cumulus-pallet-xcm/std",
+  "parachain-info/std",
 ]
 

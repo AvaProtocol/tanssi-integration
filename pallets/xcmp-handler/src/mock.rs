@@ -19,7 +19,7 @@ use crate::{self as pallet_xcmp_handler};
 use core::cell::RefCell;
 use frame_support::{
 	parameter_types,
-	traits::{ConstU32, Everything, GenesisBuild, Nothing},
+	traits::{ConstU32, Everything, Nothing},
 };
 use frame_system as system;
 use pallet_xcm::XcmPassthrough;
@@ -27,24 +27,23 @@ use polkadot_parachain_primitives::primitives::Sibling;
 use sp_core::H256;
 use sp_runtime::{
 	traits::{BlakeTwo256, Convert, IdentityLookup},
-	AccountId32,
+	AccountId32, BuildStorage,
 };
-use xcm::latest::{prelude::*, Weight};
-use xcm_builder::{
+use staging_xcm::latest::{prelude::*, Weight};
+use staging_xcm_builder::{
 	AccountId32Aliases, AllowUnpaidExecutionFrom, EnsureXcmOrigin, FixedWeightBounds,
 	ParentIsPreset, RelayChainAsNative, SiblingParachainAsNative, SiblingParachainConvertsVia,
-	SignedAccountId32AsNative, SignedToAccountId32, SovereignSignedViaLocation,
+	SignedAccountId32AsNative, SignedToAccountId32, SovereignSignedViaLocation, FrameTransactionalProcessor,
 };
-use xcm_executor::{
+use staging_xcm_executor::{
 	traits::{TransactAsset, WeightTrader},
-	Assets, XcmExecutor,
+	XcmExecutor, AssetsInHolding,
 };
 
 use orml_traits::parameter_type_with_key;
 
-use primitives::AbsoluteAndRelativeReserveProvider;
+use ava_protocol_primitives::AbsoluteAndRelativeReserveProvider;
 
-type UncheckedExtrinsic = frame_system::mocking::MockUncheckedExtrinsic<Test>;
 type Block = frame_system::mocking::MockBlock<Test>;
 pub type AccountId = AccountId32;
 pub type Balance = u128;
@@ -55,19 +54,16 @@ pub const LOCAL_PARA_ID: u32 = 2114;
 pub const NATIVE: CurrencyId = 0;
 
 frame_support::construct_runtime!(
-	pub enum Test where
-		Block = Block,
-		NodeBlock = Block,
-		UncheckedExtrinsic = UncheckedExtrinsic,
+	pub enum Test
 	{
-		System: system::{Pallet, Call, Config, Storage, Event<T>},
-		Balances: pallet_balances::{Pallet, Call, Storage, Config<T>, Event<T>},
-		ParachainInfo: parachain_info::{Pallet, Storage, Config},
-		XcmpHandler: pallet_xcmp_handler::{Pallet, Call, Storage, Event<T>},
-		XcmPallet: pallet_xcm::{Pallet, Call, Storage, Event<T>, Origin},
-		CumulusXcm: cumulus_pallet_xcm::{Pallet, Call, Event<T>, Origin},
-		Currencies: orml_currencies::{Pallet, Call},
-		Tokens: orml_tokens::{Pallet, Storage, Event<T>, Config<T>},
+		System: system,
+		Balances: pallet_balances,
+		ParachainInfo: parachain_info,
+		XcmpHandler: pallet_xcmp_handler,
+		XcmPallet: pallet_xcm,
+		CumulusXcm: cumulus_pallet_xcm,
+		Currencies: orml_currencies,
+		Tokens: orml_tokens,
 	}
 );
 
@@ -86,8 +82,8 @@ impl system::Config for Test {
 	type DbWeight = ();
 	type RuntimeOrigin = RuntimeOrigin;
 	type RuntimeCall = RuntimeCall;
-	type Index = u64;
-	type BlockNumber = u64;
+	type Nonce = u64;
+	type Block = Block;
 	type Hash = H256;
 	type Hashing = BlakeTwo256;
 	type AccountId = AccountId;
@@ -163,23 +159,23 @@ impl orml_currencies::Config for Test {
 }
 pub type AdaptedBasicCurrency = orml_currencies::BasicCurrencyAdapter<Test, Balances, i64, u64>;
 
-pub struct AccountIdToMultiLocation;
-impl Convert<AccountId, MultiLocation> for AccountIdToMultiLocation {
-	fn convert(account: AccountId) -> MultiLocation {
-		X1(Junction::AccountId32 { network: None, id: account.into() }).into()
+pub struct AccountIdToLocation;
+impl Convert<AccountId, Location> for AccountIdToLocation {
+	fn convert(account: AccountId) -> Location {
+		Junction::AccountId32 { network: None, id: account.into() }.into()
 	}
 }
 
 thread_local! {
-	pub static SENT_XCM: RefCell<Vec<(MultiLocation,Xcm<()>)>>  = RefCell::new(Vec::new());
-	pub static TRANSACT_ASSET: RefCell<Vec<(MultiAsset,MultiLocation)>>  = RefCell::new(Vec::new());
+	pub static SENT_XCM: RefCell<Vec<(Location,Xcm<()>)>>  = RefCell::new(Vec::new());
+	pub static TRANSACT_ASSET: RefCell<Vec<(Asset,Location)>>  = RefCell::new(Vec::new());
 }
 
-pub(crate) fn sent_xcm() -> Vec<(MultiLocation, Xcm<()>)> {
+pub(crate) fn sent_xcm() -> Vec<(Location, Xcm<()>)> {
 	SENT_XCM.with(|q| (*q.borrow()).clone())
 }
 
-pub(crate) fn transact_asset() -> Vec<(MultiAsset, MultiLocation)> {
+pub(crate) fn transact_asset() -> Vec<(Asset, Location)> {
 	TRANSACT_ASSET.with(|q| (*q.borrow()).clone())
 }
 
@@ -203,7 +199,7 @@ impl SendXcm for TestSendXcm {
 	type Ticket = ();
 
 	fn validate(
-		destination: &mut Option<MultiLocation>,
+		destination: &mut Option<Location>,
 		message: &mut Option<opaque::Xcm>,
 	) -> SendResult<Self::Ticket> {
 		let err_message = Xcm(vec![Transact {
@@ -215,8 +211,8 @@ impl SendXcm for TestSendXcm {
 			Err(SendError::Transport("Destination location full"))
 		} else {
 			SENT_XCM
-				.with(|q| q.borrow_mut().push(((*destination).unwrap(), message.clone().unwrap())));
-			Ok(((), MultiAssets::new()))
+				.with(|q| q.borrow_mut().push((((*destination).clone()).unwrap(), message.clone().unwrap())));
+			Ok(((), Assets::new()))
 		}
 	}
 
@@ -236,39 +232,37 @@ impl WeightTrader for DummyWeightTrader {
 		DummyWeightTrader
 	}
 
-	fn buy_weight(&mut self, _weight: Weight, _payment: Assets) -> Result<Assets, XcmError> {
-		Ok(Assets::default())
+	fn buy_weight(&mut self, _weight: Weight, _payment: AssetsInHolding, _context: &XcmContext) -> Result<AssetsInHolding, XcmError> {
+		Ok(AssetsInHolding::default())
 	}
 }
 pub struct DummyAssetTransactor;
 impl TransactAsset for DummyAssetTransactor {
-	fn deposit_asset(what: &MultiAsset, who: &MultiLocation, _context: &XcmContext) -> XcmResult {
+	fn deposit_asset(what: &Asset, who: &Location, _context: Option<&XcmContext>) -> XcmResult {
 		let asset = what.clone();
-		let location = *who;
-		TRANSACT_ASSET.with(|q| q.borrow_mut().push((asset, location)));
+		TRANSACT_ASSET.with(|q| q.borrow_mut().push((asset, who.clone())));
 		Ok(())
 	}
 
 	fn withdraw_asset(
-		what: &MultiAsset,
-		who: &MultiLocation,
+		what: &Asset,
+		who: &Location,
 		_maybe_context: Option<&XcmContext>,
-	) -> Result<Assets, XcmError> {
+	) -> Result<AssetsInHolding, XcmError> {
 		let asset = what.clone();
-		let location = *who;
-		TRANSACT_ASSET.with(|q| q.borrow_mut().push((asset.clone(), location)));
+		TRANSACT_ASSET.with(|q| q.borrow_mut().push((asset.clone(), who.clone())));
 		Ok(asset.into())
 	}
 }
 
 parameter_types! {
 	pub const RelayNetwork: NetworkId = NetworkId::Polkadot;
-	pub UniversalLocation: InteriorMultiLocation =
-		X1(Parachain(2114));
+	pub UniversalLocation: InteriorLocation =
+		Parachain(2114).into();
 	pub RelayChainOrigin: RuntimeOrigin = cumulus_pallet_xcm::Origin::Relay.into();
 }
 pub struct XcmConfig;
-impl xcm_executor::Config for XcmConfig {
+impl staging_xcm_executor::Config for XcmConfig {
 	type RuntimeCall = RuntimeCall;
 	type XcmSender = TestSendXcm;
 	type AssetTransactor = DummyAssetTransactor;
@@ -293,11 +287,17 @@ impl xcm_executor::Config for XcmConfig {
 	type UniversalAliases = Nothing;
 	type CallDispatcher = RuntimeCall;
 	type SafeCallFilter = Everything;
+	type Aliasers = Nothing;
+	type TransactionalProcessor = FrameTransactionalProcessor;
+	type HrmpNewChannelOpenRequestHandler = ();
+	type HrmpChannelAcceptedHandler = ();
+	type HrmpChannelClosingHandler = ();
+	type XcmRecorder = ();
 }
 
 #[cfg(feature = "runtime-benchmarks")]
 parameter_types! {
-	pub ReachableDest: Option<MultiLocation> = Some(Parent.into());
+	pub ReachableDest: Option<Location> = Some(Parent.into());
 }
 
 impl pallet_xcm::Config for Test {
@@ -322,8 +322,6 @@ impl pallet_xcm::Config for Test {
 	type MaxLockers = ConstU32<8>;
 	type MaxRemoteLockConsumers = ConstU32<0>;
 	type WeightInfo = pallet_xcm::TestWeightInfo;
-	#[cfg(feature = "runtime-benchmarks")]
-	type ReachableDest = ReachableDest;
 	type RemoteLockConsumerIdentifier = ();
 	type AdminOrigin = system::EnsureRoot<AccountId>;
 }
@@ -334,17 +332,17 @@ impl cumulus_pallet_xcm::Config for Test {
 }
 
 pub struct TokenIdConvert;
-impl Convert<CurrencyId, Option<MultiLocation>> for TokenIdConvert {
-	fn convert(_id: CurrencyId) -> Option<MultiLocation> {
+impl Convert<CurrencyId, Option<Location>> for TokenIdConvert {
+	fn convert(_id: CurrencyId) -> Option<Location> {
 		// Mock implementation with default value
-		Some(MultiLocation { parents: 1, interior: Here })
+		Some(Location { parents: 1, interior: Here })
 	}
 }
 
 parameter_types! {
 	pub const GetNativeCurrencyId: CurrencyId = NATIVE;
-	pub Ancestry: MultiLocation = Parachain(ParachainInfo::parachain_id().into()).into();
-	pub SelfLocation: MultiLocation = MultiLocation::new(1, X1(Parachain(ParachainInfo::parachain_id().into())));
+	pub Ancestry: Location = Parachain(ParachainInfo::parachain_id().into()).into();
+	pub SelfLocation: Location = Location::new(1, Parachain(ParachainInfo::parachain_id().into()));
 }
 
 impl pallet_xcmp_handler::Config for Test {
@@ -354,8 +352,8 @@ impl pallet_xcmp_handler::Config for Test {
 	type MultiCurrency = Currencies;
 	type GetNativeCurrencyId = GetNativeCurrencyId;
 	type SelfParaId = parachain_info::Pallet<Test>;
-	type AccountIdToMultiLocation = AccountIdToMultiLocation;
-	type CurrencyIdToMultiLocation = TokenIdConvert;
+	type AccountIdToLocation = AccountIdToLocation;
+	type CurrencyIdToLocation = TokenIdConvert;
 	type UniversalLocation = UniversalLocation;
 	type XcmExecutor = XcmExecutor<XcmConfig>;
 	type XcmSender = TestSendXcm;
@@ -366,17 +364,18 @@ impl pallet_xcmp_handler::Config for Test {
 
 // Build genesis storage according to the mock runtime.
 pub fn new_test_ext() -> sp_io::TestExternalities {
-	let mut t = frame_system::GenesisConfig::default()
-		.build_storage::<Test>()
-		.expect("Frame system builds valid default genesis config");
+	let mut storage = frame_system::GenesisConfig::<Test>::default()
+		.build_storage()
+		.unwrap();
 
-	GenesisBuild::<Test>::assimilate_storage(
-		&parachain_info::GenesisConfig { parachain_id: LOCAL_PARA_ID.into() },
-		&mut t,
-	)
-	.expect("Pallet Parachain info can be assimilated");
+	parachain_info::GenesisConfig::<Test> {
+		parachain_id: LOCAL_PARA_ID.into(),
+		..Default::default()
+	}
+	.assimilate_storage(&mut storage)
+	.unwrap();
 
-	let mut ext = sp_io::TestExternalities::new(t);
+	let mut ext = sp_io::TestExternalities::new(storage);
 	ext.execute_with(|| System::set_block_number(1));
 	ext
 }

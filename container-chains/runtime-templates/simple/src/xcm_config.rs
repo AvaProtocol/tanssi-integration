@@ -600,8 +600,8 @@ impl pallet_xcmp_handler::Config for Runtime {
 	type CurrencyId = TokenId;
 	type GetNativeCurrencyId = GetNativeCurrencyId;
 	type SelfParaId = parachain_info::Pallet<Runtime>;
-	type AccountIdToMultiLocation = AccountIdToMultiLocation;
-	type CurrencyIdToMultiLocation = TokenIdConvert;
+	type AccountIdToLocation = AccountIdToMultiLocation;
+	type CurrencyIdToLocation = TokenIdConvert;
 	type UniversalLocation = UniversalLocation;
 	type XcmSender = XcmRouter;
 	type XcmExecutor = XcmExecutor<XcmConfig>;
