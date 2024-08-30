@@ -5,7 +5,7 @@ description = "The commonalities between runtimes"
 authors = ["Ava Protocol Team"]
 license = "GPL-3.0"
 homepage = "https://avaprotocol.org"
-repository = 'https://github.com/AvaProtocol/OAK-blockchain'
+repository = 'https://github.com/AvaProtocol/tanssi-integration'
 edition = "2021"
 
 [dependencies]

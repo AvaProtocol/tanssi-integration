@@ -23,7 +23,7 @@
 //! EXECUTION: Some(Wasm), WASM-EXECUTION: Compiled, CHAIN: Some("turing-dev"), DB CACHE: 1024
 
 // Executed Command:
-// ./target/release/oak-collator
+// target/release/container-chain-simple-node
 // benchmark
 // pallet
 // --chain

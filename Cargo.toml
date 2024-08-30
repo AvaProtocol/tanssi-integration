@@ -496,7 +496,7 @@ orml-tokens = { git = "https://github.com/AstarNetwork/open-runtime-module-libra
 orml-asset-registry = { git = "https://github.com/AstarNetwork/open-runtime-module-library", branch = "polkadot-v1.11.0", default-features = false }
 orml-xtokens = { git = "https://github.com/AstarNetwork/open-runtime-module-library", branch = "polkadot-v1.11.0", default-features = false }
 
-# OAK
+# Ava Protocol
 ava-protocol-primitives = { path = "ava-protocol-primitives", default-features = false }
 pallet-xcmp-handler = { path = "pallets/xcmp-handler", default-features = false }
 pallet-automation-time = { path = "pallets/automation-time", default-features = false }

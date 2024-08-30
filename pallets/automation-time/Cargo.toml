@@ -6,7 +6,7 @@ edition = "2021"
 authors = ["Ava Protocol Team"]
 license = "GPL-3.0"
 homepage = "https://avaprotocol.org"
-repository = 'https://github.com/AvaProtocol/OAK-blockchain'
+repository = 'https://github.com/AvaProtocol/tanssi-integration'
 readme = 'README.md'
 
 [package.metadata.docs.rs]

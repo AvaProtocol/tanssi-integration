@@ -1,6 +1,6 @@
-// This file is part of OAK Blockchain.
+// This file is part of Ava Protocol.
 
-// Copyright (C) 2022 OAK Network
+// Copyright (C) 2022 Ava Protocol
 // SPDX-License-Identifier: Apache-2.0
 
 // Licensed under the Apache License, Version 2.0 (the "License");

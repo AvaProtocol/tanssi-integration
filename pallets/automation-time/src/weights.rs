@@ -1,4 +1,4 @@
-// This file is part of OAK-blockchain.
+// This file is part of Ava Protocol.
 
 // Copyright (C) Ava Protocol Ltd.
 // SPDX-License-Identifier: GPL-3.0-or-later WITH Classpath-exception-2.0
@@ -25,7 +25,7 @@
 //! EXECUTION: Some(Wasm), WASM-EXECUTION: Compiled, CHAIN: Some("turing-dev"), DB CACHE: 1024
 
 // Executed Command:
-// ./oak-collator
+// target/release/container-chain-simple-node
 // benchmark
 // pallet
 // --header
