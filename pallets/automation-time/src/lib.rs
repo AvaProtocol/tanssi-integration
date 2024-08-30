@@ -455,51 +455,6 @@ pub mod pallet {
 			Ok(())
 		}
 
-		// /// Schedule a task to increase delegation to a specified up to a minimum balance
-		// /// Task will reschedule itself to run on a given frequency until a failure occurs
-		// ///
-		// /// # Parameters
-		// /// * `execution_time`: The unix timestamp when the task should run for the first time
-		// /// * `frequency`: Number of seconds to wait inbetween task executions
-		// /// * `collator_id`: Account ID of the target collator
-		// /// * `account_minimum`: The minimum amount of funds that should be left in the wallet
-		// ///
-		// /// # Errors
-		// /// * `InvalidTime`: Execution time and frequency must be a multiple of SlotSizeSeconds.
-		// /// * `PastTime`: Time must be in the future.
-		// /// * `DuplicateTask`: There can be no duplicate tasks.
-		// /// * `TimeSlotFull`: Time slot is full. No more tasks can be scheduled for this time.
-		// /// * `TimeTooFarOut`: Execution time or frequency are past the max time horizon.
-		// /// * `InsufficientBalance`: Not enough funds to pay execution fee.
-		// #[pallet::call_index(2)]
-		// #[pallet::weight(<T as Config>::WeightInfo::schedule_auto_compound_delegated_stake_task_full())]
-		// pub fn schedule_auto_compound_delegated_stake_task(
-		// 	origin: OriginFor<T>,
-		// 	execution_time: UnixTime,
-		// 	frequency: Seconds,
-		// 	collator_id: AccountOf<T>,
-		// 	account_minimum: BalanceOf<T>,
-		// ) -> DispatchResult {
-		// 	let who = ensure_signed(origin)?;
-
-		// 	let action = Action::AutoCompoundDelegatedStake {
-		// 		delegator: who.clone(),
-		// 		collator: collator_id,
-		// 		account_minimum,
-		// 	};
-		// 	let schedule = Schedule::new_recurring_schedule::<T>(execution_time, frequency)?;
-
-		// 	// List of errors causing the auto compound task to be terminated.
-		// 	let errors: Vec<Vec<u8>> = AUTO_COMPOUND_DELEGATION_ABORT_ERRORS
-		// 		.iter()
-		// 		.map(|&error| error.as_bytes().to_vec())
-		// 		.collect();
-
-		// 	Self::schedule_task_with_event(action, who, schedule, errors, None)?;
-
-		// 	Ok(())
-		// }
-
 		/// Schedule a task that will dispatch a call.
 		/// ** This is currently limited to calls from the System and Balances pallets.
 		///
@@ -939,16 +894,6 @@ pub mod pallet {
 								overall_weight,
 								instruction_sequence,
 							),
-							// Action::AutoCompoundDelegatedStake {
-							// 	delegator,
-							// 	collator,
-							// 	account_minimum,
-							// } => Self::run_auto_compound_delegated_stake_task(
-							// 	delegator,
-							// 	collator,
-							// 	account_minimum,
-							// 	&task,
-							// ),
 							Action::DynamicDispatch { encoded_call } =>
 								Self::run_dynamic_dispatch_action(
 									task.owner_id.clone(),
@@ -1075,50 +1020,6 @@ pub mod pallet {
 				Err(e) => (<T as Config>::WeightInfo::run_xcmp_task(), Some(e)),
 			}
 		}
-
-		// /// Executes auto compounding delegation and reschedules task on success
-		// pub fn run_auto_compound_delegated_stake_task(
-		// 	delegator: AccountOf<T>,
-		// 	collator: AccountOf<T>,
-		// 	account_minimum: BalanceOf<T>,
-		// 	task: &TaskOf<T>,
-		// ) -> (Weight, Option<DispatchError>) {
-		// 	let fee_amount = Self::calculate_schedule_fee_amount(&task.action, 1);
-		// 	if let Err(error) = fee_amount {
-		// 		return (
-		// 			<T as Config>::WeightInfo::run_auto_compound_delegated_stake_task(),
-		// 			Some(error),
-		// 		)
-		// 	}
-		// 	let fee_amount = fee_amount.unwrap();
-
-		// 	let reserved_funds = account_minimum.saturating_add(fee_amount);
-		// 	match T::DelegatorActions::get_delegator_stakable_free_balance(&delegator)
-		// 		.checked_sub(&reserved_funds)
-		// 	{
-		// 		Some(delegation) => {
-		// 			match T::DelegatorActions::delegator_bond_more(
-		// 				&delegator, &collator, delegation,
-		// 			) {
-		// 				Ok(_) => (
-		// 					<T as Config>::WeightInfo::run_auto_compound_delegated_stake_task(),
-		// 					None,
-		// 				),
-		// 				Err(e) => (
-		// 					<T as Config>::WeightInfo::run_auto_compound_delegated_stake_task(),
-		// 					Some(e.error),
-		// 				),
-		// 			}
-		// 		},
-		// 		None => {
-		// 			// InsufficientBalance
-		// 			(
-		// 				<T as Config>::WeightInfo::run_auto_compound_delegated_stake_task(),
-		// 				Some(Error::<T>::InsufficientBalance.into()),
-		// 			)
-		// 		},
-		// 	}
-		// }
 
 		/// Attempt to decode and run the call.
 		pub fn run_dynamic_dispatch_action(
@@ -1491,24 +1392,6 @@ pub mod pallet {
 				.as_bytes()
 				.to_vec()
 		}
-
-		// // Find auto compount tasks of a paritcular account by iterate over AccountTasks
-		// // StorageDoubleMap using the first key prefix which is account_id.
-		// pub fn get_auto_compound_delegated_stake_task_ids(
-		// 	account_id: AccountOf<T>,
-		// ) -> Vec<TaskIdV2> {
-		// 	AccountTasks::<T>::iter_prefix_values(account_id)
-		// 		.filter(|task| {
-		// 			match task.action {
-		// 				// We don't care about the inner content, we just want to pick out the
-		// 				// AutoCompoundDelegatedStake
-		// 				Action::AutoCompoundDelegatedStake { .. } => true,
-		// 				_ => false,
-		// 			}
-		// 		})
-		// 		.map(|task| task.task_id)
-		// 		.collect()
-		// }
 
 		/// Calculates the execution fee for a given action based on weight and num of executions
 		///

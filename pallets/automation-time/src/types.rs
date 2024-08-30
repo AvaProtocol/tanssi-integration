@@ -60,36 +60,6 @@ impl<AccountId> Action<AccountId> {
 	}
 }
 
-// impl<AccountId: Clone + Decode, Balance: AtLeast32BitUnsigned> From<AutomationAction>
-// 	for Action<AccountId, Balance>
-// {
-// 	fn from(a: AutomationAction) -> Self {
-// 		let default_account =
-// 			AccountId::decode(&mut sp_runtime::traits::TrailingZeroInput::zeroes())
-// 				.expect("always valid");
-// 		match a {
-// 			AutomationAction::XCMP => Action::XCMP {
-// 				destination: Location::default(),
-// 				schedule_fee: Location::default(),
-// 				execution_fee: AssetPayment {
-// 					asset_location: Location::default().into(),
-// 					amount: 0,
-// 				},
-// 				encoded_call: vec![0],
-// 				encoded_call_weight: Weight::zero(),
-// 				overall_weight: Weight::zero(),
-// 				schedule_as: None,
-// 				instruction_sequence: InstructionSequence::PayThroughSovereignAccount,
-// 			},
-// 			AutomationAction::AutoCompoundDelegatedStake => Action::AutoCompoundDelegatedStake {
-// 				delegator: default_account.clone(),
-// 				collator: default_account,
-// 				account_minimum: 0u32.into(),
-// 			},
-// 		}
-// 	}
-// }
-
 /// API Param for Scheduling
 #[derive(Clone, Debug, Decode, Encode, PartialEq, TypeInfo)]
 pub enum ScheduleParam {
