@@ -25,7 +25,7 @@ pub enum Action<AccountId> {
     XCMP {
         destination: Location,
         schedule_fee: Location,
-        execution_fee: AssetPayment,
+        execution_fee: Box<AssetPayment>,
         encoded_call: Vec<u8>,
         encoded_call_weight: Weight,
         overall_weight: Weight,
@@ -254,7 +254,7 @@ impl<AccountId: Clone> Task<AccountId> {
         let action = Action::XCMP {
             destination,
             schedule_fee,
-            execution_fee,
+            execution_fee: Box::new(execution_fee),
             encoded_call,
             encoded_call_weight,
             overall_weight,

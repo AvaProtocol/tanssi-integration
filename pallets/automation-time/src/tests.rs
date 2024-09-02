@@ -70,10 +70,10 @@ impl Default for XcmpActionParams {
         XcmpActionParams {
             destination: Location::new(1, X1([Parachain(PARA_ID)].into())),
             schedule_fee: get_moonbase_asset_location(),
-            execution_fee: AssetPayment {
+            execution_fee: *Box::new(AssetPayment {
                 asset_location: get_moonbase_asset_location().into(),
                 amount: 100,
-            },
+            }),
             encoded_call: vec![3, 4, 5],
             encoded_call_weight: Weight::from_parts(100_000, 0),
             overall_weight: Weight::from_parts(200_000, 0),
@@ -87,7 +87,7 @@ fn create_xcmp_action(options: XcmpActionParams) -> ActionOf<Test> {
     Action::XCMP {
         destination: options.destination,
         schedule_fee: options.schedule_fee,
-        execution_fee: options.execution_fee,
+        execution_fee: Box::new(options.execution_fee),
         encoded_call: options.encoded_call,
         encoded_call_weight: options.encoded_call_weight,
         overall_weight: options.overall_weight,
@@ -217,7 +217,7 @@ fn schedule_invalid_time_fixed_schedule() {
 #[test]
 fn schedule_invalid_time_recurring_schedule() {
     new_test_ext(START_BLOCK_TIME).execute_with(|| {
-        for (next_run, frequency) in vec![
+        for (next_run, frequency) in [
             (SCHEDULED_TIME + 10, 10_u64),
             (SCHEDULED_TIME + SLOT_SIZE_SECONDS, 100_u64),
             (SCHEDULED_TIME + 10, SLOT_SIZE_SECONDS),
@@ -275,7 +275,7 @@ fn schedule_past_time() {
 #[test]
 fn schedule_past_time_recurring() {
     new_test_ext(START_BLOCK_TIME + 1_000 * SLOT_SIZE_SECONDS * 3).execute_with(|| {
-        for (next_run, frequency) in vec![
+        for (next_run, frequency) in [
             (SCHEDULED_TIME - SLOT_SIZE_SECONDS, SLOT_SIZE_SECONDS * 2),
             (SCHEDULED_TIME, SLOT_SIZE_SECONDS * 2),
         ]
@@ -308,7 +308,7 @@ fn schedule_past_time_recurring() {
 #[test]
 fn schedule_too_far_out() {
     new_test_ext(START_BLOCK_TIME).execute_with(|| {
-        for task_far_schedule in vec![
+        for task_far_schedule in [
             // only one time slot that is far
             ScheduleParam::Fixed {
                 execution_times: vec![SCHEDULED_TIME + MAX_SCHEDULE_SECONDS],
@@ -945,20 +945,20 @@ fn calculate_xcmp_action_schedule_fee_amount_with_different_execution_fee_return
         let num_of_execution = generate_random_num(1, 20);
 
         let action = create_xcmp_action(XcmpActionParams {
-            execution_fee: AssetPayment {
+            execution_fee: *Box::new(AssetPayment {
                 asset_location: get_moonbase_asset_location().into(),
                 amount: 100,
-            },
+            }),
             ..XcmpActionParams::default()
         });
         let fee_amount = AutomationTime::calculate_schedule_fee_amount(&action, num_of_execution)
             .expect(EXPECT_CALCULATE_SCHEDULE_FEE_AMOUNT);
 
         let action_diffrent_execution_fee = create_xcmp_action(XcmpActionParams {
-            execution_fee: AssetPayment {
+            execution_fee: *Box::new(AssetPayment {
                 asset_location: Location::new(1, X1([Parachain(3000)].into())).into(),
                 amount: 300,
-            },
+            }),
             ..XcmpActionParams::default()
         });
         let fee_amount_diffrent_execution_fee = AutomationTime::calculate_schedule_fee_amount(
@@ -1225,14 +1225,11 @@ fn schedule_xcmp_with_schedule_as_works() {
 		// Find the TaskScheduled event in the event list and verify if the who within it is correct.
 		events()
 			.into_iter()
-			.find(|e| match e {
-				RuntimeEvent::AutomationTime(crate::Event::TaskScheduled {
+			.find(|e| matches!(e, RuntimeEvent::AutomationTime(crate::Event::TaskScheduled {
 				who,
 				schedule_as,
 				..
-			}) if *who == proxy_account && *schedule_as == Some(delegator_account.clone()) => true,
-				_ => false,
-			})
+			}) if *who == proxy_account && *schedule_as == Some(delegator_account.clone())))
 			.expect("TaskScheduled event should emit with 'who' being proxy_account, and 'schedule_as' being delegator_account.");
 	})
 }
@@ -2188,7 +2185,7 @@ mod extrinsics {
         fn works() {
             new_test_ext(START_BLOCK_TIME).execute_with(|| {
                 let account_id = AccountId32::new(ALICE);
-                let execution_times = vec![SCHEDULED_TIME];
+                let execution_times = [SCHEDULED_TIME];
                 let call: RuntimeCall = frame_system::Call::remark { remark: vec![] }.into();
                 assert_ok!(fund_account_dynamic_dispatch(
                     &account_id,
@@ -3023,10 +3020,10 @@ fn trigger_tasks_completes_some_xcmp_tasks() {
             Action::XCMP {
                 destination,
                 schedule_fee: NATIVE_LOCATION,
-                execution_fee: AssetPayment {
+                execution_fee: Box::new(AssetPayment {
                     asset_location: Location::new(0, Here).into(),
                     amount: 10,
-                },
+                }),
                 encoded_call,
                 encoded_call_weight: Weight::from_parts(100_000, 0),
                 overall_weight: Weight::from_parts(200_000, 0),

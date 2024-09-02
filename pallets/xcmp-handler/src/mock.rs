@@ -172,8 +172,8 @@ impl Convert<AccountId, Location> for AccountIdToLocation {
 }
 
 thread_local! {
-    pub static SENT_XCM: RefCell<Vec<(Location,Xcm<()>)>>  = RefCell::new(Vec::new());
-    pub static TRANSACT_ASSET: RefCell<Vec<(Asset,Location)>>  = RefCell::new(Vec::new());
+    pub static SENT_XCM: RefCell<Vec<(Location,Xcm<()>)>> = const { RefCell::new(Vec::new()) };
+    pub static TRANSACT_ASSET: RefCell<Vec<(Asset,Location)>> = const { RefCell::new(Vec::new()) };
 }
 
 pub(crate) fn sent_xcm() -> Vec<(Location, Xcm<()>)> {

@@ -302,10 +302,10 @@ mod tests {
             let action = Action::XCMP {
                 destination: destination.clone(),
                 schedule_fee: NATIVE_LOCATION,
-                execution_fee: AssetPayment {
+                execution_fee: Box::new(AssetPayment {
                     asset_location: destination.into(),
                     amount: 10,
-                },
+                }),
                 encoded_call: vec![3, 4, 5],
                 encoded_call_weight: Weight::from_parts(100_000, 0),
                 overall_weight: Weight::from_parts(200_000, 0),
@@ -344,10 +344,10 @@ mod tests {
             let action = Action::XCMP {
                 destination: destination.clone(),
                 schedule_fee: destination,
-                execution_fee: AssetPayment {
+                execution_fee: Box::new(AssetPayment {
                     asset_location: NATIVE_LOCATION.into(),
                     amount: 10,
-                },
+                }),
                 encoded_call: vec![3, 4, 5],
                 encoded_call_weight: Weight::from_parts(100_000, 0),
                 overall_weight: Weight::from_parts(200_000, 0),
@@ -380,10 +380,10 @@ mod tests {
             let action = Action::XCMP {
                 destination: destination.clone(),
                 schedule_fee: destination,
-                execution_fee: AssetPayment {
+                execution_fee: Box::new(AssetPayment {
                     asset_location: NATIVE_LOCATION.into(),
                     amount: 10,
-                },
+                }),
                 encoded_call: vec![3, 4, 5],
                 encoded_call_weight: Weight::from_parts(100_000, 0),
                 overall_weight: Weight::from_parts(200_000, 0),
@@ -411,10 +411,10 @@ mod tests {
             let action = Action::XCMP {
                 destination: destination.clone(),
                 schedule_fee: NATIVE_LOCATION,
-                execution_fee: AssetPayment {
+                execution_fee: Box::new(AssetPayment {
                     asset_location: destination.into(),
                     amount: 10,
-                },
+                }),
                 encoded_call: vec![3, 4, 5],
                 encoded_call_weight: Weight::from_parts(100_000, 0),
                 overall_weight: Weight::from_parts(200_000, 0),
@@ -443,10 +443,10 @@ mod tests {
             let action = Action::XCMP {
                 destination: destination.clone(),
                 schedule_fee: NATIVE_LOCATION,
-                execution_fee: AssetPayment {
+                execution_fee: Box::new(AssetPayment {
                     asset_location: destination.into(),
                     amount: 10,
-                },
+                }),
                 encoded_call: vec![3, 4, 5],
                 encoded_call_weight: Weight::from_parts(100_000, 0),
                 overall_weight: Weight::from_parts(200_000, 0),

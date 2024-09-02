@@ -421,7 +421,7 @@ pub mod pallet {
             let action = Action::XCMP {
                 destination: destination_location,
                 schedule_fee: schedule_fee_location,
-                execution_fee: execution_fee_payment,
+                execution_fee: Box::new(execution_fee_payment),
                 encoded_call: encoded_call.clone(),
                 encoded_call_weight,
                 overall_weight,
@@ -899,7 +899,7 @@ pub mod pallet {
                             } => Self::run_xcmp_task(
                                 destination,
                                 schedule_as.unwrap_or_else(|| task.owner_id.clone()),
-                                execution_fee,
+                                *execution_fee,
                                 encoded_call,
                                 encoded_call_weight,
                                 overall_weight,
@@ -1265,15 +1265,12 @@ pub mod pallet {
             schedule: Schedule,
             abort_errors: Vec<Vec<u8>>,
         ) -> Result<TaskIdV2, DispatchError> {
-            match action.clone() {
-                Action::XCMP { execution_fee, .. } => {
-                    let asset_location = Location::try_from(execution_fee.asset_location)
-                        .map_err(|()| Error::<T>::BadVersion)?;
-                    let _asset_location = asset_location
-                        .reanchored(&T::SelfLocation::get(), &T::UniversalLocation::get())
-                        .map_err(|_| Error::<T>::CannotReanchor)?;
-                }
-                _ => (),
+            if let Action::XCMP { execution_fee, .. } = action.clone() {
+                let asset_location = Location::try_from(execution_fee.asset_location)
+                    .map_err(|()| Error::<T>::BadVersion)?;
+                let _asset_location = asset_location
+                    .reanchored(&T::SelfLocation::get(), &T::UniversalLocation::get())
+                    .map_err(|_| Error::<T>::CannotReanchor)?;
             };
 
             let executions = schedule.known_executions_left();

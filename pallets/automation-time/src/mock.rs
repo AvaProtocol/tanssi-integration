@@ -312,11 +312,7 @@ where
 pub struct ScheduleAllowList;
 impl Contains<RuntimeCall> for ScheduleAllowList {
     fn contains(c: &RuntimeCall) -> bool {
-        match c {
-            RuntimeCall::System(_) => true,
-            RuntimeCall::Balances(_) => true,
-            _ => false,
-        }
+        matches!(c, RuntimeCall::System(_) | RuntimeCall::Balances(_))
     }
 }
 
