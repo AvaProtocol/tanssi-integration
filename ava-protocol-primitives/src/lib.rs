@@ -18,9 +18,9 @@
 
 use sp_core::H256;
 use sp_runtime::{
-	generic,
-	traits::{BlakeTwo256, IdentifyAccount, Verify},
-	MultiAddress, MultiSignature,
+    generic,
+    traits::{BlakeTwo256, IdentifyAccount, Verify},
+    MultiAddress, MultiSignature,
 };
 use sp_std::marker::PhantomData;
 
@@ -71,22 +71,22 @@ pub use sp_runtime::OpaqueExtrinsic as UncheckedExtrinsic;
 pub type Block = generic::Block<Header, UncheckedExtrinsic>;
 
 pub trait EnsureProxy<AccountId> {
-	fn ensure_ok(delegator: AccountId, delegatee: AccountId) -> Result<(), &'static str>;
+    fn ensure_ok(delegator: AccountId, delegatee: AccountId) -> Result<(), &'static str>;
 }
 
 /// `Asset` reserve location provider. It's based on `RelativeReserveProvider` and in
 /// addition will convert self absolute location to relative location.
 pub struct AbsoluteAndRelativeReserveProvider<AbsoluteLocation>(PhantomData<AbsoluteLocation>);
 impl<AbsoluteLocation: Get<Location>> Reserve
-	for AbsoluteAndRelativeReserveProvider<AbsoluteLocation>
+    for AbsoluteAndRelativeReserveProvider<AbsoluteLocation>
 {
-	fn reserve(asset: &Asset) -> Option<Location> {
-		RelativeReserveProvider::reserve(asset).map(|reserve_location| {
-			if reserve_location == AbsoluteLocation::get() {
-				Location::here()
-			} else {
-				reserve_location
-			}
-		})
-	}
+    fn reserve(asset: &Asset) -> Option<Location> {
+        RelativeReserveProvider::reserve(asset).map(|reserve_location| {
+            if reserve_location == AbsoluteLocation::get() {
+                Location::here()
+            } else {
+                reserve_location
+            }
+        })
+    }
 }

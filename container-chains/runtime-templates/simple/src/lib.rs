@@ -34,12 +34,14 @@ pub mod weights;
 
 pub use sp_runtime::{MultiAddress, Perbill, Permill};
 use {
+    ava_protocol_primitives::{AbsoluteAndRelativeReserveProvider, EnsureProxy},
+    common_runtime::constants::weight_ratios::SCHEDULED_TASKS_INITIALIZE_RATIO,
     cumulus_primitives_core::AggregateMessageOrigin,
     dp_impl_tanssi_pallets_config::impl_tanssi_pallets_config,
     frame_support::{
         construct_runtime,
-        ensure,
         dispatch::DispatchClass,
+        ensure,
         genesis_builder_helper::{build_state, get_preset},
         pallet_prelude::DispatchResult,
         parameter_types,
@@ -86,14 +88,14 @@ use {
         dry_run::{CallDryRunEffects, Error as XcmDryRunApiError, XcmDryRunEffects},
         fees::Error as XcmPaymentApiError,
     },
-    ava_protocol_primitives::{AbsoluteAndRelativeReserveProvider, EnsureProxy},
-    common_runtime::constants::weight_ratios::SCHEDULED_TASKS_INITIALIZE_RATIO,
 };
 
-use ava_protocol_primitives::{ assets::CustomMetadata, TokenId };
+use ava_protocol_primitives::{assets::CustomMetadata, TokenId};
 
 pub mod xcm_config;
-use xcm_config::{SelfLocationAbsolute, ToTreasury, FeePerSecondProvider, TokenIdConvert, UniversalLocation};
+use xcm_config::{
+    FeePerSecondProvider, SelfLocationAbsolute, ToTreasury, TokenIdConvert, UniversalLocation,
+};
 
 // Polkadot imports
 use polkadot_runtime_common::BlockHashCount;
@@ -384,8 +386,8 @@ impl frame_system::Config for Runtime {
 
 parameter_types! {
     pub const ExistentialDeposit: Balance = EXISTENTIAL_DEPOSIT;
-	pub const MaxLocks: u32 = 50;
-	pub const MaxReserves: u32 = 50;
+    pub const MaxLocks: u32 = 50;
+    pub const MaxReserves: u32 = 50;
 }
 
 impl pallet_balances::Config for Runtime {
@@ -671,51 +673,51 @@ impl pallet_multisig::Config for Runtime {
 }
 
 parameter_types! {
-	// pub const ProposalBond: Permill = Permill::from_percent(5);
-	// pub const ProposalBondMinimum: Balance = 1 * DOLLAR;
-	// pub const ProposalBondMaximum: Balance = 5 * DOLLAR;
-	// pub const SpendPeriod: BlockNumber = 7 * DAYS;
-	// pub const Burn: Permill = Permill::from_percent(100);
-	// pub const TipCountdown: BlockNumber = 1 * DAYS;
-	// pub const TipFindersFee: Percent = Percent::from_percent(20);
-	// pub const TipReportDepositBase: Balance = 1 * UNIT;
-	// pub const DataDepositPerByte: Balance = 1 * CENT;
-	// pub const BountyDepositBase: Balance = 1 * UNIT;
-	// pub const BountyDepositPayoutDelay: BlockNumber = 1 * DAYS;
-	pub const TreasuryPalletId: PalletId = PalletId(*b"py/trsry");
-	// pub const BountyUpdatePeriod: BlockNumber = 14 * DAYS;
-	// pub const CuratorDepositMultiplier: Permill = Permill::from_percent(50);
-	// pub CuratorDepositMin: Balance = DOLLAR;
-	// pub CuratorDepositMax: Balance = 100 * DOLLAR;
-	// pub const BountyValueMinimum: Balance = 5 * UNIT;
+    // pub const ProposalBond: Permill = Permill::from_percent(5);
+    // pub const ProposalBondMinimum: Balance = 1 * DOLLAR;
+    // pub const ProposalBondMaximum: Balance = 5 * DOLLAR;
+    // pub const SpendPeriod: BlockNumber = 7 * DAYS;
+    // pub const Burn: Permill = Permill::from_percent(100);
+    // pub const TipCountdown: BlockNumber = 1 * DAYS;
+    // pub const TipFindersFee: Percent = Percent::from_percent(20);
+    // pub const TipReportDepositBase: Balance = 1 * UNIT;
+    // pub const DataDepositPerByte: Balance = 1 * CENT;
+    // pub const BountyDepositBase: Balance = 1 * UNIT;
+    // pub const BountyDepositPayoutDelay: BlockNumber = 1 * DAYS;
+    pub const TreasuryPalletId: PalletId = PalletId(*b"py/trsry");
+    // pub const BountyUpdatePeriod: BlockNumber = 14 * DAYS;
+    // pub const CuratorDepositMultiplier: Permill = Permill::from_percent(50);
+    // pub CuratorDepositMin: Balance = DOLLAR;
+    // pub CuratorDepositMax: Balance = 100 * DOLLAR;
+    // pub const BountyValueMinimum: Balance = 5 * UNIT;
 }
 
 pub struct AssetAuthority;
 impl EnsureOriginWithArg<RuntimeOrigin, Option<u32>> for AssetAuthority {
-	type Success = ();
+    type Success = ();
 
-	fn try_origin(
-		origin: RuntimeOrigin,
-		_asset_id: &Option<u32>,
-	) -> Result<Self::Success, RuntimeOrigin> {
-		<EnsureRoot<AccountId> as EnsureOrigin<RuntimeOrigin>>::try_origin(origin)
-	}
+    fn try_origin(
+        origin: RuntimeOrigin,
+        _asset_id: &Option<u32>,
+    ) -> Result<Self::Success, RuntimeOrigin> {
+        <EnsureRoot<AccountId> as EnsureOrigin<RuntimeOrigin>>::try_origin(origin)
+    }
 
-	#[cfg(feature = "runtime-benchmarks")]
-	fn try_successful_origin(_asset_id: &Option<u32>) -> Result<RuntimeOrigin, ()> {
-		// EnsureRoot::try_successful_origin()
+    #[cfg(feature = "runtime-benchmarks")]
+    fn try_successful_origin(_asset_id: &Option<u32>) -> Result<RuntimeOrigin, ()> {
+        // EnsureRoot::try_successful_origin()
         <EnsureRoot<AccountId> as EnsureOrigin<RuntimeOrigin>>::try_successful_origin()
-	}
+    }
 }
 
 impl orml_asset_registry::module::Config for Runtime {
-	type RuntimeEvent = RuntimeEvent;
-	type CustomMetadata = CustomMetadata;
-	type AssetId = TokenId;
-	type AuthorityOrigin = AssetAuthority;
-	type AssetProcessor = orml_asset_registry::SequentialId<Runtime>;
-	type Balance = Balance;
-	type WeightInfo = weights::asset_registry_weights::SubstrateWeight<Runtime>;
+    type RuntimeEvent = RuntimeEvent;
+    type CustomMetadata = CustomMetadata;
+    type AssetId = TokenId;
+    type AuthorityOrigin = AssetAuthority;
+    type AssetProcessor = orml_asset_registry::SequentialId<Runtime>;
+    type Balance = Balance;
+    type WeightInfo = weights::asset_registry_weights::SubstrateWeight<Runtime>;
     type StringLimit = common_runtime::config::orml_asset_registry::StringLimit;
 }
 
@@ -724,12 +726,12 @@ impl orml_asset_registry::module::Config for Runtime {
 // }
 
 parameter_types! {
-	pub const MaxScheduleSeconds: u64 = 6 * 30 * 24 * 60 * 60;	// 6 months in seconds
-	pub const SlotSizeSeconds: u64 = 600; // 10 minutes in seconds
-	pub const MaxBlockWeight: u64 = MAXIMUM_BLOCK_WEIGHT.ref_time();
-	pub const MaxWeightPercentage: Perbill = SCHEDULED_TASKS_INITIALIZE_RATIO;
-	pub const UpdateQueueRatio: Perbill = Perbill::from_percent(50);
-	pub const ExecutionWeightFee: Balance = 12;
+    pub const MaxScheduleSeconds: u64 = 6 * 30 * 24 * 60 * 60;	// 6 months in seconds
+    pub const SlotSizeSeconds: u64 = 600; // 10 minutes in seconds
+    pub const MaxBlockWeight: u64 = MAXIMUM_BLOCK_WEIGHT.ref_time();
+    pub const MaxWeightPercentage: Perbill = SCHEDULED_TASKS_INITIALIZE_RATIO;
+    pub const UpdateQueueRatio: Perbill = Perbill::from_percent(50);
+    pub const ExecutionWeightFee: Balance = 12;
 }
 
 // parameter_types! {
@@ -778,66 +780,65 @@ parameter_types! {
 // 	type CallAccessFilter = TechnicalMembership;
 // }
 
-
 pub struct ScheduleAllowList;
 impl Contains<RuntimeCall> for ScheduleAllowList {
-	fn contains(c: &RuntimeCall) -> bool {
-		match c {
-			RuntimeCall::System(_) => true,
-			RuntimeCall::Balances(_) => true,
-			// RuntimeCall::ParachainStaking(_) => true,
-			RuntimeCall::XTokens(_) => true,
-			RuntimeCall::Utility(_) => true,
-			RuntimeCall::Currencies(_) => true,
-			_ => false,
-		}
-	}
+    fn contains(c: &RuntimeCall) -> bool {
+        match c {
+            RuntimeCall::System(_) => true,
+            RuntimeCall::Balances(_) => true,
+            // RuntimeCall::ParachainStaking(_) => true,
+            RuntimeCall::XTokens(_) => true,
+            RuntimeCall::Utility(_) => true,
+            RuntimeCall::Currencies(_) => true,
+            _ => false,
+        }
+    }
 }
 
 pub struct AutomationEnsureProxy;
 impl EnsureProxy<AccountId> for AutomationEnsureProxy {
-	fn ensure_ok(delegator: AccountId, delegatee: AccountId) -> Result<(), &'static str> {
-		// We only allow for "Any" proxies
-		let def: pallet_proxy::ProxyDefinition<AccountId, ProxyType, BlockNumber> =
-			pallet_proxy::Pallet::<Runtime>::find_proxy(
-				&delegator,
-				&delegatee,
-				Some(ProxyType::Any),
-			)
-			.map_err(|_| "proxy error: expected `ProxyType::Any`")?;
-		// We only allow to use it for delay zero proxies, as the call will immediatly be executed
-		ensure!(def.delay.is_zero(), "proxy delay is Non-zero`");
-		Ok(())
-	}
+    fn ensure_ok(delegator: AccountId, delegatee: AccountId) -> Result<(), &'static str> {
+        // We only allow for "Any" proxies
+        let def: pallet_proxy::ProxyDefinition<AccountId, ProxyType, BlockNumber> =
+            pallet_proxy::Pallet::<Runtime>::find_proxy(
+                &delegator,
+                &delegatee,
+                Some(ProxyType::Any),
+            )
+            .map_err(|_| "proxy error: expected `ProxyType::Any`")?;
+        // We only allow to use it for delay zero proxies, as the call will immediatly be executed
+        ensure!(def.delay.is_zero(), "proxy delay is Non-zero`");
+        Ok(())
+    }
 }
 
 impl pallet_automation_time::Config for Runtime {
-	type RuntimeEvent = RuntimeEvent;
-	type MaxTasksPerSlot = ConstU32<256>;
-	type MaxExecutionTimes = ConstU32<36>;
-	type MaxScheduleSeconds = MaxScheduleSeconds;
-	type MaxBlockWeight = MaxBlockWeight;
-	type MaxWeightPercentage = MaxWeightPercentage;
-	// Roughly .125% of parachain block weight per hour
-	// ≈ 500_000_000_000 (MaxBlockWeight) * 300 (Blocks/Hour) * .00125
-	type MaxWeightPerSlot = ConstU128<150_000_000_000>;
-	type SlotSizeSeconds = SlotSizeSeconds;
-	type UpdateQueueRatio = UpdateQueueRatio;
-	type WeightInfo = pallet_automation_time::weights::SubstrateWeight<Runtime>;
-	type ExecutionWeightFee = ExecutionWeightFee;
-	type Currency = Balances;
-	type MultiCurrency = Currencies;
-	type CurrencyId = TokenId;
-	type XcmpTransactor = XcmpHandler;
-	type FeeHandler = pallet_automation_time::FeeHandler<Runtime, ToTreasury>;
-	type CurrencyIdConvert = TokenIdConvert;
-	type FeeConversionRateProvider = FeePerSecondProvider;
-	type RuntimeCall = RuntimeCall;
-	type ScheduleAllowList = ScheduleAllowList;
-	type EnsureProxy = AutomationEnsureProxy;
-	type UniversalLocation = UniversalLocation;
-	type ReserveProvider = AbsoluteAndRelativeReserveProvider<SelfLocationAbsolute>;
-	type SelfLocation = SelfLocationAbsolute;
+    type RuntimeEvent = RuntimeEvent;
+    type MaxTasksPerSlot = ConstU32<256>;
+    type MaxExecutionTimes = ConstU32<36>;
+    type MaxScheduleSeconds = MaxScheduleSeconds;
+    type MaxBlockWeight = MaxBlockWeight;
+    type MaxWeightPercentage = MaxWeightPercentage;
+    // Roughly .125% of parachain block weight per hour
+    // ≈ 500_000_000_000 (MaxBlockWeight) * 300 (Blocks/Hour) * .00125
+    type MaxWeightPerSlot = ConstU128<150_000_000_000>;
+    type SlotSizeSeconds = SlotSizeSeconds;
+    type UpdateQueueRatio = UpdateQueueRatio;
+    type WeightInfo = pallet_automation_time::weights::SubstrateWeight<Runtime>;
+    type ExecutionWeightFee = ExecutionWeightFee;
+    type Currency = Balances;
+    type MultiCurrency = Currencies;
+    type CurrencyId = TokenId;
+    type XcmpTransactor = XcmpHandler;
+    type FeeHandler = pallet_automation_time::FeeHandler<Runtime, ToTreasury>;
+    type CurrencyIdConvert = TokenIdConvert;
+    type FeeConversionRateProvider = FeePerSecondProvider;
+    type RuntimeCall = RuntimeCall;
+    type ScheduleAllowList = ScheduleAllowList;
+    type EnsureProxy = AutomationEnsureProxy;
+    type UniversalLocation = UniversalLocation;
+    type ReserveProvider = AbsoluteAndRelativeReserveProvider<SelfLocationAbsolute>;
+    type SelfLocation = SelfLocationAbsolute;
 }
 
 impl_tanssi_pallets_config!(Runtime);

@@ -15,23 +15,27 @@
 // along with Tanssi.  If not, see <http://www.gnu.org/licenses/>.
 
 use {
+    ava_protocol_primitives::{assets::CustomMetadata, Balance, TokenId},
+    common_runtime::{
+        config::orml_asset_registry::{AssetMetadataOf, StringLimit},
+        constants::currency::TOKEN_DECIMALS,
+    },
     container_chain_template_simple_runtime::{
-        AccountId, AssetRegistryConfig, MaintenanceModeConfig, MigrationsConfig, PolkadotXcmConfig, Signature,
+        AccountId, AssetRegistryConfig, MaintenanceModeConfig, MigrationsConfig, PolkadotXcmConfig,
+        Signature,
     },
     cumulus_primitives_core::ParaId,
+    parity_scale_codec::Encode,
     sc_chain_spec::{ChainSpecExtension, ChainSpecGroup},
     sc_network::config::MultiaddrWithPeerId,
     sc_service::ChainType,
     serde::{Deserialize, Serialize},
     sp_core::{sr25519, Pair, Public},
-    sp_runtime::{BoundedVec, traits::{IdentifyAccount, Verify}},
-    staging_xcm::{prelude::*, VersionedLocation},
-    ava_protocol_primitives::{assets::CustomMetadata, TokenId, Balance},
-    common_runtime::{
-        constants::currency::TOKEN_DECIMALS,
-        config::orml_asset_registry::{StringLimit, AssetMetadataOf},
+    sp_runtime::{
+        traits::{IdentifyAccount, Verify},
+        BoundedVec,
     },
-    parity_scale_codec::Encode,
+    staging_xcm::{prelude::*, VersionedLocation},
 };
 
 /// Specialized `ChainSpec` for the normal parachain runtime.
@@ -169,29 +173,35 @@ fn testnet_genesis(
     root_key: AccountId,
     additional_assets: Vec<(TokenId, Vec<u8>)>,
 ) -> serde_json::Value {
-
     let assets = [
-		vec![(
-			0,
-			orml_asset_registry::AssetMetadata::<Balance, CustomMetadata, StringLimit>::encode(
-				&AssetMetadataOf {
-					decimals: TOKEN_DECIMALS,
-					name: BoundedVec::truncate_from(b"Native".to_vec()),
-					symbol: BoundedVec::truncate_from(TOKEN_SYMBOL.as_bytes().to_vec()),
-					existential_deposit: 100_000_000,
-					location: Some(VersionedLocation::V4(Location { parents: 0, interior: Here })),
-					additional: CustomMetadata {
-						fee_per_second: Some(416_000_000_000),
-						conversion_rate: None,
-					},
-				},
-			),
-		)],
-		additional_assets,
-	]
-	.concat();
+        vec![(
+            0,
+            orml_asset_registry::AssetMetadata::<Balance, CustomMetadata, StringLimit>::encode(
+                &AssetMetadataOf {
+                    decimals: TOKEN_DECIMALS,
+                    name: BoundedVec::truncate_from(b"Native".to_vec()),
+                    symbol: BoundedVec::truncate_from(TOKEN_SYMBOL.as_bytes().to_vec()),
+                    existential_deposit: 100_000_000,
+                    location: Some(VersionedLocation::V4(Location {
+                        parents: 0,
+                        interior: Here,
+                    })),
+                    additional: CustomMetadata {
+                        fee_per_second: Some(416_000_000_000),
+                        conversion_rate: None,
+                    },
+                },
+            ),
+        )],
+        additional_assets,
+    ]
+    .concat();
 
-    let last_asset_id = assets.iter().map(|asset| asset.0).max().expect("At least 1 item!");
+    let last_asset_id = assets
+        .iter()
+        .map(|asset| asset.0)
+        .max()
+        .expect("At least 1 item!");
 
     let g = container_chain_template_simple_runtime::RuntimeGenesisConfig {
         balances: container_chain_template_simple_runtime::BalancesConfig {
@@ -223,7 +233,10 @@ fn testnet_genesis(
         transaction_payment: Default::default(),
         tx_pause: Default::default(),
         system: Default::default(),
-        asset_registry: AssetRegistryConfig { assets, last_asset_id },
+        asset_registry: AssetRegistryConfig {
+            assets,
+            last_asset_id,
+        },
         tokens: Default::default(),
     };
 
