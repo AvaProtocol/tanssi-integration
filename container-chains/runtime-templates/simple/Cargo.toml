@@ -252,6 +252,12 @@ runtime-benchmarks = [
 	"tanssi-runtime-common/runtime-benchmarks",
 	"xcm-primitives/runtime-benchmarks",
 	"xcm-runtime-apis/runtime-benchmarks",
+	"orml-asset-registry/runtime-benchmarks",
+	"orml-tokens/runtime-benchmarks",
+	"orml-xtokens/runtime-benchmarks",
+	"pallet-membership/runtime-benchmarks",
+	"pallet-automation-time/runtime-benchmarks",
+	"pallet-xcmp-handler/runtime-benchmarks",
 ]
 
 try-runtime = [
@@ -274,6 +280,7 @@ try-runtime = [
 	"pallet-collective/try-runtime",
 	"pallet-foreign-asset-creator/try-runtime",
 	"pallet-maintenance-mode/try-runtime",
+	"pallet-membership/try-runtime",
 	"pallet-message-queue/try-runtime",
 	"pallet-migrations/try-runtime",
 	"pallet-multisig/try-runtime",

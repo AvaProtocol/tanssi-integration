@@ -46,4 +46,5 @@ std = [
   "ava-protocol-primitives/std",
   "orml-traits/std",
   "orml-tokens/std",
+  "frame-system/std",
 ]

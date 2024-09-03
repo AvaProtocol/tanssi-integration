@@ -45,4 +45,6 @@ std = [
   "staging-xcm-executor/std",
   "staging-xcm/std",
   "staging-xcm-builder/std",
+  "orml-traits/std",
+  "sp-io/std",
 ]

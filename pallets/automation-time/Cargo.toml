@@ -70,8 +70,34 @@ orml-tokens = { workspace = true }
 
 [features]
 default = ["std"]
-runtime-benchmarks = ["frame-benchmarking"]
-try-runtime = ["frame-support/try-runtime"]
+runtime-benchmarks = [
+  "frame-benchmarking/runtime-benchmarks",
+  "orml-tokens/runtime-benchmarks",
+  "cumulus-primitives-core/runtime-benchmarks",
+  "frame-support/runtime-benchmarks",
+  "frame-system/runtime-benchmarks",
+  "pallet-balances/runtime-benchmarks",
+  "pallet-timestamp/runtime-benchmarks",
+  "pallet-xcm/runtime-benchmarks",
+  "polkadot-parachain-primitives/runtime-benchmarks",
+  "sp-runtime/runtime-benchmarks",
+  "staging-xcm-builder/runtime-benchmarks",
+  "staging-xcm-executor/runtime-benchmarks",
+  "pallet-xcmp-handler/runtime-benchmarks",
+]
+try-runtime = [
+  "frame-support/try-runtime",
+  "orml-currencies/try-runtime",
+  "orml-tokens/try-runtime",
+  "cumulus-pallet-xcm/try-runtime",
+  "frame-system/try-runtime",
+  "pallet-balances/try-runtime",
+  "pallet-timestamp/try-runtime",
+  "pallet-xcm/try-runtime",
+  "sp-runtime/try-runtime",
+  "parachain-info/try-runtime",
+  "pallet-xcmp-handler/try-runtime",
+]
 std = [
   "parity-scale-codec/std",
   "cumulus-pallet-xcm/std",
@@ -96,5 +122,11 @@ std = [
   "staging-xcm-builder/std",
   "staging-xcm-executor/std",
   "parachain-info/std",
+  "pallet-xcmp-handler/std",
+  "sp-core/std",
+  "hex/std",
+  "log/std",
+  "rand/std",
+  "serde/std",
 ]
 dev-queue = []

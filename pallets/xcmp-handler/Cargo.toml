@@ -60,8 +60,30 @@ ava-protocol-primitives = { workspace = true }
 
 [features]
 default = ["std"]
-runtime-benchmarks = ["frame-benchmarking/runtime-benchmarks", "staging-xcm-builder/runtime-benchmarks", "pallet-xcm/runtime-benchmarks"]
-try-runtime = ["frame-support/try-runtime", "cumulus-pallet-xcm/try-runtime", "pallet-xcm/try-runtime"]
+runtime-benchmarks = [
+  "frame-benchmarking/runtime-benchmarks",
+  "staging-xcm-builder/runtime-benchmarks",
+  "pallet-xcm/runtime-benchmarks",
+  "cumulus-primitives-core/runtime-benchmarks",
+  "orml-tokens/runtime-benchmarks",
+  "frame-support/runtime-benchmarks",
+  "frame-system/runtime-benchmarks",
+  "pallet-balances/runtime-benchmarks",
+  "polkadot-parachain-primitives/runtime-benchmarks",
+  "sp-runtime/runtime-benchmarks",
+  "staging-xcm-executor/runtime-benchmarks",
+]
+try-runtime = [
+  "frame-support/try-runtime",
+  "cumulus-pallet-xcm/try-runtime",
+  "pallet-xcm/try-runtime",
+  "orml-currencies/try-runtime",
+  "orml-tokens/try-runtime",
+  "frame-system/try-runtime",
+  "pallet-balances/try-runtime",
+  "sp-runtime/try-runtime",
+  "parachain-info/try-runtime",
+]
 std = [
   "parity-scale-codec/std",
   "cumulus-primitives-core/std",
@@ -82,5 +104,10 @@ std = [
   "pallet-xcm/std",
   "cumulus-pallet-xcm/std",
   "parachain-info/std",
+  "pallet-balances/std",
+  "sp-core/std",
+  "sp-io/std",
+  "log/std",
+  "serde/std",
 ]
 
