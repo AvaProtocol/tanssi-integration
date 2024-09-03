@@ -1,50 +1,50 @@
 [package]
 name = "ava-protocol-primitives"
-version = "1.0.0"
+authors = [ "Ava Protocol Team" ]
 description = "Ava Protocol Runtime primitives"
-authors = ["Ava Protocol Team"]
-license = "GPL-3.0"
-homepage = "https://avaprotocol.org"
-repository = 'https://github.com/AvaProtocol/tanssi-integration'
 edition = "2021"
+homepage = "https://avaprotocol.org"
+license = "GPL-3.0"
+repository = "https://github.com/AvaProtocol/tanssi-integration"
+version = "1.0.0"
 
 [dependencies]
 impl-trait-for-tuples = { workspace = true }
-parity-scale-codec = { workspace = true, features = ["derive"] }
-scale-info = { workspace = true, features = ["derive"] }
+parity-scale-codec = { workspace = true, features = [ "derive" ] }
+scale-info = { workspace = true, features = [ "derive" ] }
 
 # Substrate Dependencies
 ## Substrate Primitive Dependencies
-sp-std = { workspace = true }
 sp-consensus-aura = { workspace = true }
 sp-core = { workspace = true }
-sp-runtime = { workspace = true }
 sp-io = { workspace = true }
+sp-runtime = { workspace = true }
+sp-std = { workspace = true }
 
 ## Substrate FRAME Dependencies
 frame-support = { workspace = true }
 
 ## Polkdadot deps
 staging-xcm = { workspace = true }
-staging-xcm-executor = { workspace = true }
 staging-xcm-builder = { workspace = true }
+staging-xcm-executor = { workspace = true }
 
 ## ORML deps
 orml-traits = { workspace = true }
 
 [features]
-default = ["std"]
+default = [ "std" ]
 std = [
-  "frame-support/std",
-  "parity-scale-codec/std",
-  "scale-info/std",
-  "sp-consensus-aura/std",
-  "sp-core/std",
-  "sp-runtime/std",
-  "sp-std/std",
-  "staging-xcm-executor/std",
-  "staging-xcm/std",
-  "staging-xcm-builder/std",
-  "orml-traits/std",
-  "sp-io/std",
+	"frame-support/std",
+	"orml-traits/std",
+	"parity-scale-codec/std",
+	"scale-info/std",
+	"sp-consensus-aura/std",
+	"sp-core/std",
+	"sp-io/std",
+	"sp-runtime/std",
+	"sp-std/std",
+	"staging-xcm-builder/std",
+	"staging-xcm-executor/std",
+	"staging-xcm/std",
 ]

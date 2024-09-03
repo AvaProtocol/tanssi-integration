@@ -1,18 +1,18 @@
 [package]
 name = "common-runtime"
-version = "0.1.0"
+authors = [ "Ava Protocol Team" ]
 description = "The commonalities between runtimes"
-authors = ["Ava Protocol Team"]
-license = "GPL-3.0"
-homepage = "https://avaprotocol.org"
-repository = 'https://github.com/AvaProtocol/tanssi-integration'
 edition = "2021"
+homepage = "https://avaprotocol.org"
+license = "GPL-3.0"
+repository = "https://github.com/AvaProtocol/tanssi-integration"
+version = "0.1.0"
 
 [dependencies]
 # Substrate Dependencies
 ## Substrate Primitive Dependencies
-sp-std = { workspace = true }
 sp-runtime = { workspace = true }
+sp-std = { workspace = true }
 
 ## Substrate FRAME Dependencies
 frame-support = { workspace = true }
@@ -27,24 +27,24 @@ pallet-treasury = { workspace = true }
 polkadot-primitives = { workspace = true }
 
 ## ORML
-orml-traits = { workspace = true }
 orml-tokens = { workspace = true }
+orml-traits = { workspace = true }
 
 # Local Dependencies
 ava-protocol-primitives = { workspace = true }
 
 [features]
-default = ["std"]
+default = [ "std" ]
 std = [
-  "frame-support/std",
-  "sp-runtime/std",
-  "sp-std/std",
-  "pallet-balances/std",
-  "pallet-transaction-payment/std",
-  "pallet-treasury/std",
-  "polkadot-primitives/std",
-  "ava-protocol-primitives/std",
-  "orml-traits/std",
-  "orml-tokens/std",
-  "frame-system/std",
+	"ava-protocol-primitives/std",
+	"frame-support/std",
+	"frame-system/std",
+	"orml-tokens/std",
+	"orml-traits/std",
+	"pallet-balances/std",
+	"pallet-transaction-payment/std",
+	"pallet-treasury/std",
+	"polkadot-primitives/std",
+	"sp-runtime/std",
+	"sp-std/std",
 ]

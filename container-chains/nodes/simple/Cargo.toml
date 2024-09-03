@@ -106,8 +106,8 @@ cumulus-relay-chain-interface = { workspace = true }
 orml-asset-registry = { workspace = true }
 
 # Ava Protocol
-common-runtime = { workspace = true }
 ava-protocol-primitives = { workspace = true }
+common-runtime = { workspace = true }
 
 [build-dependencies]
 substrate-build-script-utils = { workspace = true }
@@ -120,6 +120,7 @@ runtime-benchmarks = [
 	"frame-benchmarking-cli/runtime-benchmarks",
 	"frame-benchmarking/runtime-benchmarks",
 	"nimbus-primitives/runtime-benchmarks",
+	"orml-asset-registry/runtime-benchmarks",
 	"polkadot-cli/runtime-benchmarks",
 	"polkadot-parachain-primitives/runtime-benchmarks",
 	"polkadot-primitives/runtime-benchmarks",
@@ -127,14 +128,13 @@ runtime-benchmarks = [
 	"sc-service/runtime-benchmarks",
 	"sp-runtime/runtime-benchmarks",
 	"tc-service-container-chain/runtime-benchmarks",
-	"orml-asset-registry/runtime-benchmarks",
 ]
 try-runtime = [
 	"container-chain-template-simple-runtime/try-runtime",
 	"nimbus-primitives/try-runtime",
+	"orml-asset-registry/try-runtime",
 	"polkadot-cli/try-runtime",
 	"polkadot-service/try-runtime",
 	"sp-runtime/try-runtime",
 	"tc-service-container-chain/try-runtime",
-	"orml-asset-registry/try-runtime",
 ]

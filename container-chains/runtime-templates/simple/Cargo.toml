@@ -21,15 +21,15 @@ serde = { workspace = true, features = [ "derive" ] }
 smallvec = { workspace = true }
 
 # Local
+ava-protocol-primitives = { workspace = true }
+common-runtime = { workspace = true }
 dp-consensus = { workspace = true }
 dp-impl-tanssi-pallets-config = { workspace = true }
 dp-slot-duration-runtime-api = { workspace = true }
+pallet-automation-time = { workspace = true }
 pallet-cc-authorities-noting = { workspace = true }
 pallet-xcmp-handler = { workspace = true }
-pallet-automation-time = { workspace = true }
 tanssi-runtime-common = { workspace = true }
-ava-protocol-primitives = { workspace = true }
-common-runtime = { workspace = true }
 
 # Moonkit
 async-backing-primitives = { workspace = true }
@@ -107,11 +107,11 @@ parachains-common = { workspace = true }
 
 
 # ORML
-orml-currencies = { workspace = true }
 orml-asset-registry = { workspace = true }
-orml-xtokens = { workspace = true }
-orml-traits = { workspace = true }
+orml-currencies = { workspace = true }
 orml-tokens = { workspace = true }
+orml-traits = { workspace = true }
+orml-xtokens = { workspace = true }
 
 # Benchmarking
 frame-benchmarking = { workspace = true, optional = true }
@@ -124,6 +124,8 @@ substrate-wasm-builder = { workspace = true }
 default = [ "std" ]
 std = [
 	"async-backing-primitives/std",
+	"ava-protocol-primitives/std",
+	"common-runtime/std",
 	"cumulus-pallet-dmp-queue/std",
 	"cumulus-pallet-parachain-system/std",
 	"cumulus-pallet-session-benchmarking/std",
@@ -145,16 +147,22 @@ std = [
 	"frame-try-runtime/std",
 	"log/std",
 	"nimbus-primitives/std",
+	"orml-asset-registry/std",
+	"orml-currencies/std",
+	"orml-tokens/std",
+	"orml-traits/std",
+	"orml-xtokens/std",
 	"pallet-asset-rate/std",
 	"pallet-assets/std",
 	"pallet-async-backing/std",
 	"pallet-author-inherent/std",
+	"pallet-automation-time/std",
 	"pallet-balances/std",
 	"pallet-cc-authorities-noting/std",
 	"pallet-collective/std",
-	"pallet-membership/std",
 	"pallet-foreign-asset-creator/std",
 	"pallet-maintenance-mode/std",
+	"pallet-membership/std",
 	"pallet-message-queue/std",
 	"pallet-migrations/std",
 	"pallet-multisig/std",
@@ -171,7 +179,6 @@ std = [
 	"pallet-xcm-executor-utils/std",
 	"pallet-xcm/std",
 	"pallet-xcmp-handler/std",
-	"pallet-automation-time/std",
 	"parachain-info/std",
 	"parachains-common/std",
 	"parity-scale-codec/std",
@@ -198,15 +205,8 @@ std = [
 	"staging-xcm-executor/std",
 	"staging-xcm/std",
 	"tanssi-runtime-common/std",
-	"orml-currencies/std",
-	"orml-asset-registry/std",
-	"orml-xtokens/std",
-	"orml-traits/std",
 	"xcm-primitives/std",
 	"xcm-runtime-apis/std",
-	"ava-protocol-primitives/std",
-	"common-runtime/std",
-	"orml-tokens/std",
 ]
 
 # Allow to print logs details (no wasm:stripped)
@@ -225,13 +225,18 @@ runtime-benchmarks = [
 	"frame-system-benchmarking/runtime-benchmarks",
 	"frame-system/runtime-benchmarks",
 	"nimbus-primitives/runtime-benchmarks",
+	"orml-asset-registry/runtime-benchmarks",
+	"orml-tokens/runtime-benchmarks",
+	"orml-xtokens/runtime-benchmarks",
 	"pallet-asset-rate/runtime-benchmarks",
 	"pallet-assets/runtime-benchmarks",
 	"pallet-author-inherent/runtime-benchmarks",
+	"pallet-automation-time/runtime-benchmarks",
 	"pallet-balances/runtime-benchmarks",
 	"pallet-cc-authorities-noting/runtime-benchmarks",
 	"pallet-collective/runtime-benchmarks",
 	"pallet-foreign-asset-creator/runtime-benchmarks",
+	"pallet-membership/runtime-benchmarks",
 	"pallet-message-queue/runtime-benchmarks",
 	"pallet-migrations/runtime-benchmarks",
 	"pallet-multisig/runtime-benchmarks",
@@ -243,6 +248,7 @@ runtime-benchmarks = [
 	"pallet-xcm-benchmarks/runtime-benchmarks",
 	"pallet-xcm-executor-utils/runtime-benchmarks",
 	"pallet-xcm/runtime-benchmarks",
+	"pallet-xcmp-handler/runtime-benchmarks",
 	"parachains-common/runtime-benchmarks",
 	"polkadot-parachain-primitives/runtime-benchmarks",
 	"polkadot-runtime-common/runtime-benchmarks",
@@ -252,12 +258,6 @@ runtime-benchmarks = [
 	"tanssi-runtime-common/runtime-benchmarks",
 	"xcm-primitives/runtime-benchmarks",
 	"xcm-runtime-apis/runtime-benchmarks",
-	"orml-asset-registry/runtime-benchmarks",
-	"orml-tokens/runtime-benchmarks",
-	"orml-xtokens/runtime-benchmarks",
-	"pallet-membership/runtime-benchmarks",
-	"pallet-automation-time/runtime-benchmarks",
-	"pallet-xcmp-handler/runtime-benchmarks",
 ]
 
 try-runtime = [
@@ -271,10 +271,15 @@ try-runtime = [
 	"frame-try-runtime",
 	"frame-try-runtime/try-runtime",
 	"nimbus-primitives/try-runtime",
+	"orml-asset-registry/try-runtime",
+	"orml-currencies/try-runtime",
+	"orml-tokens/try-runtime",
+	"orml-xtokens/try-runtime",
 	"pallet-asset-rate/try-runtime",
 	"pallet-assets/try-runtime",
 	"pallet-async-backing/try-runtime",
 	"pallet-author-inherent/try-runtime",
+	"pallet-automation-time/try-runtime",
 	"pallet-balances/try-runtime",
 	"pallet-cc-authorities-noting/try-runtime",
 	"pallet-collective/try-runtime",
@@ -294,14 +299,9 @@ try-runtime = [
 	"pallet-utility/try-runtime",
 	"pallet-xcm-executor-utils/try-runtime",
 	"pallet-xcm/try-runtime",
+	"pallet-xcmp-handler/try-runtime",
 	"parachain-info/try-runtime",
 	"polkadot-runtime-common/try-runtime",
 	"sp-runtime/try-runtime",
 	"tanssi-runtime-common/try-runtime",
-	"orml-asset-registry/try-runtime",
-	"orml-currencies/try-runtime",
-	"orml-xtokens/try-runtime",
-	"orml-tokens/try-runtime",
-	"pallet-automation-time/try-runtime",
-	"pallet-xcmp-handler/try-runtime",
 ]
