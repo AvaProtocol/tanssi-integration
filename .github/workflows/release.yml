@@ -50,7 +50,7 @@ jobs:
                   echo "sha=$(git log -1 --format='%H')" >> $GITHUB_OUTPUT
                   echo "sha8=$(git log -1 --format='%H' | cut -c1-8)" >> $GITHUB_OUTPUT
 
-                  ENDPOINT="https://api.github.com/repos/moondance-labs/tanssi/git/refs/tags/${{ steps.get-latest-rt.outputs.latest_rt }}"
+                  ENDPOINT="https://api.github.com/repos/AvaProtocol/tanssi-integration/git/refs/tags/${{ steps.get-latest-rt.outputs.latest_rt }}"
                   RESPONSE=$(curl -s -H "Accept: application/vnd.github.v3+json" $ENDPOINT)
                   TYPE=$(echo $RESPONSE | jq -r '.object.type')
 
