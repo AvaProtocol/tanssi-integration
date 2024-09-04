@@ -72,7 +72,7 @@ jobs:
               id: check-docker-image
               run: |
                   TAG=sha-${{ steps.get-sha.outputs.sha8 }}
-                  echo "image_exists=$(docker image inspect moondancelabs/tanssi:$TAG > /dev/null && echo "true" || echo "false")" >> $GITHUB_OUTPUT
+                  echo "image_exists=$(docker image inspect avaprotocol/tanssi:$TAG > /dev/null && echo "true" || echo "false")" >> $GITHUB_OUTPUT
 
             - name: Display variables
               run: |
@@ -652,7 +652,7 @@ jobs:
             - name: Retrieve tanssi binary from docker (for plainSpec generation)
               run: |
                   TANSSI_COMMIT=${{ needs.set-tags.outputs.latest_rt_sha8 }}
-                  DOCKER_TAG="moondancelabs/tanssi:sha-$TANSSI_COMMIT"
+                  DOCKER_TAG="avaprotocol/tanssi:sha-$TANSSI_COMMIT"
 
                   docker rm -f tanssi_container 2> /dev/null | true
                   docker create --name tanssi_container $DOCKER_TAG bash
@@ -757,7 +757,7 @@ jobs:
             - name: Prepare
               id: prep
               run: |
-                  DOCKER_IMAGE=moondancelabs/${{matrix.image}}
+                  DOCKER_IMAGE=avaprotocol/${{matrix.image}}
                   TAGS="${DOCKER_IMAGE}:sha-${{ needs.set-tags.outputs.sha8 }}"
                   echo "tags=${TAGS}" >> $GITHUB_OUTPUT
                   echo "created=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
