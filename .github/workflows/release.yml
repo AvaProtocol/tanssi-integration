@@ -696,7 +696,7 @@ jobs:
             fail-fast: false
             matrix:
                 chains: [
-                  { chain: "frontier_template", runtime: "container-chain-template-frontier" },
+                  # { chain: "frontier_template", runtime: "container-chain-template-frontier" },
                   { chain: "simple_template", runtime: "container-chain-template-simple" },
                 ]
         steps:
