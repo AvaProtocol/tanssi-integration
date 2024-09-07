@@ -1,21 +1,21 @@
 [package]
 name = "pallet-automation-price"
+authors = [ "Ava Protocol Team" ]
 description = "Pallet for scheduling and running tasks in the future."
-version = "0.1.0"
 edition = "2021"
-authors = ["Ava Protocol Team"]
-license = "GPL-3.0"
 homepage = "https://avaprotocol.org"
-repository = 'https://github.com/AvaProtocol/tanssi-integration'
-readme = 'README.md'
+license = "GPL-3.0"
+readme = "README.md"
+repository = "https://github.com/AvaProtocol/tanssi-integration"
+version = "0.1.0"
 
 [package.metadata.docs.rs]
-targets = ['x86_64-unknown-linux-gnu']
+targets = [ "x86_64-unknown-linux-gnu" ]
 
 [dependencies]
-parity-scale-codec = { workspace = true, features = ["derive"] }
-scale-info = { workspace = true, features = ["derive"] }
 log = { workspace = true }
+parity-scale-codec = { workspace = true, features = [ "derive" ] }
+scale-info = { workspace = true, features = [ "derive" ] }
 
 # Polkadot
 polkadot-parachain-primitives = { workspace = true }
@@ -26,8 +26,8 @@ cumulus-pallet-xcm = { workspace = true }
 cumulus-primitives-core = { workspace = true }
 
 ## ORML
-orml-traits = { workspace = true }
 orml-currencies = { workspace = true }
+orml-traits = { workspace = true }
 
 
 # Substrate Dependencies
@@ -47,15 +47,15 @@ pallet-timestamp = { workspace = true }
 staging-xcm-builder = { workspace = true }
 
 ## Local
-pallet-xcmp-handler = { workspace = true }
 ava-protocol-primitives = { workspace = true }
+pallet-xcmp-handler = { workspace = true }
 
 [dev-dependencies]
+pallet-balances = { workspace = true }
 rand = { workspace = true }
 serde = { workspace = true }
 sp-core = { workspace = true }
 sp-io = { workspace = true }
-pallet-balances = { workspace = true }
 
 pallet-xcm = { workspace = true }
 staging-xcm-executor = { workspace = true }
@@ -68,32 +68,62 @@ orml-currencies = { workspace = true }
 orml-tokens = { workspace = true }
 
 [features]
-default = ["std"]
-runtime-benchmarks = ["frame-benchmarking"]
-try-runtime = ["frame-support/try-runtime"]
+default = [ "std" ]
 std = [
-  "serde/std",
-  "sp-io/std",
-  "parity-scale-codec/std",
-  "cumulus-pallet-xcm/std",
-  "cumulus-primitives-core/std",
-  "frame-benchmarking/std",
-  "frame-support/std",
-  "frame-system/std",
-  "orml-currencies/std",
-  "orml-tokens/std",
-  "orml-traits/std",
-  "pallet-timestamp/std",
-  "pallet-xcm/std",
-  "polkadot-parachain-primitives/std",
-  "scale-info/std",
-  "sp-runtime/std",
-  "sp-std/std",
-  "staging-xcm/std",
-  "staging-xcm-builder/std",
-  "staging-xcm-executor/std",
-  "pallet-xcmp-handler/std",
-  "ava-protocol-primitives/std",
-  "parachain-info/std",
+	"ava-protocol-primitives/std",
+	"cumulus-pallet-xcm/std",
+	"cumulus-primitives-core/std",
+	"frame-benchmarking/std",
+	"frame-support/std",
+	"frame-system/std",
+	"log/std",
+	"orml-currencies/std",
+	"orml-tokens/std",
+	"orml-traits/std",
+	"pallet-balances/std",
+	"pallet-timestamp/std",
+	"pallet-xcm/std",
+	"pallet-xcmp-handler/std",
+	"parachain-info/std",
+	"parity-scale-codec/std",
+	"polkadot-parachain-primitives/std",
+	"rand/std",
+	"scale-info/std",
+	"serde/std",
+	"sp-core/std",
+	"sp-io/std",
+	"sp-runtime/std",
+	"sp-std/std",
+	"staging-xcm-builder/std",
+	"staging-xcm-executor/std",
+	"staging-xcm/std",
 ]
 dev-queue = []
+runtime-benchmarks = [
+	"cumulus-primitives-core/runtime-benchmarks",
+	"frame-benchmarking/runtime-benchmarks",
+	"frame-support/runtime-benchmarks",
+	"frame-system/runtime-benchmarks",
+	"orml-tokens/runtime-benchmarks",
+	"pallet-balances/runtime-benchmarks",
+	"pallet-timestamp/runtime-benchmarks",
+	"pallet-xcm/runtime-benchmarks",
+	"pallet-xcmp-handler/runtime-benchmarks",
+	"polkadot-parachain-primitives/runtime-benchmarks",
+	"sp-runtime/runtime-benchmarks",
+	"staging-xcm-builder/runtime-benchmarks",
+	"staging-xcm-executor/runtime-benchmarks",
+]
+try-runtime = [
+	"cumulus-pallet-xcm/try-runtime",
+	"frame-support/try-runtime",
+	"frame-system/try-runtime",
+	"orml-currencies/try-runtime",
+	"orml-tokens/try-runtime",
+	"pallet-balances/try-runtime",
+	"pallet-timestamp/try-runtime",
+	"pallet-xcm/try-runtime",
+	"pallet-xcmp-handler/try-runtime",
+	"parachain-info/try-runtime",
+	"sp-runtime/try-runtime",
+]

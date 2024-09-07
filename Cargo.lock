@@ -2099,6 +2099,7 @@ dependencies = [
  "pallet-assets",
  "pallet-async-backing",
  "pallet-author-inherent",
+ "pallet-automation-price",
  "pallet-automation-time",
  "pallet-balances",
  "pallet-cc-authorities-noting",

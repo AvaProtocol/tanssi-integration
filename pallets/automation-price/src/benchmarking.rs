@@ -24,7 +24,7 @@ use frame_system::RawOrigin;
 use polkadot_parachain_primitives::primitives::Sibling;
 use sp_runtime::traits::{AccountIdConversion, Saturating};
 
-use xcm::latest::{prelude::*, Location};
+use staging_xcm::latest::prelude::*;
 
 use crate::{
 	pallet::{Task, TaskId},
@@ -37,22 +37,22 @@ const ED_MULTIPLIER: u32 = 1_000;
 // ensure enough funds to execute tasks
 const DEPOSIT_MULTIPLIER: u32 = 100_000_000;
 
-const chain: &[u8] = "chain".as_bytes();
-const exchange: &[u8] = "exchange".as_bytes();
-const asset_tur: &[u8] = "TUR".as_bytes();
-const asset_usd: &[u8] = "USD".as_bytes();
-const decimal: u8 = 10_u8;
+const CHAIN: &[u8] = "CHAIN".as_bytes();
+const EXCHANGE: &[u8] = "EXCHANGE".as_bytes();
+const ASSET_TUR: &[u8] = "TUR".as_bytes();
+const ASSET_USD: &[u8] = "USD".as_bytes();
+const DECIMAL: u8 = 10_u8;
 
 // a helper function to prepare asset when setting up tasks or price because asset needs to be
 // defined before updating price
 fn setup_asset<T: Config>(authorized_wallets: Vec<T::AccountId>) {
-	AutomationPrice::<T>::initialize_asset(
+	let _ = AutomationPrice::<T>::initialize_asset(
 		RawOrigin::Root.into(),
-		chain.to_vec(),
-		exchange.to_vec(),
-		asset_tur.to_vec(),
-		asset_usd.to_vec(),
-		decimal,
+		CHAIN.to_vec(),
+		EXCHANGE.to_vec(),
+		ASSET_TUR.to_vec(),
+		ASSET_USD.to_vec(),
+		DECIMAL,
 		authorized_wallets,
 	);
 }
@@ -62,14 +62,13 @@ fn schedule_xcmp_task<T: Config>(
 	para_id: u32,
 	owner: T::AccountId,
 	call: Vec<u8>,
-	expired_at: u128,
 ) {
-	AutomationPrice::<T>::schedule_xcmp_task(
+	let _ = AutomationPrice::<T>::schedule_xcmp_task(
 		RawOrigin::Signed(owner).into(),
-		chain.to_vec(),
-		exchange.to_vec(),
-		asset_tur.to_vec(),
-		asset_usd.to_vec(),
+		CHAIN.to_vec(),
+		EXCHANGE.to_vec(),
+		ASSET_TUR.to_vec(),
+		ASSET_USD.to_vec(),
 		6000u128,
 		"gt".as_bytes().to_vec(),
 		vec![2000],
@@ -121,9 +120,9 @@ fn direct_task_schedule<T: Config>(
 	let task: Task<T> = Task::<T> {
 		owner_id: creator,
 		task_id,
-		chain: chain.to_vec(),
-		exchange: exchange.to_vec(),
-		asset_pair: (asset_tur.to_vec(), asset_usd.to_vec()),
+		chain: CHAIN.to_vec(),
+		exchange: EXCHANGE.to_vec(),
+		asset_pair: (ASSET_TUR.to_vec(), ASSET_USD.to_vec()),
 		expired_at,
 		trigger_function,
 		trigger_params: vec![price_target],
@@ -136,17 +135,17 @@ fn direct_task_schedule<T: Config>(
 benchmarks! {
 	initialize_asset_extrinsic {
 		let v in 1..5;
-		let asset_pair = (asset_tur.to_vec(), asset_usd.to_vec());
+		let asset_pair = (ASSET_TUR.to_vec(), ASSET_USD.to_vec());
 
 		let mut authorized_wallets: Vec<T::AccountId> = vec![];
 		for i in 1..=v {
 			authorized_wallets.push(account("caller", i, SEED));
 		}
 	} : {
-		AutomationPrice::<T>::initialize_asset(
+		let _ = AutomationPrice::<T>::initialize_asset(
 			RawOrigin::Root.into(),
-			chain.to_vec(), exchange.to_vec(),
-			asset_tur.to_vec(), asset_usd.to_vec(), decimal, authorized_wallets);
+			CHAIN.to_vec(), EXCHANGE.to_vec(),
+			ASSET_TUR.to_vec(), ASSET_USD.to_vec(), DECIMAL, authorized_wallets);
 	}
 
 	asset_price_update_extrinsic {
@@ -166,8 +165,8 @@ benchmarks! {
 		let mut rounds: Vec<u128> = vec![];
 
 		for i in 1..=v {
-			chains.push(format!("chain:{:?}", i).as_bytes().to_vec());
-			exchanges.push(format!("exchange:{:?}", i).as_bytes().to_vec());
+			chains.push(format!("CHAIN:{:?}", i).as_bytes().to_vec());
+			exchanges.push(format!("EXCHANGE:{:?}", i).as_bytes().to_vec());
 			assets1.push(format!("ASSET1{:?}", i).as_bytes().to_vec());
 			assets2.push(format!("ASSET2{:?}", i).as_bytes().to_vec());
 			prices.push(i as u128);
@@ -175,7 +174,7 @@ benchmarks! {
 			rounds.push(i as u128);
 		}
 	} : {
-		AutomationPrice::<T>::update_asset_prices(
+		let _ = AutomationPrice::<T>::update_asset_prices(
 			RawOrigin::Signed(sender.clone()).into(),
 			chains,
 			exchanges,
@@ -193,13 +192,13 @@ benchmarks! {
 		let call: Vec<u8> = vec![2, 4, 5];
 		setup_asset::<T>(vec![sender.clone()]);
 		let transfer_amount = T::Currency::minimum_balance().saturating_mul(ED_MULTIPLIER.into());
-		T::Currency::deposit_creating(
+		let _ = T::Currency::deposit_creating(
 			&sender,
 			transfer_amount.saturating_mul(DEPOSIT_MULTIPLIER.into()),
 		);
 
 	} : {
-		schedule_xcmp_task::<T>(para_id, sender, call, 12345);
+		schedule_xcmp_task::<T>(para_id, sender, call);
 	}
 
 	cancel_task_extrinsic {
@@ -208,7 +207,7 @@ benchmarks! {
 		let call: Vec<u8> = vec![2, 4, 5];
 		setup_asset::<T>(vec![creator.clone()]);
 		let transfer_amount = T::Currency::minimum_balance().saturating_mul(ED_MULTIPLIER.into());
-		T::Currency::deposit_creating(
+		let _ = T::Currency::deposit_creating(
 			&creator,
 			transfer_amount.saturating_mul(DEPOSIT_MULTIPLIER.into()),
 		);
@@ -220,14 +219,14 @@ benchmarks! {
 		for i in 1..100 {
 		  // Fund the account so we can schedule task
 		  let account_min = T::Currency::minimum_balance().saturating_mul(ED_MULTIPLIER.into());
-		  T::Currency::deposit_creating(&creator, account_min.saturating_mul(DEPOSIT_MULTIPLIER.into()));
-		  direct_task_schedule::<T>(creator.clone(), format!("{:?}", i).as_bytes().to_vec(), i, "gt".as_bytes().to_vec(), i, vec![100, 200, (i % 256) as u8]);
+		  let _ = T::Currency::deposit_creating(&creator, account_min.saturating_mul(DEPOSIT_MULTIPLIER.into()));
+		  let _ = direct_task_schedule::<T>(creator.clone(), format!("{:?}", i).as_bytes().to_vec(), i, "gt".as_bytes().to_vec(), i, vec![100, 200, (i % 256) as u8]);
 		  task_ids.push(format!("{:?}", i).as_bytes().to_vec());
 		}
 
 		let task_id_to_cancel = "1".as_bytes().to_vec();
 	} : {
-		AutomationPrice::<T>::cancel_task(RawOrigin::Signed(creator).into(), task_id_to_cancel.clone());
+		let _ = AutomationPrice::<T>::cancel_task(RawOrigin::Signed(creator).into(), task_id_to_cancel.clone());
 	}
 	verify {
 	}
@@ -240,7 +239,7 @@ benchmarks! {
 		let local_para_id: u32 = 2114;
 		let destination = Location::new(1, Parachain(para_id));
 		let local_sovereign_account: T::AccountId = Sibling::from(local_para_id).into_account_truncating();
-		T::Currency::deposit_creating(
+		let _ = T::Currency::deposit_creating(
 			&local_sovereign_account,
 			T::Currency::minimum_balance().saturating_mul(DEPOSIT_MULTIPLIER.into()),
 		);
@@ -256,7 +255,7 @@ benchmarks! {
 		let call: Vec<u8> = vec![2, 4, 5];
 		setup_asset::<T>(vec![creator.clone()]);
 		let transfer_amount = T::Currency::minimum_balance().saturating_mul(ED_MULTIPLIER.into());
-		T::Currency::deposit_creating(
+		let _ = T::Currency::deposit_creating(
 			&creator,
 			transfer_amount.saturating_mul(DEPOSIT_MULTIPLIER.into()),
 		);
@@ -286,8 +285,8 @@ benchmarks! {
 
 		  task_ids.push(format!("{:?}", i).as_bytes().to_vec());
 			let action = Action::XCMP {
-				destination,
-				schedule_fee,
+				destination: destination.clone(),
+				schedule_fee: schedule_fee.clone(),
 				execution_fee: execution_fee.clone(),
 				encoded_call,
 				encoded_call_weight,
@@ -299,15 +298,15 @@ benchmarks! {
 			let task: Task<T> = Task::<T> {
 				owner_id: creator.clone(),
 				task_id: task_id.clone(),
-				chain: chain.to_vec(),
-				exchange: exchange.to_vec(),
-				asset_pair: (asset_tur.to_vec(), asset_usd.to_vec()),
+				chain: CHAIN.to_vec(),
+				exchange: EXCHANGE.to_vec(),
+				asset_pair: (ASSET_TUR.to_vec(), ASSET_USD.to_vec()),
 				expired_at,
 				trigger_function,
 				trigger_params: vec![price_target],
 				action,
 			};
-			AutomationPrice::<T>::validate_and_schedule_task(task.clone());
+			let _ = AutomationPrice::<T>::validate_and_schedule_task(task.clone());
 			tasks.push(task);
 		}
 

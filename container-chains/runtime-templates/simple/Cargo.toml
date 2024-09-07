@@ -26,6 +26,7 @@ common-runtime = { workspace = true }
 dp-consensus = { workspace = true }
 dp-impl-tanssi-pallets-config = { workspace = true }
 dp-slot-duration-runtime-api = { workspace = true }
+pallet-automation-price = { workspace = true }
 pallet-automation-time = { workspace = true }
 pallet-cc-authorities-noting = { workspace = true }
 pallet-xcmp-handler = { workspace = true }
@@ -156,6 +157,8 @@ std = [
 	"pallet-assets/std",
 	"pallet-async-backing/std",
 	"pallet-author-inherent/std",
+	"pallet-automation-price/std",
+	"pallet-automation-time/std",
 	"pallet-automation-time/std",
 	"pallet-balances/std",
 	"pallet-cc-authorities-noting/std",
@@ -231,6 +234,7 @@ runtime-benchmarks = [
 	"pallet-asset-rate/runtime-benchmarks",
 	"pallet-assets/runtime-benchmarks",
 	"pallet-author-inherent/runtime-benchmarks",
+	"pallet-automation-price/runtime-benchmarks",
 	"pallet-automation-time/runtime-benchmarks",
 	"pallet-balances/runtime-benchmarks",
 	"pallet-cc-authorities-noting/runtime-benchmarks",
@@ -272,13 +276,19 @@ try-runtime = [
 	"frame-try-runtime/try-runtime",
 	"nimbus-primitives/try-runtime",
 	"orml-asset-registry/try-runtime",
+	"orml-asset-registry/try-runtime",
+	"orml-currencies/try-runtime",
 	"orml-currencies/try-runtime",
 	"orml-tokens/try-runtime",
+	"orml-tokens/try-runtime",
+	"orml-xtokens/try-runtime",
 	"orml-xtokens/try-runtime",
 	"pallet-asset-rate/try-runtime",
 	"pallet-assets/try-runtime",
 	"pallet-async-backing/try-runtime",
 	"pallet-author-inherent/try-runtime",
+	"pallet-automation-price/try-runtime",
+	"pallet-automation-time/try-runtime",
 	"pallet-automation-time/try-runtime",
 	"pallet-balances/try-runtime",
 	"pallet-cc-authorities-noting/try-runtime",
@@ -299,6 +309,7 @@ try-runtime = [
 	"pallet-utility/try-runtime",
 	"pallet-xcm-executor-utils/try-runtime",
 	"pallet-xcm/try-runtime",
+	"pallet-xcmp-handler/try-runtime",
 	"pallet-xcmp-handler/try-runtime",
 	"parachain-info/try-runtime",
 	"polkadot-runtime-common/try-runtime",
