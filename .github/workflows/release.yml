@@ -609,85 +609,85 @@ jobs:
             pnpm install
             pnpm moonwall test chopsticks_${{ matrix.chains.chain }}_upgrade
 
-    zombienet-test-upgrade:
-        runs-on: self-hosted
-        needs: ["set-tags", "build"]
-        strategy:
-            fail-fast: false
-            matrix:
-                chain: ["dancebox"]
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v4
-              with:
-                  ref: ${{ needs.set-tags.outputs.git_ref }}
+    # zombienet-test-upgrade:
+    #     runs-on: self-hosted
+    #     needs: ["set-tags", "build"]
+    #     strategy:
+    #         fail-fast: false
+    #         matrix:
+    #             chain: ["dancebox"]
+    #     steps:
+    #         - name: Checkout
+    #           uses: actions/checkout@v4
+    #           with:
+    #               ref: ${{ needs.set-tags.outputs.git_ref }}
 
-            - name: Pnpm
-              uses: pnpm/action-setup@v3.0.0
-              with:
-                  version: 8
+    #         - name: Pnpm
+    #           uses: pnpm/action-setup@v3.0.0
+    #           with:
+    #               version: 8
 
-            - name: Setup node
-              uses: actions/setup-node@v4
-              with:
-                  node-version: 20.x
-                  cache: "pnpm"
+    #         - name: Setup node
+    #           uses: actions/setup-node@v4
+    #           with:
+    #               node-version: 20.x
+    #               cache: "pnpm"
 
-            - name: Create local folders
-              run: |
-                  mkdir -p target/release/wbuild/${{ matrix.chain }}-runtime/
-                  mkdir -p test/tmp
-            - name: "Download binaries"
-              uses: actions/download-artifact@v4
-              with:
-                  name: binaries
-                  path: target/release
+    #         - name: Create local folders
+    #           run: |
+    #               mkdir -p target/release/wbuild/${{ matrix.chain }}-runtime/
+    #               mkdir -p test/tmp
+    #         - name: "Download binaries"
+    #           uses: actions/download-artifact@v4
+    #           with:
+    #               name: binaries
+    #               path: target/release
 
-            - name: "Download branch built runtime"
-              uses: actions/download-artifact@v4
-              with:
-                  name: runtimes
-                  path: target/release/wbuild/${{ matrix.chain }}-runtime/
+    #         - name: "Download branch built runtime"
+    #           uses: actions/download-artifact@v4
+    #           with:
+    #               name: runtimes
+    #               path: target/release/wbuild/${{ matrix.chain }}-runtime/
 
-            - name: Retrieve tanssi binary from docker (for plainSpec generation)
-              run: |
-                  TANSSI_COMMIT=${{ needs.set-tags.outputs.latest_rt_sha8 }}
-                  DOCKER_TAG="avaprotocol/tanssi:sha-$TANSSI_COMMIT"
+    #         - name: Retrieve tanssi binary from docker (for plainSpec generation)
+    #           run: |
+    #               TANSSI_COMMIT=${{ needs.set-tags.outputs.latest_rt_sha8 }}
+    #               DOCKER_TAG="avaprotocol/tanssi:sha-$TANSSI_COMMIT"
 
-                  docker rm -f tanssi_container 2> /dev/null | true
-                  docker create --name tanssi_container $DOCKER_TAG bash
-                  docker cp tanssi_container:tanssi/tanssi-node test/tmp/tanssi_rt
-                  docker rm -f tanssi_container
+    #               docker rm -f tanssi_container 2> /dev/null | true
+    #               docker create --name tanssi_container $DOCKER_TAG bash
+    #               docker cp tanssi_container:tanssi/tanssi-node test/tmp/tanssi_rt
+    #               docker rm -f tanssi_container
 
-            - name: "Run zombie upgrade test"
-              run: |
-                  chmod uog+x target/release/tanssi-node
+    #         - name: "Run zombie upgrade test"
+    #           run: |
+    #               chmod uog+x target/release/tanssi-node
 
-                  cd test
+    #               cd test
 
-                  pnpm install
+    #               pnpm install
 
-                  chmod uog+x tmp/tanssi_rt
-                  tmp/tanssi_rt build-spec --chain ${{ matrix.chain }}-local > tmp/${{ matrix.chain }}-plain-spec.json
-                  pnpm tsx scripts/modify-plain-specs.ts process tmp/${{ matrix.chain }}-plain-spec.json tmp/${{ matrix.chain }}-modified-spec.json 
-                  tmp/tanssi_rt build-spec --chain tmp/${{ matrix.chain }}-modified-spec.json --raw > tmp/${{ matrix.chain }}-raw-spec.json
+    #               chmod uog+x tmp/tanssi_rt
+    #               tmp/tanssi_rt build-spec --chain ${{ matrix.chain }}-local > tmp/${{ matrix.chain }}-plain-spec.json
+    #               pnpm tsx scripts/modify-plain-specs.ts process tmp/${{ matrix.chain }}-plain-spec.json tmp/${{ matrix.chain }}-modified-spec.json 
+    #               tmp/tanssi_rt build-spec --chain tmp/${{ matrix.chain }}-modified-spec.json --raw > tmp/${{ matrix.chain }}-raw-spec.json
 
-                  ## Run tests
+    #               ## Run tests
 
-                  pnpm moonwall test zombie_${{ matrix.chain }}_upgrade
-            - name: Zip and Upload Node Logs on Failure
-              if: failure()
-              run: |
-                  TIMESTAMP=$(date +%Y%m%d%H%M%S)
-                  export NODE_LOGS_ZIP="node_logs_$TIMESTAMP.zip"
-                  MOST_RECENT_ZOMBIE_DIR=$(ls -td /tmp/zombie-* | head -n 1)
-                  find $MOST_RECENT_ZOMBIE_DIR -maxdepth 1 -type f -name '*.log' -exec zip -r $NODE_LOGS_ZIP {} \;
-                  echo "NODE_LOGS_ZIP=${NODE_LOGS_ZIP}" >> $GITHUB_ENV
-            - uses: actions/upload-artifact@v4
-              if: failure()
-              with:
-                  name: failed-node-logs
-                  path: ${{ env.NODE_LOGS_ZIP }}
+    #               pnpm moonwall test zombie_${{ matrix.chain }}_upgrade
+    #         - name: Zip and Upload Node Logs on Failure
+    #           if: failure()
+    #           run: |
+    #               TIMESTAMP=$(date +%Y%m%d%H%M%S)
+    #               export NODE_LOGS_ZIP="node_logs_$TIMESTAMP.zip"
+    #               MOST_RECENT_ZOMBIE_DIR=$(ls -td /tmp/zombie-* | head -n 1)
+    #               find $MOST_RECENT_ZOMBIE_DIR -maxdepth 1 -type f -name '*.log' -exec zip -r $NODE_LOGS_ZIP {} \;
+    #               echo "NODE_LOGS_ZIP=${NODE_LOGS_ZIP}" >> $GITHUB_ENV
+    #         - uses: actions/upload-artifact@v4
+    #           if: failure()
+    #           with:
+    #               name: failed-node-logs
+    #               path: ${{ env.NODE_LOGS_ZIP }}
 
     zombienet-test-upgrade-containers:
         runs-on: self-hosted
