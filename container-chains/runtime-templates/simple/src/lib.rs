@@ -842,24 +842,24 @@ impl pallet_automation_time::Config for Runtime {
 }
 
 impl pallet_automation_price::Config for Runtime {
-	type RuntimeEvent = RuntimeEvent;
-	type MaxTasksPerSlot = ConstU32<1>;
-	type MaxTasksPerAccount = ConstU32<32>;
-	type MaxTasksOverall = ConstU32<16_384>;
-	type MaxBlockWeight = MaxBlockWeight;
-	type MaxWeightPercentage = MaxWeightPercentage;
-	type WeightInfo = pallet_automation_price::weights::SubstrateWeight<Runtime>;
-	type ExecutionWeightFee = ExecutionWeightFee;
-	type Currency = Balances;
-	type MultiCurrency = Currencies;
-	type CurrencyId = TokenId;
-	type XcmpTransactor = XcmpHandler;
-	type EnsureProxy = AutomationEnsureProxy;
-	type CurrencyIdConvert = TokenIdConvert;
-	type FeeConversionRateProvider = FeePerSecondProvider;
-	type FeeHandler = pallet_automation_price::FeeHandler<Runtime, ToTreasury>;
-	type UniversalLocation = UniversalLocation;
-	type SelfParaId = parachain_info::Pallet<Runtime>;
+    type RuntimeEvent = RuntimeEvent;
+    type MaxTasksPerSlot = ConstU32<1>;
+    type MaxTasksPerAccount = ConstU32<32>;
+    type MaxTasksOverall = ConstU32<16_384>;
+    type MaxBlockWeight = MaxBlockWeight;
+    type MaxWeightPercentage = MaxWeightPercentage;
+    type WeightInfo = pallet_automation_price::weights::SubstrateWeight<Runtime>;
+    type ExecutionWeightFee = ExecutionWeightFee;
+    type Currency = Balances;
+    type MultiCurrency = Currencies;
+    type CurrencyId = TokenId;
+    type XcmpTransactor = XcmpHandler;
+    type EnsureProxy = AutomationEnsureProxy;
+    type CurrencyIdConvert = TokenIdConvert;
+    type FeeConversionRateProvider = FeePerSecondProvider;
+    type FeeHandler = pallet_automation_price::FeeHandler<Runtime, ToTreasury>;
+    type UniversalLocation = UniversalLocation;
+    type SelfParaId = parachain_info::Pallet<Runtime>;
 }
 
 impl_tanssi_pallets_config!(Runtime);
