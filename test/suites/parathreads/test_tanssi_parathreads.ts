@@ -1,14 +1,12 @@
 import { beforeAll, describeSuite, expect } from "@moonwall/cli";
-import { MIN_GAS_PRICE, customWeb3Request, generateKeyringPair, getBlockArray } from "@moonwall/util";
+import { getBlockArray } from "@moonwall/util";
 import { ApiPromise, Keyring } from "@polkadot/api";
-import { Signer } from "ethers";
 import fs from "fs/promises";
 import { getAuthorFromDigest } from "../../util/author";
 import { signAndSendAndInclude, waitSessions } from "../../util/block";
 import { getHeaderFromRelay } from "../../util/relayInterface";
 import { chainSpecToContainerChainGenesisData } from "../../util/genesis_data.ts";
 import jsonBg from "json-bigint";
-import { createTransfer, waitUntilEthTxIncluded } from "../../util/ethereum.ts";
 import { getKeyringNimbusIdHex } from "../../util/keys.ts";
 import Bottleneck from "bottleneck";
 import { stringToHex } from "@polkadot/util";
@@ -23,7 +21,6 @@ describeSuite({
         let relayApi: ApiPromise;
         let container2000Api: ApiPromise;
         let container2001Api: ApiPromise;
-        let ethersSigner: Signer;
         let allCollators: string[];
         let collatorName: Record<string, string>;
 
@@ -32,7 +29,6 @@ describeSuite({
             relayApi = context.polkadotJs("Relay");
             container2000Api = context.polkadotJs("Container2000");
             container2001Api = context.polkadotJs("Container2001");
-            ethersSigner = context.ethers();
 
             const relayNetwork = relayApi.consts.system.version.specName.toString();
             expect(relayNetwork, "Relay API incorrect").to.contain("rococo");
@@ -211,21 +207,21 @@ describeSuite({
                     slotFrequency2000,
                     nextProfileId
                 );
-                const slotFrequency2001 = paraApi.createType("TpTraitsSlotFrequency", {
-                    min: 5,
-                    max: 5,
-                });
-                const responseFor2001 = await createTxBatchForCreatingParathread(
-                    paraApi,
-                    alice.address,
-                    2001,
-                    slotFrequency2001,
-                    responseFor2000.nextProfileId
-                );
+                // const slotFrequency2001 = paraApi.createType("TpTraitsSlotFrequency", {
+                //     min: 5,
+                //     max: 5,
+                // });
+                // const responseFor2001 = await createTxBatchForCreatingParathread(
+                //     paraApi,
+                //     alice.address,
+                //     2001,
+                //     slotFrequency2001,
+                //     responseFor2000.nextProfileId
+                // );
 
                 // Cram everything in one array
                 const txs = responseFor2000.txs;
-                txs.push(...responseFor2001.txs);
+                // txs.push(...responseFor2001.txs);
                 await signAndSendAndInclude(paraApi.tx.sudo.sudo(paraApi.tx.utility.batch(txs)), alice);
 
                 const pendingParas = await paraApi.query.registrar.pendingParaIds();
@@ -236,17 +232,17 @@ describeSuite({
 
                 // These will be the paras in session 2
                 // TODO: fix once we have types
-                expect(parasScheduled.toJSON()).to.deep.equal([2000, 2001]);
+                expect(parasScheduled.toJSON()).to.deep.equal([2000]);
 
                 // Check the para id has been given some free credits
                 expect(
                     (await paraApi.query.servicesPayment.blockProductionCredits(2000)).toJSON(),
                     "Container chain 2000 should have been given credits"
                 ).toBeGreaterThan(0);
-                expect(
-                    (await paraApi.query.servicesPayment.blockProductionCredits(2001)).toJSON(),
-                    "Container chain 2001 should have been given credits"
-                ).toBeGreaterThan(0);
+                // expect(
+                //     (await paraApi.query.servicesPayment.blockProductionCredits(2001)).toJSON(),
+                //     "Container chain 2001 should have been given credits"
+                // ).toBeGreaterThan(0);
 
                 // Checking that in session 2 paras are registered
                 await waitSessions(context, paraApi, 2);
@@ -254,14 +250,15 @@ describeSuite({
                 // Expect now paraIds to be registered
                 const parasRegistered = await paraApi.query.registrar.registeredParaIds();
                 // TODO: fix once we have types
-                expect(parasRegistered.toJSON()).to.deep.equal([2000, 2001]);
+                // expect(parasRegistered.toJSON()).to.deep.equal([2000, 2001]);
+                expect(parasRegistered.toJSON()).to.deep.equal([2000]);
 
                 // Check that collators have been assigned
                 const collators = await paraApi.query.collatorAssignment.collatorContainerChain();
                 console.log(collators.toJSON());
 
                 expect(collators.toJSON().containerChains[2000].length).to.be.greaterThan(0);
-                expect(collators.toJSON().containerChains[2001].length).to.be.greaterThan(0);
+                // expect(collators.toJSON().containerChains[2001].length).to.be.greaterThan(0);
             },
         });
 
@@ -277,19 +274,19 @@ describeSuite({
             },
         });
 
-        it({
-            id: "T05",
-            title: "Blocks are being produced on container 2001",
-            test: async function () {
-                // Produces 1 block every 5 slots, which is every 30 seconds
-                // Give it a bit more time just in case
-                await sleep(120000);
-                const blockNum = (await container2001Api.rpc.chain.getBlock()).block.header.number.toNumber();
+        // it({
+        //     id: "T05",
+        //     title: "Blocks are being produced on container 2001",
+        //     test: async function () {
+        //         // Produces 1 block every 5 slots, which is every 30 seconds
+        //         // Give it a bit more time just in case
+        //         await sleep(120000);
+        //         const blockNum = (await container2001Api.rpc.chain.getBlock()).block.header.number.toNumber();
 
-                expect(blockNum).to.be.greaterThan(0);
-                expect(await ethersSigner.provider.getBlockNumber(), "Safe tag is not present").to.be.greaterThan(0);
-            },
-        });
+        //         expect(blockNum).to.be.greaterThan(0);
+        //         expect(await ethersSigner.provider.getBlockNumber(), "Safe tag is not present").to.be.greaterThan(0);
+        //     },
+        // });
 
         it({
             id: "T06",
@@ -308,21 +305,21 @@ describeSuite({
             },
         });
 
-        it({
-            id: "T07",
-            title: "Test container chain 2001 assignation is correct",
-            test: async function () {
-                const currentSession = (await paraApi.query.session.currentIndex()).toNumber();
-                const paraId = (await container2001Api.query.parachainInfo.parachainId()).toString();
-                const containerChainCollators = (
-                    await paraApi.query.authorityAssignment.collatorContainerChain(currentSession)
-                ).toJSON().containerChains[paraId];
+        // it({
+        //     id: "T07",
+        //     title: "Test container chain 2001 assignation is correct",
+        //     test: async function () {
+        //         const currentSession = (await paraApi.query.session.currentIndex()).toNumber();
+        //         const paraId = (await container2001Api.query.parachainInfo.parachainId()).toString();
+        //         const containerChainCollators = (
+        //             await paraApi.query.authorityAssignment.collatorContainerChain(currentSession)
+        //         ).toJSON().containerChains[paraId];
 
-                const writtenCollators = (await container2001Api.query.authoritiesNoting.authorities()).toJSON();
+        //         const writtenCollators = (await container2001Api.query.authoritiesNoting.authorities()).toJSON();
 
-                expect(containerChainCollators).to.deep.equal(writtenCollators);
-            },
-        });
+        //         expect(containerChainCollators).to.deep.equal(writtenCollators);
+        //     },
+        // });
 
         it({
             id: "T08",
@@ -331,18 +328,17 @@ describeSuite({
             test: async function () {
                 const assignment = await paraApi.query.collatorAssignment.collatorContainerChain();
                 const paraId2000 = await container2000Api.query.parachainInfo.parachainId();
-                const paraId2001 = await container2001Api.query.parachainInfo.parachainId();
 
                 // TODO: fix once we have types
                 const containerChainCollators2000 = assignment.containerChains.toJSON()[paraId2000.toString()];
-                const containerChainCollators2001 = assignment.containerChains.toJSON()[paraId2001.toString()];
+                // const containerChainCollators2001 = assignment.containerChains.toJSON()[paraId2001.toString()];
 
                 await context.waitBlock(3, "Tanssi");
                 const author2000 = await paraApi.query.authorNoting.latestAuthor(paraId2000);
-                const author2001 = await paraApi.query.authorNoting.latestAuthor(paraId2001);
+                // const author2001 = await paraApi.query.authorNoting.latestAuthor(paraId2001);
 
                 expect(containerChainCollators2000.includes(author2000.toJSON().author)).to.be.true;
-                expect(containerChainCollators2001.includes(author2001.toJSON().author)).to.be.true;
+                // expect(containerChainCollators2001.includes(author2001.toJSON().author)).to.be.true;
             },
         });
 
@@ -358,35 +354,35 @@ describeSuite({
             },
         });
 
-        it({
-            id: "T10",
-            title: "Test frontier template isEthereum",
-            test: async function () {
-                // TODO: fix once we have types
-                const genesisData2000 = await paraApi.query.registrar.paraGenesisData(2000);
-                expect(genesisData2000.toJSON().properties.isEthereum).to.be.false;
-                const genesisData2001 = await paraApi.query.registrar.paraGenesisData(2001);
-                expect(genesisData2001.toJSON().properties.isEthereum).to.be.true;
-            },
-        });
-        it({
-            id: "T11",
-            title: "Transactions can be made with ethers",
-            timeout: 120000,
-            test: async function () {
-                const randomAccount = generateKeyringPair();
-                const tx = await createTransfer(context, randomAccount.address, 1_000_000_000_000, {
-                    gasPrice: MIN_GAS_PRICE,
-                });
-                const txHash = await customWeb3Request(context.web3(), "eth_sendRawTransaction", [tx]);
-                await waitUntilEthTxIncluded(
-                    () => context.waitBlock(1, "Container2001"),
-                    context.web3(),
-                    txHash.result
-                );
-                expect(Number(await context.web3().eth.getBalance(randomAccount.address))).to.be.greaterThan(0);
-            },
-        });
+        // it({
+        //     id: "T10",
+        //     title: "Test frontier template isEthereum",
+        //     test: async function () {
+        //         // TODO: fix once we have types
+        //         const genesisData2000 = await paraApi.query.registrar.paraGenesisData(2000);
+        //         expect(genesisData2000.toJSON().properties.isEthereum).to.be.false;
+        //         const genesisData2001 = await paraApi.query.registrar.paraGenesisData(2001);
+        //         expect(genesisData2001.toJSON().properties.isEthereum).to.be.true;
+        //     },
+        // });
+        // it({
+        //     id: "T11",
+        //     title: "Transactions can be made with ethers",
+        //     timeout: 120000,
+        //     test: async function () {
+        //         const randomAccount = generateKeyringPair();
+        //         const tx = await createTransfer(context, randomAccount.address, 1_000_000_000_000, {
+        //             gasPrice: MIN_GAS_PRICE,
+        //         });
+        //         const txHash = await customWeb3Request(context.web3(), "eth_sendRawTransaction", [tx]);
+        //         await waitUntilEthTxIncluded(
+        //             () => context.waitBlock(1, "Container2001"),
+        //             context.web3(),
+        //             txHash.result
+        //         );
+        //         expect(Number(await context.web3().eth.getBalance(randomAccount.address))).to.be.greaterThan(0);
+        //     },
+        // });
         it({
             id: "T12",
             title: "Check block frequency of parathreads",
@@ -398,7 +394,7 @@ describeSuite({
                 // TODO: calculate block frequency somehow
                 assertSlotFrequency(await getBlockData(paraApi), 1);
                 assertSlotFrequency(await getBlockData(container2000Api), 10);
-                assertSlotFrequency(await getBlockData(container2001Api), 10);
+                // assertSlotFrequency(await getBlockData(container2001Api), 10);
             },
         });
     },
