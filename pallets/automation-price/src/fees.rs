@@ -131,9 +131,7 @@ where
 			Pallet::<T>::calculate_schedule_fee_amount(action)?.saturated_into();
 
 		let execution_fee_amount = match action.clone() {
-			Action::XCMP { execution_fee, instruction_sequence, .. }
-				if instruction_sequence == InstructionSequence::PayThroughSovereignAccount =>
-			{
+			Action::XCMP { execution_fee, instruction_sequence: InstructionSequence::PayThroughSovereignAccount, .. } => {
 				execution_fee.amount.saturated_into()
 			},
 			_ => 0u32.saturated_into(),

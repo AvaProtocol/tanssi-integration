@@ -448,12 +448,13 @@ pub fn get_fee_per_second(location: &Location) -> Option<u128> {
 		)
 		.expect("Reanchor location failed");
 
-	let found_asset = get_asset_fee_per_second_config().into_iter().find(|item| match item {
-		MockAssetFeePerSecond { asset_location, .. } => *asset_location == location,
+	let found_asset = get_asset_fee_per_second_config().into_iter().find(|item| {
+		let MockAssetFeePerSecond { asset_location, .. } = item;
+		*asset_location == location
 	});
 
-	if found_asset.is_some() {
-		Some(found_asset.unwrap().fee_per_second)
+	if let Some(asset) = found_asset {
+		Some(asset.fee_per_second)
 	} else {
 		None
 	}

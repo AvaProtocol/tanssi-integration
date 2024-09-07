@@ -621,8 +621,6 @@ pub mod pallet {
 			}
 
 			for (index, price) in prices.clone().iter().enumerate() {
-				let index: usize = index.try_into().unwrap();
-
 				let chain = chains[index].clone();
 				let exchange = exchanges[index].clone();
 				let asset1 = assets1[index].clone();
@@ -1322,8 +1320,8 @@ pub mod pallet {
 				);
 			}
 
-			if event.is_some() {
-				Self::deposit_event(event.unwrap());
+			if let Some(e) = event {
+				Self::deposit_event(e);
 			}
 		}
 

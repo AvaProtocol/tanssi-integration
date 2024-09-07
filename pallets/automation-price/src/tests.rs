@@ -580,7 +580,7 @@ fn test_sweep_expired_task_works() {
 
 		// Now we set timestamp to a later point
 		Timestamp::set_timestamp(
-			START_BLOCK_TIME.saturating_add(3_600_000_u64).try_into().unwrap(),
+			START_BLOCK_TIME.saturating_add(3_600_000_u64),
 		);
 
 		let price_target2 = 1000;
@@ -776,7 +776,7 @@ fn test_sweep_expired_task_partially() {
 
 		// Now we set timestamp to a later point
 		Timestamp::set_timestamp(
-			START_BLOCK_TIME.saturating_add((3600 + 6 * 10) * 1000).try_into().unwrap(),
+			START_BLOCK_TIME.saturating_add((3600 + 6 * 10) * 1000),
 		);
 
 		assert_eq!(
@@ -1406,7 +1406,7 @@ fn test_expired_task_not_run() {
 
 		// Moving the clock to simulate the task expiration
 		Timestamp::set_timestamp(
-			START_BLOCK_TIME.saturating_add(7_200_000_u64).try_into().unwrap(),
+			START_BLOCK_TIME.saturating_add(7_200_000_u64),
 		);
 		AutomationPrice::run_tasks(
 			vec![(task.owner_id.clone(), task.task_id.clone())],
