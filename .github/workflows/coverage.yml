@@ -33,7 +33,8 @@ jobs:
             echo "git_target_branch=$(echo ${GITHUB_BASE_REF})" >> $GITHUB_OUTPUT
             echo "git_ref=${{ github.event.pull_request.head.sha }}" >> $GITHUB_OUTPUT
             echo "coverage_dir=tanssi-coverage/pulls/${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
-            echo "coverage_report=true" >> $GITHUB_OUTPUT
+            # echo "coverage_report=true" >> $GITHUB_OUTPUT
+            echo "coverage_report=false" >> $GITHUB_OUTPUT
           else
             echo "git_branch=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_OUTPUT
             echo "git_target_branch=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_OUTPUT
@@ -157,22 +158,22 @@ jobs:
         with:
           name: coverage
           path: coverage
-      - name: Upload coverage s3
-        if: ${{(github.event.pull_request.head.repo.full_name == github.repository || github.event_name == 'push') }}
-        uses: mario-sangar/upload-s3-action@master
-        id: S3
-        with:
-          aws_key_id: ${{ secrets.S3_COVERAGE_ID }}
-          aws_secret_access_key: ${{ secrets.S3_COVERAGE_KEY }}
-          aws_bucket: ${{ vars.S3_COVERAGE_BUCKET }}
-          destination_dir: "${{ needs.set-tags.outputs.coverage_dir }}"
-          source_dir: "coverage"
-          acl: "none"
-      - name: Link To Report
-        if: ${{(github.event.pull_request.head.repo.full_name == github.repository || github.event_name == 'push') }}
-        run: |
-          echo "${{steps.S3.outputs.object_key}}"
-          echo "${{ vars.S3_BUCKET_URL }}/${{steps.S3.outputs.object_key}}/html/index.html"
+      # - name: Upload coverage s3
+      #   if: ${{(github.event.pull_request.head.repo.full_name == github.repository || github.event_name == 'push') }}
+      #   uses: mario-sangar/upload-s3-action@master
+      #   id: S3
+      #   with:
+      #     aws_key_id: ${{ secrets.S3_COVERAGE_ID }}
+      #     aws_secret_access_key: ${{ secrets.S3_COVERAGE_KEY }}
+      #     aws_bucket: ${{ vars.S3_COVERAGE_BUCKET }}
+      #     destination_dir: "${{ needs.set-tags.outputs.coverage_dir }}"
+      #     source_dir: "coverage"
+      #     acl: "none"
+      # - name: Link To Report
+      #   if: ${{(github.event.pull_request.head.repo.full_name == github.repository || github.event_name == 'push') }}
+      #   run: |
+      #     echo "${{steps.S3.outputs.object_key}}"
+      #     echo "${{ vars.S3_BUCKET_URL }}/${{steps.S3.outputs.object_key}}/html/index.html"
 
       - name: Create coverage report comment
         if: ${{ (needs.set-tags.outputs.coverage_report == 'true') && (github.event.pull_request.head.repo.full_name == github.repository || github.event_name == 'push') }}

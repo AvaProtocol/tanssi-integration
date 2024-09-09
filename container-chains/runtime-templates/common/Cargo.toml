@@ -1,0 +1,50 @@
+[package]
+name = "common-runtime"
+authors = [ "Ava Protocol Team" ]
+description = "The commonalities between runtimes"
+edition = "2021"
+homepage = "https://avaprotocol.org"
+license = "GPL-3.0"
+repository = "https://github.com/AvaProtocol/tanssi-integration"
+version = "0.1.0"
+
+[dependencies]
+# Substrate Dependencies
+## Substrate Primitive Dependencies
+sp-runtime = { workspace = true }
+sp-std = { workspace = true }
+
+## Substrate FRAME Dependencies
+frame-support = { workspace = true }
+frame-system = { workspace = true }
+
+## Substrate Pallet Dependencies
+pallet-balances = { workspace = true }
+pallet-transaction-payment = { workspace = true }
+pallet-treasury = { workspace = true }
+
+## Polkdadot deps
+polkadot-primitives = { workspace = true }
+
+## ORML
+orml-tokens = { workspace = true }
+orml-traits = { workspace = true }
+
+# Local Dependencies
+ava-protocol-primitives = { workspace = true }
+
+[features]
+default = [ "std" ]
+std = [
+	"ava-protocol-primitives/std",
+	"frame-support/std",
+	"frame-system/std",
+	"orml-tokens/std",
+	"orml-traits/std",
+	"pallet-balances/std",
+	"pallet-transaction-payment/std",
+	"pallet-treasury/std",
+	"polkadot-primitives/std",
+	"sp-runtime/std",
+	"sp-std/std",
+]
