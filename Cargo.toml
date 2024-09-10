@@ -499,6 +499,7 @@ orml-xtokens = { git = "https://github.com/AstarNetwork/open-runtime-module-libr
 # Ava Protocol
 ava-protocol-primitives = { path = "ava-protocol-primitives", default-features = false }
 common-runtime = { path = "container-chains/runtime-templates/common", default-features = false }
+pallet-automation-price = { path = "pallets/automation-price", default-features = false }
 pallet-automation-time = { path = "pallets/automation-time", default-features = false }
 pallet-xcmp-handler = { path = "pallets/xcmp-handler", default-features = false }
 

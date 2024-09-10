@@ -91,7 +91,7 @@ fn schedule_xcmp_tasks<T: Config>(
 			MultiLocation::new(1, X1(Parachain(para_id))),
 			MultiLocation::default(),
 			AssetPayment {
-				asset_location: MultiLocation::new(1, X1(Parachain(para_id))).into(),
+				asset_location: MultiLocation::new(1, Parachain(para_id)).into(),
 				amount: 0,
 			},
 			vec![4, 5, 6],
@@ -274,7 +274,7 @@ benchmarks! {
 			T::Currency::minimum_balance().saturating_mul(DEPOSIT_MULTIPLIER.into()),
 		);
 
-		let fee = AssetPayment { asset_location: MultiLocation::new(1, X1(Parachain(para_id))).into(), amount: 1000u128 };
+		let fee = AssetPayment { asset_location: MultiLocation::new(1, Parachain(para_id)).into(), amount: 1000u128 };
 		let task_id = schedule_xcmp_tasks::<T>(caller.clone(), Some(schedule_as.clone()), times, 1);
 	}: cancel_task_with_schedule_as(RawOrigin::Signed(schedule_as), caller, task_id)
 
@@ -292,7 +292,7 @@ benchmarks! {
 			T::Currency::minimum_balance().saturating_mul(DEPOSIT_MULTIPLIER.into()),
 		);
 
-		let fee = AssetPayment { asset_location: MultiLocation::new(1, X1(Parachain(para_id))).into(), amount: 1000u128 };
+		let fee = AssetPayment { asset_location: MultiLocation::new(1, Parachain(para_id)).into(), amount: 1000u128 };
 
 		let task_id = schedule_xcmp_tasks::<T>(caller.clone(), None, vec![time], 1);
 	}: { AutomationTime::<T>::run_xcmp_task(destination, caller, fee, call, Weight::from_parts(100_000, 0), Weight::from_parts(200_000, 0), InstructionSequence::PayThroughSovereignAccount) }
